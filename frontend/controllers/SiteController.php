@@ -78,7 +78,7 @@ class SiteController extends Controller
         $connection = Yii::$app->db2;
         $datao = $connection->createCommand('
             SELECT a.fiscal , COUNT(a.visit_id) AS acvisits, COUNT(DISTINCT a.HN ) AS achuman
-            FROM mb_accidents_fiscal a
+            FROM mb_accidents_fiscal a group by a.fiscal
             ')->queryAll();
 
             $acdataProvider = new ArrayDataProvider([
@@ -180,7 +180,7 @@ class SiteController extends Controller
                 COUNT(CASE WHEN (category_id >0) THEN 14  END )  AS  Total,
                 SUM(price) AS Price
             FROM mb_devices_fiscal
-            WHERE purchase_date > '20081001'
+            WHERE purchase_date > '20121001'
             GROUP BY fiscal ")->queryAll(); 
 
         $comdataProvider = new ArrayDataProvider([
