@@ -8,9 +8,7 @@ $this->title = 'allergy';
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['pharm/index']];
 $this->params['breadcrumbs'][] = 'รายงานผู้ป่วยแพ้ยาพร้อมที่อยู่';
 ?>
-<<<<<<< HEAD
 
-=======
 <b>รายงานผู้ป่วยแพ้ยา</b>
 <div class='well'>
     <?php $form = ActiveForm::begin(); ?>
@@ -44,7 +42,6 @@ $this->params['breadcrumbs'][] = 'รายงานผู้ป่วยแพ�
         
     <?php ActiveForm::end(); ?>
 </div>
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
 <?php
 echo GridView::widget([
         'dataProvider' => $dataProvider,
