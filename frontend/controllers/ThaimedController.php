@@ -221,5 +221,69 @@ GROUP BY UNIT_NAME ORDER BY amount";
 
        ]);   
      }
+     public function actionStaff_operation(){
+        $data = Yii::$app->request->post();
+        $date1 = isset($data['date1']) ? $data['date1'] : '';
+        $date2 = isset($data['date2']) ? $data['date2'] : '';
+
+    $sql = "SELECT a.STAFF_ID,CONCAT(c.FNAME,'',TRIM(c.LNAME))AS Provider, COUNT(CASE WHEN SUBSTR(tname,1,3) ='ฝัง' THEN '1' END) AS 'ฝังเข็ม',
+    COUNT(CASE WHEN SUBSTR(tname,4,6) ='บริบาล' THEN '1' END) AS 'บริบาล', 
+    COUNT(case WHEN left(TNAME,6) = 'การนวด' THEN '2'END) AS 'การนวด',
+    #COUNT(CASE WHEN SUBSTR(tname,4,3) = 'นวด' THEN '3' END) AS 'การนวด',
+    #COUNT(case WHEN left(TNAME,3) = 'นวด' THEN '6'END) AS 'นวด', 
+    COUNT(CASE WHEN SUBSTR(tname,4,2) = 'อบ' THEN '4' END) AS 'อบ', 
+    COUNT(CASE WHEN SUBSTR(tname,4,5) = 'ประคบ' THEN '5' END) AS 'ประคบ', 
+    COUNT(CASE WHEN SUBSTR(tname,4,8) = 'ส่งเสริม' THEN '5' END) AS 'ส่งเสริม', 
+    COUNT(CODE) AS Total 
+    FROM mb_thaimedoper a
+    INNER JOIN staff b ON a.STAFF_ID = b.STAFF_ID
+    LEFT JOIN population c ON b.CID = c.CID
+    WHERE REGDATE BETWEEN '2018-08-01' AND '2018-08-02'
+    GROUP BY STAFF_ID ORDER BY STAFF_ID";
+   $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+
+  // print_r($rawData);
+   try {
+       $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+   } catch (\yii\db\Exception $e) {
+       throw new \yii\web\ConflictHttpException('sql error');
+   }
+   Yii::$app->session['date1']=$date1;
+   Yii::$app->session['date2']=$date2;
+   $dataProvider = new \yii\data\ArrayDataProvider([
+       'allModels' => $rawData,
+       'pagination' => FALSE,
+   ]);
+   return $this->render('staff_operation', [
+               'dataProvider' => $dataProvider,
+               'sql'=>$sql,
+               'date1'=>$date1,
+               'date2'=>$date2,
+
+   ]);   
+}
+    public function actionStaff_operation_list($catid){
+        $sql = "SELECT a.device_serial, device_name, a.spec, a.purchase_date, a.sale_date, b.category_name, a.price
+        FROM devices a
+        INNER JOIN categories b ON a.category_id = b.category_id
+        WHERE a.category_id = $catid and a.sale_date = 0";
+    $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+
+    // print_r($rawData);
+    try {
+        $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+    } catch (\yii\db\Exception $e) {
+        throw new \yii\web\ConflictHttpException('sql error');
+    }
+    $dataProvider = new \yii\data\ArrayDataProvider([
+        'allModels' => $rawData,
+        'pagination' => FALSE,
+    ]);
+    return $this->render('devices_all_list', [
+                'dataProvider' => $dataProvider,
+                'sql'=>$sql,
+
+    ]);
+} 
 }
 
