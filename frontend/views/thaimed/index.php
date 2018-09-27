@@ -23,5 +23,8 @@ use yii\helpers\Html;
   <?=  Html::a('5.รายงานการจ่ายยาสมุนไพรทดแทน 6 ชนิด (แยกรายเดือน)',['thaimed/smonpri_replace']) ?>
 </p>
 <p>
-  <?=  Html::a('6.รายงานการทำหัตการแผทย์แผนไทยแยกตามผู้ทำหัตการ',['thaimed/staff_operation']) ?>
+  <?=  Html::a('6.รายงานผู้สั่งหัตการแผทย์แผนไทย(ผู้สั่ง)',['thaimed/staff_operation']) ?>
+</p>
+<p>
+  <?=  Html::a('7.รายงานผู้ทำหัตการแผทย์แผนไทยแยกตามผู้ทำหัตการ(ผู้ทำ)',['thaimed/surgeon_operation']) ?>
 </p>

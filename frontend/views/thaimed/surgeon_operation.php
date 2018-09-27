@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
 use yii\helpers\Url;
 
-$this->title = 'STAFF_OPERATON';
+$this->title = 'SURGEON_OPERATON';
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['computer/index']];
-$this->params['breadcrumbs'][] = 'รายงานผู้สั่งหัตถการแพทย์แผนไทย';
+$this->params['breadcrumbs'][] = 'รายงานการทำหัตถการแพทย์แผนไทยแยกตามผู้ทำหัตถการ';
 ?>
-<b>รายงานผู้สั่งหัตถการแพทย์แผนไทย</b>
+<b>รายงานการทำหัตถการแพทย์แผนไทยแยกตามผู้ทำหัตถการ</b>
 <div class='well'>
     <?php $form = ActiveForm::begin(); ?>
      ระหว่างวันที่:
@@ -47,7 +47,7 @@ echo GridView::widget([
         'dataProvider' => $dataProvider,
         
         'panel' => [
-            'before'=>'รายงานผู้สั่งหัตถการแพทย์แผนไทย',
+            'before'=>'รายงานการทำหัตถการแพทย์แผนไทยแยกตามผู้ทำหัตถการ',
             'after'=>'ประมวลผล '.date('Y-m-d H:i:s')
           ],
                'columns' => [
@@ -55,10 +55,10 @@ echo GridView::widget([
                   
                     [
                         'attribute' => 'Provider',
-                        'header' => 'ชื่อผู้สั่ง',
+                        'header' => 'ชื่อผู้ทำ',
                     ],
                     [
-                        'attribute' => 'STAFF_ID',
+                        'attribute' => 'SURGEON_ID',
                         'header' => 'รหัส',
                     ],
                     [
@@ -83,9 +83,9 @@ echo GridView::widget([
                         'attribute' => 'Total ',
                         'format' => 'raw',
                         'value' => function($model) {
-                            $staffid = $model['STAFF_ID'];
+                            $surgeonid = $model['SURGEON_ID'];
                             $total = $model['Total'];
-                            return Html::a(Html::encode($total), ['thaimed/staff_operation_list','staffid'=> $staffid],['target'=>'_blank']);
+                            return Html::a(Html::encode($total), ['thaimed/surgeon_operation_list','surgeonid'=> $surgeonid],['target'=>'_blank']);
                         }
                             ],
                   ]
