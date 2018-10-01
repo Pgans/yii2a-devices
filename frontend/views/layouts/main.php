@@ -85,6 +85,8 @@ MaterialAsset::register($this);
     $report_mnu_itms[] = ['label' => 'เภสัชกรรม', 'url' => ['pharm/index']];
     $report_mnu_itms[] = ['label' => 'ยาเสพติด', 'url' => ['addictive/index']];
     $report_mnu_itms[] = ['label' => 'เวชปฏิบัติ', 'url' => ['wech/index']];
+    $report_mnu_itms[] = ['label' => 'กายภาพบำบัด', 'url' => ['phisical/index']];
+  
   
     $menuItems = [
         ['label' => 'Home', 'url' => ['/site/index']],
