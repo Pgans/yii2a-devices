@@ -62,6 +62,9 @@ echo GridView::widget([
                         'header' => 'รหัส',
                     ],
                     [
+                        'attribute' => 'Acupuncture'
+                    ],
+                    [
                         'attribute' => 'ฝังเข็ม',
                     ],
                     [

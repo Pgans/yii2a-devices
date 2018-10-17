@@ -14,17 +14,19 @@ class ThaimedController extends \yii\web\Controller
         $date1 =isset($data['date1'])  ? $data['date1'] : '';
         $date2 =isset($data['date2'])  ? $data['date2'] : '';
 
-      $sql = "SELECT REGDATE, 
-      COUNT(CASE WHEN SUBSTR(tname,1,3) ='ฝัง' THEN '1' END) AS 'ฝังเข็ม',
-      COUNT(CASE WHEN SUBSTR(tname,4,6) ='บริบาล'  THEN '1' END) AS 'บริบาล', 
-      COUNT(CASE WHEN SUBSTR(tname,4,3) = 'นวด' THEN '3' END) AS 'การนวด',
-      COUNT(CASE WHEN SUBSTR(tname,4,2) = 'อบ' THEN '4' END) AS 'อบ',
-      COUNT(CASE WHEN SUBSTR(tname,4,5) = 'ประคบ' THEN '5' END) AS 'ประคบ',
-      COUNT(CASE WHEN SUBSTR(tname,4,8) = 'ส่งเสริม' THEN '5' END) AS 'ส่งเสริม',
+      $sql = "SELECT date(a.REG_DATETIME), 
+      COUNT(CASE WHEN SUBSTR(NICKNAME,1,3) ='ฝัง' THEN '1' END) AS 'ฝังเข็ม',
+      COUNT(CASE WHEN CODE= 99.92 THEN '2' END) AS 'Acupuncture', 
+      COUNT(CASE WHEN SUBSTR(NICKNAME,4,6) ='บริบาล' THEN '3' END) AS 'บริบาล', 
+      COUNT(case WHEN left(NICKNAME,6) = 'การนวด' THEN '4'END) AS 'การนวด',
+      COUNT(CASE WHEN SUBSTR(NICKNAME,4,2) = 'อบ' THEN '5' END) AS 'อบ', 
+      COUNT(CASE WHEN SUBSTR(NICKNAME,4,5) = 'ประคบ' THEN '6' END) AS 'ประคบ', 
+      COUNT(CASE WHEN SUBSTR(NICKNAME,4,8) = 'ส่งเสริม' THEN '7' END) AS 'ส่งเสริม', 
       COUNT(CODE) AS Total 
-        FROM mb_thaimedoper 
-        WHERE REGDATE BETWEEN '$date1' AND '$date2'
-        GROUP BY REGDATE ORDER BY REGDATE";
+    FROM mb_opd_operations a
+    WHERE  DATE(a.REG_DATETIME) BETWEEN '$date1' AND '$date2'
+							AND a.CGD_ID = 15              
+   GROUP BY DATE(a.REG_DATETIME) ORDER BY DATE(a.REG_DATETIME)";
 
      $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
 
@@ -185,17 +187,18 @@ GROUP BY UNIT_NAME ORDER BY amount";
             $date1 = isset($data['date1']) ? $data['date1'] : '';
             $date2 = isset($data['date2']) ? $data['date2'] : '';
 
-        $sql = "SELECT month(REGDATE)AS MONTH, 
-		COUNT(CASE WHEN SUBSTR(tname,1,3) ='ฝัง' THEN '1' END) AS 'ฝังเข็ม',
-		COUNT(CASE WHEN SUBSTR(tname,4,6) ='บริบาล'  THEN '1' END) AS 'บริบาล', 
-		COUNT(CASE WHEN SUBSTR(tname,4,3) = 'นวด' THEN '3' END) AS 'การนวด',
-		COUNT(CASE WHEN SUBSTR(tname,4,2) = 'อบ' THEN '4' END) AS 'อบ',
-		COUNT(CASE WHEN SUBSTR(tname,4,5) = 'ประคบ' THEN '5' END) AS 'ประคบ',
-		COUNT(CASE WHEN SUBSTR(tname,4,8) = 'ส่งเสริม' THEN '5' END) AS 'ส่งเสริม',
-		COUNT(CODE) AS Total 
-        FROM mb_thaimedoper 
-        WHERE REGDATE between  '$date1' and '$date2'
-        GROUP BY MONTH ORDER BY MONTH";
+        $sql = "SELECT MONTH(REG_DATETIME)AS MONTH, 
+		COUNT(CASE WHEN SUBSTR(NICKNAME,1,3) ='ฝัง' THEN '1' END) AS 'ฝังเข็ม',
+      COUNT(CASE WHEN CODE= 99.92 THEN '2' END) AS 'Acupuncture', 
+      COUNT(CASE WHEN SUBSTR(NICKNAME,4,6) ='บริบาล' THEN '3' END) AS 'บริบาล', 
+      COUNT(case WHEN left(NICKNAME,6) = 'การนวด' THEN '4'END) AS 'การนวด',
+      COUNT(CASE WHEN SUBSTR(NICKNAME,4,2) = 'อบ' THEN '5' END) AS 'อบ', 
+      COUNT(CASE WHEN SUBSTR(NICKNAME,4,5) = 'ประคบ' THEN '6' END) AS 'ประคบ', 
+      COUNT(CASE WHEN SUBSTR(NICKNAME,4,8) = 'ส่งเสริม' THEN '7' END) AS 'ส่งเสริม', 
+      COUNT(CODE) AS Total  
+        FROM mb_opd_operations 
+        WHERE REG_DATETIME BETWEEN  '$date1' AND '$date2'
+        GROUP BY MONTH(REG_DATETIME) ORDER BY MONTH(REG_DATETIME)";
 
        $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
 
@@ -226,12 +229,13 @@ GROUP BY UNIT_NAME ORDER BY amount";
         $date1 = isset($data['date1']) ? $data['date1'] : '';
         $date2 = isset($data['date2']) ? $data['date2'] : '';
 
-    $sql = "SELECT a.STAFF_ID,CONCAT(c.FNAME,'',TRIM(c.LNAME))AS Provider, COUNT(CASE WHEN SUBSTR(NICKNAME,1,3) ='ฝัง' THEN '1' END) AS 'ฝังเข็ม',
-    COUNT(CASE WHEN SUBSTR(NICKNAME,4,6) ='บริบาล' THEN '1' END) AS 'บริบาล', 
-    COUNT(case WHEN left(NICKNAME,6) = 'การนวด' THEN '2'END) AS 'การนวด',
-    COUNT(CASE WHEN SUBSTR(NICKNAME,4,2) = 'อบ' THEN '4' END) AS 'อบ', 
-    COUNT(CASE WHEN SUBSTR(NICKNAME,4,5) = 'ประคบ' THEN '5' END) AS 'ประคบ', 
-    COUNT(CASE WHEN SUBSTR(NICKNAME,4,8) = 'ส่งเสริม' THEN '5' END) AS 'ส่งเสริม', 
+    $sql = "SELECT a.STAFF_ID,CONCAT(c.FNAME,'',TRIM(c.LNAME))AS Provider,
+    COUNT(CASE WHEN SUBSTR(NICKNAME,1,3) ='ฝัง' THEN '1' END) AS 'ฝังเข็ม',
+    COUNT(CASE WHEN SUBSTR(NICKNAME,4,6) ='บริบาล' THEN '3' END) AS 'บริบาล', 
+    COUNT(case WHEN left(NICKNAME,6) = 'การนวด' THEN '4'END) AS 'การนวด',
+    COUNT(CASE WHEN SUBSTR(NICKNAME,4,2) = 'อบ' THEN '5' END) AS 'อบ', 
+    COUNT(CASE WHEN SUBSTR(NICKNAME,4,5) = 'ประคบ' THEN '6' END) AS 'ประคบ', 
+    COUNT(CASE WHEN SUBSTR(NICKNAME,4,8) = 'ส่งเสริม' THEN '7' END) AS 'ส่งเสริม', 
     COUNT(CODE) AS Total 
     FROM mb_opd_operations a
     INNER JOIN staff b ON a.STAFF_ID = b.STAFF_ID
@@ -293,17 +297,19 @@ public function actionSurgeon_operation(){
     $date1 = isset($data['date1']) ? $data['date1'] : '';
     $date2 = isset($data['date2']) ? $data['date2'] : '';
 
-$sql = "SELECT a.SURGEON_ID,CONCAT(c.FNAME,'',TRIM(c.LNAME))AS Provider, COUNT(CASE WHEN SUBSTR(NICKNAME,1,3) ='ฝัง' THEN '1' END) AS 'ฝังเข็ม',
-COUNT(CASE WHEN SUBSTR(NICKNAME,4,6) ='บริบาล' THEN '1' END) AS 'บริบาล', 
-COUNT(case WHEN left(NICKNAME,6) = 'การนวด' THEN '2'END) AS 'การนวด',
-COUNT(CASE WHEN SUBSTR(NICKNAME,4,2) = 'อบ' THEN '4' END) AS 'อบ', 
-COUNT(CASE WHEN SUBSTR(NICKNAME,4,5) = 'ประคบ' THEN '5' END) AS 'ประคบ', 
-COUNT(CASE WHEN SUBSTR(NICKNAME,4,8) = 'ส่งเสริม' THEN '5' END) AS 'ส่งเสริม', 
-COUNT(CODE) AS Total 
+$sql = "SELECT a.SURGEON_ID,CONCAT(c.FNAME,'',TRIM(c.LNAME))AS Provider,
+    COUNT(CASE WHEN SUBSTR(NICKNAME,1,3) ='ฝัง' THEN '1' END) AS 'ฝังเข็ม',
+    COUNT(CASE WHEN CODE= 99.92 THEN '2' END) AS 'Acupuncture', 
+    COUNT(CASE WHEN SUBSTR(NICKNAME,4,6) ='บริบาล' THEN '3' END) AS 'บริบาล', 
+    COUNT(case WHEN left(NICKNAME,6) = 'การนวด' THEN '4'END) AS 'การนวด',
+    COUNT(CASE WHEN SUBSTR(NICKNAME,4,2) = 'อบ' THEN '5' END) AS 'อบ', 
+    COUNT(CASE WHEN SUBSTR(NICKNAME,4,5) = 'ประคบ' THEN '6' END) AS 'ประคบ', 
+    COUNT(CASE WHEN SUBSTR(NICKNAME,4,8) = 'ส่งเสริม' THEN '7' END) AS 'ส่งเสริม', 
+    COUNT(CODE) AS Total 
 FROM mb_opd_operations a
 INNER JOIN staff b ON a.SURGEON_ID = b.STAFF_ID
 LEFT JOIN population c ON b.CID = c.CID
-WHERE a.REG_DATETIME between '$date1'  and '$date2'
+WHERE DATE(a.REG_DATETIME) between '$date1' AND '$date2'
 AND a.CGD_ID = 15
 GROUP BY a.SURGEON_ID ORDER BY a.SURGEON_ID";
 $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
@@ -335,7 +341,7 @@ public function actionSurgeon_operation_list($surgeonid){
     FROM mb_opd_operations a
     INNER JOIN staff b ON a.SURGEON_ID = b.STAFF_ID
     LEFT JOIN population c ON b.CID = c.CID
-    WHERE a.REG_DATETIME BETWEEN '$date1' AND '$date2'
+    WHERE DATE(a.REG_DATETIME) BETWEEN '$date1' AND '$date2'
     AND a.SURGEON_ID = $surgeonid ORDER BY a.NICKNAME";
 $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
 
@@ -353,7 +359,35 @@ return $this->render('surgeon_operation_list', [
             'dataProvider' => $dataProvider,
             'sql'=>$sql,
 
+    ]);
+  } 
+  public function actionSurgeon_operation_soy($surgeonid){
+    $date1 = Yii::$app->session['date1'];
+    $date2 = Yii::$app->session['date2'];
+    $sql = "SELECT a.REG_DATETIME,a.VISIT_ID,a.HN ,a.NICKNAME,a.CODE, a.SURGEON_ID
+    FROM mb_opd_operations a
+    INNER JOIN staff b ON a.SURGEON_ID = b.STAFF_ID
+    LEFT JOIN population c ON b.CID = c.CID
+    WHERE a.REG_DATETIME BETWEEN '$date1' AND '$date2'
+    AND a.SURGEON_ID = $surgeonid
+    ORDER BY a.NICKNAME";
+$rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+
+// print_r($rawData);
+try {
+    $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+} catch (\yii\db\Exception $e) {
+    throw new \yii\web\ConflictHttpException('sql error');
+}
+$dataProvider = new \yii\data\ArrayDataProvider([
+    'allModels' => $rawData,
+    'pagination' => FALSE,
 ]);
-} 
+return $this->render('surgeon_operation_soy', [
+            'dataProvider' => $dataProvider,
+            'sql'=>$sql,
+
+    ]);
+  } 
 }
 

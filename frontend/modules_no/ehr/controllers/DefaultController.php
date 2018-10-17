@@ -1,74 +1,35 @@
 <?php
 
-//namespace modules\ehr\controllers;
-namespace frontend\modules\ehr\controllers;
-
+namespace modules\ehr\controllers;
 
 use yii\web\Controller;
 use Yii;
 use yii\data\ArrayDataProvider;
-use kartik\tabs\TabsX;
-use yii\filters\VerbFilter;
-use frontend\modules\ehr\models\LogEhr;
-/* เพิ่มคำสั่ง 3 บรรทัดต่อจากนี้ลงไป */
-use yii\filters\AccessControl;        // เรียกใช้ คลาส AccessControl
-use common\models\User;             // เรียกใช้ Model คลาส User ที่ปรับปรังปรุงไว้
-use common\components\AccessRule;   // เรียกใช้ คลาส Component AccessRule ที่เราสร้างใหม่
+use components\MyHelper;
+use modules\ehr\models\LogEhr;
 
 
 class DefaultController extends Controller {
 
     public $enableCsrfValidation = false; //เพิ่ม
     
-    // public function behaviors() {
-    //     return[
-    //         'access' => [
-    //             'class' => \yii\filters\AccessControl::className(), 
-    //             'only'=>['index'],
-                //         'actions' => ['index'],
-                //        // 'allow'=> true,
-                //        // 'allow' => MyHelper::modIsOn(),
-                //         'roles' => ['User'],
-                       
-
-                //         ]
-                //     ],
+    public function behaviors() {
+        return[
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(), 
+                'only'=>['index'],
+                'rules' => [
+                    [
+                        'actions' => ['index'],
+                        'allow' => MyHelper::modIsOn(),
+                        'roles' => ['User'],
+                    ],
                     
-    //             ],
-           
-    //     ];
-    // }
-    public function behaviors(){
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
                 ],
             ],
-            'access'=>[
-                'class'=>AccessControl::className(),
-                'only'=> ['index','create','update','view','delete'],
-                'ruleConfig'=>[
-                    'class'=>AccessRule::className()
-                ],
-                'rules'=>[
-                    [
-                        'actions'=>['index'],
-                        'allow'=> true,
-                        'roles'=>[
-                            //'?',
-                           // '@',
-                            User::ROLE_USER,
-                            User::ROLE_EMPLOYEE,
-                            User::ROLE_ADMIN
-
-                        ]
-                    ],
-                ]
-            ]
         ];
     }
+
     public function actionIndex() {
         
         //throw ConflictHttpException('ระบบ EHR ถูกปิด');
@@ -130,7 +91,7 @@ class DefaultController extends Controller {
                 FROM person p
                 LEFT JOIN cprename n ON n.id_prename = p.prename
                 LEFT JOIN home h ON h.HOSPCODE = p.HOSPCODE AND h.HID = p.HID
-                LEFT JOIN dhdc_tmp_chronic tc on tc.cid = p.cid
+                LEFT JOIN tmp_chronic tc on tc.cid = p.cid
                 LEFT JOIN cicd10tm i ON i.diagcode = tc.chronic
                 LEFT JOIN campur a ON a.ampurcode = h.AMPUR AND a.changwatcode =  h.CHANGWAT
                 LEFT JOIN cchangwat c  ON c.changwatcode = h.CHANGWAT

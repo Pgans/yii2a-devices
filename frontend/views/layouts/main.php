@@ -109,9 +109,9 @@ MaterialAsset::register($this);
               ['label' => 'เวชระเบียน',
            'items' => $report_mnu_itms7
               ],
-        //       ['label' => 'การบริการ',
-        //    'items' => $report_mnu_itms8
-        //       ],
+               ['label' => 'การบริการ',
+           'items' => $report_mnu_itms8
+               ],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
