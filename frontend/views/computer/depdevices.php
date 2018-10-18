@@ -26,6 +26,21 @@ $this->params['breadcrumbs'][] = 'รายงานจำนวนอุปก�
         //}
         ?>
       <?php ActiveForm::end(); ?>
+      <div class='well'>
+    <?php
+    $skip_id = ['c10a2aa18f688027da4746eff598172b', 'eaf586ae6959ac7ef7d30513aa05a4d2'];
+
+    $form = ActiveForm::begin([
+               // 'method' => 'get',
+                //'action' => Url::to(['/hdcex/default/report-id']),
+    ]);
+    
+    
+        echo Html::a('ทั้งหมด', ['/hdcex/default/report-all', 'ex_id' => $ex_id, 'title' => $title, 'hospcode' => 'all'], ['class' => 'btn btn-warning', 'style' => 'margin-left:5px']);
+    
+
+    ActiveForm::end();
+    ?>
 </div>
 <?php
 echo GridView::widget([
