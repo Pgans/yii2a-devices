@@ -38,7 +38,9 @@ $this->params['breadcrumbs'][] = 'รายงานRefersผู้ป่วย�
         ]);
         ?>
         <button class='btn btn-danger'> ตกลง </button>
-
+        <?
+            echo Html::a('ทั้งหมด', ['refers/referipd_all'], ['class' => 'btn btn-success', 'target'=>'_blank']);
+        ?>
     <?php ActiveForm::end(); ?>
 </div>
 <?php

@@ -116,13 +116,38 @@ FROM  mb_refer_ipd WHERE RF_DT BETWEEN '$date1' AND '$date2' GROUP BY UNIT_NAME 
 
         ]);
     }
+    public function actionReferipd_all(){
+        $date1 = Yii::$app->session['date1'];
+        $date2 = Yii::$app->session['date2'];
+        $sql = "SELECT * FROM mb_refer_ipd
+        WHERE  UNIT_ID IN (22,38,39) AND rf_dt  BETWEEN '$date1' AND '$date2'";
+    $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+
+    // print_r($rawData);
+    try {
+        $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+    } catch (\yii\db2\Exception $e) {
+        throw new \yii\web\ConflictHttpException('sql error');
+    }
+    $dataProvider = new \yii\data\ArrayDataProvider([
+        'allModels' => $rawData,
+        'pagination' => FALSE,
+    ]);
+    return $this->render('referipd_list', [
+                'dataProvider' => $dataProvider,
+                'sql'=>$sql,
+
+    ]);
+}
     public function actionReferopd(){
             $data = Yii::$app->request->post();
             $date1 = isset($data['date1']) ? $data['date1'] : '';
             $date2 = isset($data['date2']) ? $data['date2'] : '';
+            $depid = isset($data['depid']) ? $data['depid'] : 'null';
 
         $sql = "SELECT  UNIT_ID,UNIT_NAME, COUNT(UNIT_NAME) AS AMOUNT
-FROM  mb_referout_all_list WHERE RF_DT BETWEEN '$date1' AND '$date2' GROUP BY UNIT_NAME  ORDER BY AMOUNT DESC";
+FROM  mb_referout_all_list WHERE UNIT_ID NOT IN (22,38,39)AND RF_DT BETWEEN '$date1' AND '$date2' 
+GROUP BY UNIT_NAME  ORDER BY AMOUNT DESC";
        $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
 
       // print_r($rawData);
@@ -170,6 +195,30 @@ FROM  mb_referout_all_list WHERE RF_DT BETWEEN '$date1' AND '$date2' GROUP BY UN
 
         ]);
     }
+    public function actionReferopd_all(){
+        $date1 = Yii::$app->session['date1'];
+        $date2 = Yii::$app->session['date2'];
+        
+        $sql = "SELECT * FROM mb_referout_all_list
+        WHERE  UNIT_ID NOT IN (22,38,39) AND rf_dt  BETWEEN '$date1' AND '$date2'";
+    $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+
+    // print_r($rawData);
+    try {
+        $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+    } catch (\yii\db2\Exception $e) {
+        throw new \yii\web\ConflictHttpException('sql error');
+    }
+    $dataProvider = new \yii\data\ArrayDataProvider([
+        'allModels' => $rawData,
+        'pagination' => FALSE,
+    ]);
+    return $this->render('referopd_list', [
+                'dataProvider' => $dataProvider,
+                'sql'=>$sql,
+
+    ]);
+}
     public function actionReferin(){
             $data = Yii::$app->request->post();
             $date1 = isset($data['date1']) ? $data['date1'] : '';

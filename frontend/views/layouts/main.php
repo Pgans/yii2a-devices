@@ -64,10 +64,12 @@ MaterialAsset::register($this);
     $report_mnu_itms5[] = ['label' => 'รายงาน10อันดับโรคOPD', 'url' => ['report/dxopd59']];
     $report_mnu_itms5[] = ['label' => 'รายงาน10อันดับโรคIPD', 'url' => ['report/dxipd']];
     
-    $report_mnu_itms5[] = ['label' => 'รายงานผู้เสียชีวิต5อันดับโรค(แฟ้มDeaths)', 'url' => ['deaths/deathdx59']];
-    $report_mnu_itms5[] = ['label' => 'รายงานผู้ป่วยเสียชีวิตในโรงพยาบาลและชื่อโรคแยกตามแผนก(จากการAdmitt)', 'url' => ['deaths/deathipd']];
-    $report_mnu_itms5[] = ['label' => 'รายงานผู้ป่วยเสียชีวิตในโรงพยาบาลทั้งหมด(แฟ้มDeaths)', 'url' => ['deaths/death_all']];
-    $report_mnu_itms5[] = ['label' => 'รายงานผู้ป่วยเสียชีวิตยังไม่จำหน่าย(43แฟ้ม (Discharge=9)', 'url' => ['deaths/persondisc']];
+   // $report_mnu_itms4[] = ['label' => 'รายงาน10อันดับโรคผู้ป่วยในทั้งหมดเสียชีวิตในโรงพยาบาล(ภาพรวมผู้ป่วยใน)', 'url' => ['deaths/death_ipdall']];
+    $report_mnu_itms4[] = ['label' => 'รายงานผู้ป่วยเสียชีวิตในโรงพยาบาลและชื่อโรคแยกตามแผนก(จากDSCนับคน)', 'url' => ['deaths/deathipd']];
+    $report_mnu_itms4[] = ['label' => 'รายงานผู้เสียชีวิต10อันดับโรค(IPD)', 'url' => ['deaths/deathdx59']];
+    $report_mnu_itms4[] = ['label' => 'รายงานผู้เสียชีวิต10อันดับโรค(OPD)', 'url' => ['deaths/death_opd']];
+    $report_mnu_itms4[] = ['label' => 'รายงานผู้ป่วยเสียชีวิตในโรงพยาบาลทั้งหมด(แฟ้มDeathรายคน)', 'url' => ['deaths/death_all']];
+    $report_mnu_itms4[] = ['label' => 'รายงานผู้ป่วยเสียชีวิตยังไม่จำหน่าย(43แฟ้ม (Discharge=9)', 'url' => ['deaths/persondisc']];
    
     $report_mnu_itms2[] = ['label' => 'รายงานRefersส่งต่อแยกตามแผนกบริการ(OPD)', 'url' => ['refers/referopd']];
     $report_mnu_itms2[] = ['label' => 'รายงานRefersส่งต่อแยกตามแผนกบริการ(IPD)', 'url' => ['refers/referipd']];
@@ -94,24 +96,27 @@ MaterialAsset::register($this);
               ['label' => 'mBase',
           'items' => $report_mnu_itms
             ],
-              ['label' => '43แฟ้ม',
-           'items' => $report_mnu_itms1
-              ],
+            ['label' => 'Deaths',
+          'items' => $report_mnu_itms4
+            ],
+        //       ['label' => '43แฟ้ม',
+        //    'items' => $report_mnu_itms1
+        //       ],
               ['label' => 'Refers',
            'items' => $report_mnu_itms2
               ],
-              ['label' => 'รายงาน',
+              ['label' => 'Reports',
            'items' => $report_mnu_itms5
               ],
-              ['label' => 'ทะเบียนคอม',
+              ['label' => 'Comp',
            'items' => $report_mnu_itms6
               ],
-              ['label' => 'เวชระเบียน',
+              ['label' => 'MRS',
            'items' => $report_mnu_itms7
               ],
-               ['label' => 'การบริการ',
-           'items' => $report_mnu_itms8
-               ],
+        //        ['label' => 'การบริการ',
+        //    'items' => $report_mnu_itms8
+        //        ],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];

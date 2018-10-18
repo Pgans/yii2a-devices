@@ -7,9 +7,9 @@ use frontend\models\Departments;
 
 $this->title = "DEP_DEVICES";
 //$this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['reg/index']];
-$this->params['breadcrumbs'][] = 'รายงานจำนวนอุปกรณ์แยกตามแผนก';
+$this->params['breadcrumbs'][] = 'รายงานจำนวนอุปกรณ์แยกตามแผนกทั้งหมด';
 ?>
-<b style = "color:blue">รายงานอุปกรณ์คอมพิวเตอร์แยกตามแผนก</b>
+<b style = "color:blue">รายงานอุปกรณ์คอมพิวเตอร์ทั้งหมด</b>
 <div class='well'>
      <?php $form = ActiveForm::begin([
     'method' => 'POST',
@@ -20,18 +20,13 @@ $this->params['breadcrumbs'][] = 'รายงานจำนวนอุปก�
         echo Html::dropDownList('depid', $depid, $items, ['prompt' => '--- หน่วยบริการ ---']);
         ?>
         <button class='btn btn-success'> ตกลง </button>
-        <?
-       // if (!in_array($ex_id, $skip_id)) {
-            echo Html::a('ทั้งหมด', ['computer/depdevice_all'], ['class' => 'btn btn-warning', 'style' => 'margin-left:5px'],['target'=>'_blank']);
-        //}
-        ?>
       <?php ActiveForm::end(); ?>
 </div>
 <?php
 echo GridView::widget([
         'dataProvider' => $dataProvider,
         'panel' => [
-            'before'=>'<b style="color:blue ">รายงานอุปกรณ์คอมพิวเตอร์แยกตามแผนก</b><b style="color: red">(เครื่อง)</b>',
+            'before'=>'<b style="color:blue ">รายงานอุปกรณ์คอมพิวเตอร์ทั้งหมด</b><b style="color: red">(เครื่อง)</b>',
             'after'=>'ประมวลผล '.date('Y-m-d H:i:s')
             ],
     ]

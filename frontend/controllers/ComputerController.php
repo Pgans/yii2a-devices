@@ -293,6 +293,38 @@ ORDER BY  device_serial, purchase_date";
                     
             ]);  
     }
+    public function actionDepdevice_all(){
+        $data = Yii::$app->request->post();
+        $depid = isset($data['depid']) ? $data['depid'] : 'null';
+        
+        $sql = "SELECT  a.device_serial , device_name,a.spec,b.category_name, c.dep_name, a.purchase_date,
+                a.due_date, a.price
+                FROM devices a, categories b , departments c
+                WHERE a.category_id = b.category_id
+                AND a.dep_id = c.dep_id
+                #AND c.dep_id = $depid
+                AND a.sale_date = '0000-00-00' ORDER BY b.category_name";
+            $rawData = \yii::$app->db->createCommand($sql)->queryAll();
+        // print_r($rawData);
+            try {
+                $rawData = \Yii::$app->db->createCommand($sql)->queryAll();
+            } catch (\yii\db\Exception $e) {
+                throw new \yii\web\ConflictHttpException('sql error');
+            }
+           // Yii::$app->session['date1']=$date1;
+           //Yii::$app->session['date2']=$date2;
+            $dataProvider = new \yii\data\ArrayDataProvider([
+                'allModels' => $rawData,
+                'pagination' => FALSE,
+            ]);
+            return $this->render('depdevices', [
+                        'dataProvider' => $dataProvider,
+                        'sql'=>$sql,
+                        'depid'=> $depid,
+                        
+                    
+            ]);  
+    }
     public function actionMaterials(){
        $data = Yii::$app->request->post();
        $date1 = isset($data['date1']) ? $data['date1'] : '';

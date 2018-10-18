@@ -3,6 +3,7 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use kartik\grid\GridView;
 use kartik\widgets\ActiveForm;
+use frontend\models\Departments;
 
 $this->title = "REFER-OPD";
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['refers/index']];
@@ -38,6 +39,9 @@ $this->params['breadcrumbs'][] = 'รายงานRefersส่งต่อแ�
         ]);
         ?>
         <button class='btn btn-danger'> ตกลง </button>
+        <?
+            echo Html::a('ทั้งหมด', ['refers/referopd_all'], ['class' => 'btn btn-success', 'target'=>'_blank']);
+        ?>
 
     <?php ActiveForm::end(); ?>
 </div>

@@ -8,7 +8,7 @@ $this->title = 'DEATH-List';
 echo GridView::widget([
         'dataProvider' => $dataProvider,
         'panel' => [
-            'before'=>'รายงานอันดับโรคผู้ป่วยเสียชีวิตในโรงพยาบาล(IPD) '.date('Y-m-d')
+            'before'=>'รายงานอันดับโรคผู้ป่วยเสียชีวิตในโรงพยาบาล(OPD) '.date('Y-m-d')
             ],
     ]
   );

@@ -9,9 +9,9 @@ use kartik\widgets\ActiveForm;
 
 $this->title='Death-dx';
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['deaths/index']];
-$this->params['breadcrumbs'][] = 'รายงานอันดับโรคผู้ป่วยเสียชีวิตทั้งหมดในโรงพยาบาล(IPD)';
+$this->params['breadcrumbs'][] = 'รายงาน10อันดับโรคผู้ป่วยเสียชีวิตในโรงพยาบาล(OPD)';
 ?>
-<b><a>รายงานอันดับโรคผู้ป่วยเสียชีวิตทั้งหมดในโรงพยาบาล(IPD)</a></b>
+<b><a>รายงาน10อันดับโรคผู้ป่วยเสียชีวิตในโรงพยาบาล(OPD)</a></b>
 <div class='well'>
     <?php $form = ActiveForm::begin(); ?>
      วันที่ระหว่าง:
@@ -39,23 +39,18 @@ $this->params['breadcrumbs'][] = 'รายงานอันดับโรค�
                 'changeYear' => true,
             ]
         ]);
-        
         ?>
         <button class='btn btn-danger'> ตกลง </button>
-        <!-- <?
-        #if (!in_array($ex_id, $skip_id)) {
-            echo Html::a('ทั้งหมด', ['deaths/death_list','cdeath' => $cdeath], ['class' => 'btn btn-success', 'style' => 'margin-left:5px']);
-          
-        ?> -->
-       
-    <?php ActiveForm::end();?>
+
+    <?php ActiveForm::end(); ?>
 </div>
+<?php //echo $sql;?>
 
 <?php
 echo GridView::widget([
         'dataProvider' => $dataProvider,
         'panel' => [
-            'before'=>'<b style = "color:blue">รายงานอันดับโรคผู้ป่วยเสียชีวิตในโรงพยาบาล(IPD)</b>',
+            'before'=>'<b style = "color:blue">รายงาน10อันดับโรคผู้ป่วยเสียชีวิตในโรงพยาบาล(OPD)</b>',
             'after'=>'ประมวลผล '.date('Y-m-d H:i:s')
           ],
           'columns' => [
@@ -76,7 +71,7 @@ echo GridView::widget([
                                 'value' => function($model) {
                                     $cdeath = $model['CDEATH'];
                                     $total = $model['TOTAL'];
-                                    return Html::a(Html::encode($total), ['deaths/death_list','cdeath' => $cdeath],['target'=>'_blank']);
+                                    return Html::a(Html::encode($total), ['deaths/death_opdlist','cdeath' => $cdeath],['target'=>'_blank']);
                                 }
                                     ],
                   ]

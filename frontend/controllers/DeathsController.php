@@ -36,8 +36,8 @@ WHERE  a.cid = b.cid
 AND a.is_cancel = 0
 AND a.CID = b.CID
 AND a.IS_HOSP = 1
-AND a.CDEATH_A != ' '
-AND a.DEATH_DT BETWEEN '$date1' AND  '$date2' GROUP BY a.CID ORDER BY a.DEATH_DT";
+#AND a.CDEATH_A != ' '
+AND a.DEATH_DT BETWEEN '$date1' AND  '$date2' GROUP BY a.CID ORDER BY a.AN, a.DEATH_DT";
         $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
 
        // print_r($rawData);
@@ -146,7 +146,8 @@ GROUP BY a.VISIT_ID ";
         $date2 =isset($data['date2'])  ? $data['date2'] : '';
      
       $sql = "SELECT CDEATH ,CDEATH_A,COUNT(CDEATH) AS TOTAL FROM  deaths
-WHERE  is_hosp = 1 AND DEATH_DATE BETWEEN '$date1' AND '$date2' GROUP BY CDEATH ORDER BY TOTAL DESC";
+WHERE  is_hosp = 1 AND DEATH_DATE BETWEEN '$date1' AND '$date2' AND AN != ''
+GROUP BY CDEATH ORDER BY TOTAL DESC";
        $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
 
         //print_r($rawData);
@@ -173,7 +174,7 @@ WHERE  is_hosp = 1 AND DEATH_DATE BETWEEN '$date1' AND '$date2' GROUP BY CDEATH 
         $date1 =Yii::$app->session['date1'];
         $date2 =Yii::$app->session['date2'];
      $sql= "SELECT CID,DEATH_DATE, DEATH_DT,STAFF_ID,AN, CDEATH, CDEATH_A, CDEATH_B, CDEATH_C,IS_HOSP
-     FROM deaths WHERE CDEATH = '$cdeath' AND is_hosp = 1
+     FROM deaths WHERE CDEATH = '$cdeath' AND is_hosp = 1 AND AN != ''
      AND DEATH_DATE BETWEEN'$date1' AND '$date2'";
     $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
 
@@ -219,6 +220,105 @@ WHERE  is_hosp = 1 AND DEATH_DATE BETWEEN '$date1' AND '$date2' GROUP BY CDEATH 
             Yii::$app->session['date1'] = $date1;
             Yii::$app->session['date2'] = $date2;
         return $this->render('persondisc',[
+            'dataProvider' => $dataProvider,
+            'sql'=>$sql,
+            'date1'=>$date1,
+            'date2'=>$date2
+            
+        ]);
+    }
+    public function actionDeath_opd() {
+        $data = Yii::$app->request->post();
+        $date1 =isset($data['date1'])  ? $data['date1'] : '';
+        $date2 =isset($data['date2'])  ? $data['date2'] : '';
+     
+      $sql = "SELECT CDEATH ,CDEATH_A,COUNT(CDEATH) AS TOTAL FROM  deaths
+WHERE  is_hosp = 1 AND DEATH_DATE BETWEEN '$date1' AND '$date2' AND AN = ''
+GROUP BY CDEATH ORDER BY TOTAL DESC";
+       $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+
+        //print_r($rawData);
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db2\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            'allModels' => $rawData,
+            'pagination' => FALSE,
+        ]);
+            Yii::$app->session['date1'] = $date1;
+            Yii::$app->session['date2'] = $date2;
+        return $this->render('death_opd',[
+            'dataProvider' => $dataProvider,
+            'sql'=>$sql,
+            'date1'=>$date1,
+            'date2'=>$date2
+            
+        ]);
+    }
+    public function actionDeath_opdlist($cdeath){
+        $date1 =Yii::$app->session['date1'];
+        $date2 =Yii::$app->session['date2'];
+     $sql= "SELECT CID,DEATH_DATE, DEATH_DT,STAFF_ID,AN, CDEATH, CDEATH_A, CDEATH_B, CDEATH_C,IS_HOSP
+     FROM deaths WHERE CDEATH = '$cdeath' AND is_hosp = 1 AND AN = ''
+     AND DEATH_DATE BETWEEN'$date1' AND '$date2'";
+    $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+
+   // print_r($rawData);
+    try {
+        $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+    } catch (\yii\db2\Exception $e) {
+        throw new \yii\web\ConflictHttpException('sql error');
+    }
+    $dataProvider = new \yii\data\ArrayDataProvider([
+        'allModels' => $rawData,
+        'pagination' => FALSE,
+    ]);
+    return $this->render('death_opdlist', [
+                'dataProvider' => $dataProvider,
+                'sql'=>$sql,
+
+    ]);
+  }
+    public function actionDeath_ipdall() {
+        $data = Yii::$app->request->post();
+        $date1 =isset($data['date1'])  ? $data['date1'] : '';
+        $date2 =isset($data['date2'])  ? $data['date2'] : '';
+     
+      $sql = "SELECT k.ICD10_TM, k.ICD_NAME, COUNT(k.ICD10_TM) AS Amount
+      FROM 
+      (SELECT DISTINCT a.VISIT_ID,c.HN , a.ADM_ID AS AN, DATE_FORMAT(a.ADM_DT,'%Y-%m-%d') AS 'ADMIT', DATE_FORMAT(a.DSC_DT,'%Y-%m-%d') AS 'DSC' ,f.DEATH_DATE, b.BIRTHDATE,
+      b.FNAME, b.LNAME,b.SEX,a.DSC_STATUS,a.DSC_TYPE,a.WARD_NO,g.UNIT_NAME,i.ICD10_TM, i.ICD_NAME
+      FROM ipd_reg a, population b, cid_hn c,opd_visits e,deaths f,service_units g,opd_diagnosis h, icd10new i
+      WHERE a.DSC_DT BETWEEN '$date1'  AND '$date2'
+      AND a.IS_CANCEL = 0
+      AND a.DSC_STATUS > 7
+      AND b.CID = c.CID
+      AND a.VISIT_ID = e.VISIT_ID
+      AND e.HN = c.HN
+      AND f.CID = c.CID
+      AND a.WARD_NO = g.UNIT_ID
+      AND e.VISIT_ID = h.VISIT_ID
+      AND h.ICD10 = i.ICD10
+      GROUP BY a.VISIT_ID) AS k
+      GROUP BY k.ICD10_TM ORDER BY Amount DESC
+      ";
+       $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+
+        //print_r($rawData);
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db2\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            'allModels' => $rawData,
+            'pagination' => FALSE,
+        ]);
+            Yii::$app->session['date1'] = $date1;
+            Yii::$app->session['date2'] = $date2;
+        return $this->render('dipd_all',[
             'dataProvider' => $dataProvider,
             'sql'=>$sql,
             'date1'=>$date1,
