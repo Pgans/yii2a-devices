@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = 'รายงานจำนวนอุปก�
     ]);
     
     
-        echo Html::a('ทั้งหมด', ['/hdcex/default/report-all', 'ex_id' => $ex_id, 'title' => $title, 'hospcode' => 'all'], ['class' => 'btn btn-warning', 'style' => 'margin-left:5px']);
+    echo Html::a('ทั้งหมด', ['computer/depdevice_all'], ['class' => 'btn btn-warning', 'style' => 'margin-left:5px'],['target'=>'_blank']);
     
 
     ActiveForm::end();

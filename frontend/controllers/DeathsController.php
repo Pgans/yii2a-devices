@@ -77,6 +77,7 @@ AND f.CID = c.CID
 AND a.WARD_NO = g.UNIT_ID
 AND e.VISIT_ID = h.VISIT_ID
 AND h.ICD10 = i.ICD10
+AND h.DXT_ID = 1
 GROUP BY a.VISIT_ID) AS K   GROUP BY K.UNIT_NAME ";
                     
      $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
@@ -140,6 +141,88 @@ GROUP BY a.VISIT_ID ";
                 'date2'=>$date2,
     ]);
   }
+  public function actionDeath_dsclist() {
+    $date1 = Yii::$app->session['date1'];
+    $date2 = Yii::$app->session['date2'];
+ 
+  $sql = "SELECT DISTINCT a.VISIT_ID,c.HN , a.ADM_ID AS AN, DATE_FORMAT(a.ADM_DT,'%Y-%m-%d') AS 'ADMIT', DATE_FORMAT(a.DSC_DT,'%Y-%m-%d') AS 'DSC' ,f.DEATH_DATE,
+  b.FNAME, b.LNAME,b.SEX,g.UNIT_NAME,i.ICD10_TM
+  FROM ipd_reg a, population b, cid_hn c,opd_visits e,deaths f,service_units g,opd_diagnosis h, icd10new i
+  WHERE a.DSC_DT BETWEEN '$date1' AND '$date2'
+  AND a.IS_CANCEL = 0
+  AND a.DSC_STATUS > 7
+  AND b.CID = c.CID
+  AND a.VISIT_ID = e.VISIT_ID
+  AND e.HN = c.HN
+  AND f.CID = c.CID
+  AND a.WARD_NO = g.UNIT_ID
+  AND e.VISIT_ID = h.VISIT_ID
+  AND h.ICD10 = i.ICD10
+  AND h.DXT_ID = 1
+  GROUP BY a.VISIT_ID";
+   $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+
+    //print_r($rawData);
+    try {
+        $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+    } catch (\yii\db2\Exception $e) {
+        throw new \yii\web\ConflictHttpException('sql error');
+    }
+    $dataProvider = new \yii\data\ArrayDataProvider([
+        'allModels' => $rawData,
+        'pagination' => FALSE,
+    ]);
+    return $this->render('deathipd_list',[
+        'dataProvider' => $dataProvider,
+        'sql'=>$sql,
+        'date1'=>$date1,
+        'date2'=>$date2
+        
+    ]);
+}
+public function actionDeath_dscgroup() {
+
+    $date1 = Yii::$app->session['date1'];
+    $date2 = Yii::$app->session['date2'];
+ 
+  $sql = "SELECT k.ICD10_TM, k.ICD_NAME , COUNT(k.ICD10_TM) AS AMOUNT
+  FROM (
+  SELECT DISTINCT a.VISIT_ID,c.HN , a.ADM_ID AS AN, DATE_FORMAT(a.ADM_DT,'%Y-%m-%d') AS 'ADMIT', DATE_FORMAT(a.DSC_DT,'%Y-%m-%d') AS 'DSC' ,f.DEATH_DATE, b.BIRTHDATE,
+  b.FNAME, b.LNAME,b.SEX,a.DSC_STATUS,a.DSC_TYPE,a.WARD_NO,g.UNIT_NAME,i.ICD10_TM, i.ICD_NAME,a.P_DIAG
+  FROM ipd_reg a, population b, cid_hn c,opd_visits e,deaths f,service_units g,opd_diagnosis h, icd10new i
+  WHERE a.DSC_DT BETWEEN '$date1' AND '$date2'
+  AND a.IS_CANCEL = 0
+  AND a.DSC_STATUS > 7
+  AND b.CID = c.CID
+  AND a.VISIT_ID = e.VISIT_ID
+  AND e.HN = c.HN
+  AND f.CID = c.CID
+  AND a.WARD_NO = g.UNIT_ID
+  AND e.VISIT_ID = h.VISIT_ID
+  AND h.ICD10 = i.ICD10
+  AND h.DXT_ID = 1
+  GROUP BY a.VISIT_ID ) as k
+  GROUP BY k.ICD10_TM ORDER BY AMOUNT DESC";
+   $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+
+    //print_r($rawData);
+    try {
+        $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+    } catch (\yii\db2\Exception $e) {
+        throw new \yii\web\ConflictHttpException('sql error');
+    }
+    $dataProvider = new \yii\data\ArrayDataProvider([
+        'allModels' => $rawData,
+        'pagination' => FALSE,
+    ]);
+    return $this->render('deathipd_list',[
+        'dataProvider' => $dataProvider,
+        'sql'=>$sql,
+        'date1'=>$date1,
+        'date2'=>$date2
+        
+    ]);
+}
    public function actionDeathdx59() {
         $data = Yii::$app->request->post();
         $date1 =isset($data['date1'])  ? $data['date1'] : '';
@@ -326,4 +409,5 @@ GROUP BY CDEATH ORDER BY TOTAL DESC";
             
         ]);
     }
+    
 }
