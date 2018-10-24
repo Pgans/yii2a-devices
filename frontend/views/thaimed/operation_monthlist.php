@@ -5,6 +5,9 @@ use yii\helpers\Html;
 $this->title ="operation_month";
 //$this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/referin']];
 //$this->params['breadcrumbs'][] = 'รายงานผู้ปวยส่งต่อเข้ามา';
+    ?>
+ <div>
+   <?php
 echo GridView::widget([
         'dataProvider' => $imonthData,
         'panel' => [
@@ -12,10 +15,9 @@ echo GridView::widget([
             'after'=>'<b style="color:red">ประมวลผลจากวันที่ </b>'.$date1   .'<b style="color:red">ถึงวันที่</b>' .$date2 
             ]]
         )
-
         ?>
-
-        <div>
+        </div>
+     <div>
         <?php
         echo GridView::widget([
         'dataProvider' => $omonthData,
@@ -24,7 +26,6 @@ echo GridView::widget([
             'after'=>'<b style="color:red">ประมวลผลจากวันที่ </b>'.$date1   .'<b style="color:red">ถึงวันที่</b>' .$date2 
             ]]
         )
-
         ?>
         </div>
        
