@@ -196,22 +196,17 @@ GROUP BY UNIT_NAME ORDER BY amount";
         WHERE REG_DATETIME BETWEEN  '$date1' AND '$date2'
         AND VISIT_ID NOT in (SELECT VISIT_ID FROM mobile_visits)
         GROUP BY MONTH(REG_DATETIME) ORDER BY MONTH(REG_DATETIME)";
-
-       $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
-
-      // print_r($rawData);
+       $iData = \yii::$app->db2->createCommand($sql)->queryAll();
        try {
            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
        } catch (\yii\db2\Exception $e) {
            throw new \yii\web\ConflictHttpException('sql error');
        }
        $iidataProvider = new \yii\data\ArrayDataProvider([
-           'allModels' => $rawData,
-           'pagination' => [
-               'pagesize'=> 15
-           ],
+           'allModels' => $iData,
+           'pagination' => FALSE,
        ]);
-       $sql = "SELECT MONTH(REG_DATETIME)AS MONTH, 
+       $sql2 = "SELECT MONTH(REG_DATETIME)AS MONTH, 
       COUNT(CASE WHEN CODE= 99.92 THEN '2' END) AS 'ฝังเข็ม', 
       COUNT(CASE WHEN SUBSTR(NICKNAME,4,6) ='บริบาล' THEN '3' END) AS 'บริบาล', 
       COUNT(case WHEN left(NICKNAME,6) = 'การนวด' THEN '4'END) AS 'การนวด',
@@ -223,12 +218,10 @@ GROUP BY UNIT_NAME ORDER BY amount";
         WHERE REG_DATETIME BETWEEN  '$date1' AND '$date2'
         AND VISIT_ID in (SELECT VISIT_ID FROM mobile_visits)
         GROUP BY MONTH(REG_DATETIME) ORDER BY MONTH(REG_DATETIME)";
-    $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+    $oData = \Yii::$app->db2->createCommand($sql2)->queryAll();
        $oodataProvider = new \yii\data\ArrayDataProvider([
-           'allModels' => $rawData,
-           'pagination' => [
-               'pagesize'=> 15
-           ],
+           'allModels' => $oData,
+           'pagination' => FALSE,
        ]);
        return $this->render(operation_monthlist, [
                    'imonthData' => $iidataProvider,
