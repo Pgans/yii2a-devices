@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = 'รายงานนับหัตถกา�
         ?>
         <button class='btn btn-danger'> ตกลง </button>
         <?php $form = ActiveForm::begin([ ]);
-    echo Html::a('รายเดือน', ['thaimed/operation_month'], ['class' => 'btn btn-success', 'id'=>'modalButton','target'=>'_blank']);
+    echo Html::a('รายเดือน', ['thaimed/op_count'], ['class' => 'btn btn-success', 'id'=>'modalButton','target'=>'_blank']);
     ActiveForm::end();?>
     <?php ActiveForm::end(); ?>
 
