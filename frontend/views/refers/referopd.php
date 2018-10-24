@@ -39,10 +39,9 @@ $this->params['breadcrumbs'][] = 'รายงานRefersส่งต่อแ�
         ]);
         ?>
         <button class='btn btn-danger'> ตกลง </button>
-        <?
-            echo Html::a('ทั้งหมด', ['refers/referopd_all'], ['class' => 'btn btn-success', 'target'=>'_blank']);
-        ?>
-
+        <?php $form = ActiveForm::begin([ ]);
+    echo Html::a('ทั้งหมด', ['refers/referopd_all'], ['class' => 'btn btn-success', 'target'=>'_blank']);
+    ActiveForm::end();?>
     <?php ActiveForm::end(); ?>
 </div>
 <?php

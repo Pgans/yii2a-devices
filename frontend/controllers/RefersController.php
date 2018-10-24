@@ -62,6 +62,58 @@ class RefersController extends \yii\web\Controller
 
        ]);
    }
+   public function actionReferout_sso(){
+    $date1 = Yii::$app->session['date1'];
+    $date2 = Yii::$app->session['date2'];
+     $sql = "SELECT hospid, hosp_name, count(hospid) AS 'Total' FROM mb_referout_all_list 
+     WHERE  rf_dt between '2017.10.01' AND '2017.12.31' 
+     AND (LEFT(HOSP_NAME,2) = 'สอ' OR LEFT(HOSP_NAME,3) = 'สสอ')
+     GROUP BY hospid ORDER BY Total DESC";
+
+    $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+
+   // print_r($rawData);
+    try {
+        $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+    } catch (\yii\db2\Exception $e) {
+        throw new \yii\web\ConflictHttpException('sql error');
+    }
+    $dataProvider = new \yii\data\ArrayDataProvider([
+        'allModels' => $rawData,
+        'pagination' => FALSE,
+    ]);
+    return $this->render('referout_sso', [
+                'dataProvider' => $dataProvider,
+                'sql'=>$sql,
+
+    ]);
+}
+public function actionReferout_hos(){
+    $date1 = Yii::$app->session['date1'];
+    $date2 = Yii::$app->session['date2'];
+     $sql = "SELECT hospid, hosp_name, count(hospid) AS 'Total' FROM mb_referout_all_list 
+     WHERE  rf_dt between '$date1' AND '$date2' 
+     AND LEFT(HOSP_NAME,2) != 'สอ' AND LEFT(HOSP_NAME,3) != 'สสอ'
+     GROUP BY hospid ORDER BY Total DESC";
+
+    $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+
+   // print_r($rawData);
+    try {
+        $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+    } catch (\yii\db2\Exception $e) {
+        throw new \yii\web\ConflictHttpException('sql error');
+    }
+    $dataProvider = new \yii\data\ArrayDataProvider([
+        'allModels' => $rawData,
+        'pagination' => FALSE,
+    ]);
+    return $this->render('referout_hos', [
+                'dataProvider' => $dataProvider,
+                'sql'=>$sql,
+
+    ]);
+}
    public function actionReferipd(){
             $data = Yii::$app->request->post();
             $date1 = isset($data['date1']) ? $data['date1'] : '';

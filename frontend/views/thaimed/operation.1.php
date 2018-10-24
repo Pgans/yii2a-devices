@@ -44,10 +44,20 @@ $this->params['breadcrumbs'][] = 'รายงานนับหัตถกา�
         ?>
         <button class='btn btn-danger'> ตกลง </button>
         <?php $form = ActiveForm::begin([ ]);
-    echo Html::a('รายเดือน', ['thaimed/operation_month'], ['class' => 'btn btn-success', 'id'=>'modalButton','target'=>'_blank']);
+    echo Html::a('รายเดือนxx', ['thaimed/operation_month'], ['class' => 'btn btn-success', 'id'=>'modalButton']);
+    echo Html::button('รายเดือน', ['value'=>Url::to(['thaimed/operation_month']), 'class' => 'btn btn-success','id'=>'modalButton']); 
     ActiveForm::end();?>
     <?php ActiveForm::end(); ?>
-
+</div>
+<?php Modal::begin([
+        'id' => 'modal',
+        'header' => '<h4><a color-blue>หัตการแพทย์แผนไทยแยกรายเดือน</a></h4>',
+        'size'=>'modal-lg',
+        'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">ปิด</a>',
+        ]);
+        echo "<div id='modalContent'></div>";
+        Modal::end();
+        ?>
 <?php Pjax::begin(); ?>
 <?php echo GridView::widget([
         'dataProvider' => $dataProvider,
@@ -58,4 +68,4 @@ $this->params['breadcrumbs'][] = 'รายงานนับหัตถกา�
   );
         ?>
         <?php Pjax::end() ?>
-    </div>
+    

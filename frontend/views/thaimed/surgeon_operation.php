@@ -3,12 +3,20 @@ use kartik\grid\GridView;
 use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
 use yii\helpers\Url;
+use yii\data\ArrayDataProvider;
+use common\models\RContributionIpd;
+use yii\data\ActiveDataProvider;
+use yii\widgets\Pjax;
+use \miloschuman\highcharts\Highcharts;
+use yii\web\JsExpression;
+use kartik\export\ExportMenu;
+
 
 $this->title = 'SURGEON_OPERATON';
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['computer/index']];
 $this->params['breadcrumbs'][] = 'รายงานการทำหัตถการแพทย์แผนไทยแยกตามผู้ทำหัตถการ';
 ?>
-<b>รายงานการทำหัตถการแพทย์แผนไทยแยกตามผู้ทำหัตถการ</b>
+<b><a>รายงานการทำหัตถการแพทย์แผนไทยแยกตามผู้ทำหัตถการ</a></b>
 <div class='well'>
     <?php $form = ActiveForm::begin(); ?>
      ระหว่างวันที่:
@@ -38,17 +46,20 @@ $this->params['breadcrumbs'][] = 'รายงานการทำหัตถ�
         ]);
         ?>
         <button class='btn btn-danger'> ตกลง </button>
-        
+        <?php $form = ActiveForm::begin([ ]);
+    echo Html::a('แยกรายเดือน(ใน-นอกสถานบริการ)', ['thaimed/op_count'], ['class' => 'btn btn-success', 'style' => 'margin-left:5px','target'=>'_blank']);
+    echo Html::a('เปรียบเทียบ', ['thaimed/surgeon_inout'], ['class' => 'btn btn-info', 'style' => 'margin-left:5px','target'=>'_blank']);
+    ActiveForm::end();?>
     <?php ActiveForm::end(); ?>
 </div>
+<div>
 <?php
-//return $this->redirect(array('report/dsc_list', ['date1' => $date1, 'date1' => $date2]));
 echo GridView::widget([
         'dataProvider' => $dataProvider,
         
         'panel' => [
-            'before'=>'รายงานการทำหัตถการแพทย์แผนไทยแยกตามผู้ทำหัตถการ',
-            'after'=>'ประมวลผล '.date('Y-m-d H:i:s')
+            'before'=>'<b style="color:blue">รายงานการทำหัตถการแพทย์แผนไทยแยกตามผู้ทำหัตถการ(ในสถานบริการ)</b>',
+            'after'=>'<b style="color:red">ประมวลผลจากวันที่ </b>'.$date1   .'<b style="color:red">ถึงวันที่</b>' .$date2 
           ],
                'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
@@ -62,26 +73,59 @@ echo GridView::widget([
                         'header' => 'รหัส',
                     ],
                     [
-                        'attribute' => 'Acupuncture'
-                    ],
-                    [
                         'attribute' => 'ฝังเข็ม',
-                    ],
+                        'format' => 'raw',
+                        'value' => function($model) {
+                            $surgeonid = $model['SURGEON_ID'];
+                            $total = $model['ฝังเข็ม'];
+                            return Html::a(Html::encode($total), ['thaimed/surgeon_acupencture','surgeonid'=> $surgeonid],['target'=>'_blank']);
+                        }
+                            ],
                     [
                         'attribute' => 'บริบาล',
-                    ],
+                        'format' => 'raw',
+                        'value' => function($model) {
+                            $surgeonid = $model['SURGEON_ID'];
+                            $total = $model['บริบาล'];
+                            return Html::a(Html::encode($total), ['thaimed/surgeon_nursing','surgeonid'=> $surgeonid],['target'=>'_blank']);
+                        }
+                            ],
                     [
                         'attribute' => 'การนวด',
-                    ],
+                        'format' => 'raw',
+                        'value' => function($model) {
+                            $surgeonid = $model['SURGEON_ID'];
+                            $total = $model['การนวด'];
+                            return Html::a(Html::encode($total), ['thaimed/surgeon_massage','surgeonid'=> $surgeonid],['target'=>'_blank']);
+                        }
+                            ],
                     [
                         'attribute' => 'อบ',
-                    ],
+                        'format' => 'raw',
+                        'value' => function($model) {
+                            $surgeonid = $model['SURGEON_ID'];
+                            $total = $model['อบ'];
+                            return Html::a(Html::encode($total), ['thaimed/surgeon_baked','surgeonid'=> $surgeonid],['target'=>'_blank']);
+                        }
+                            ],
                     [
                         'attribute' => 'ประคบ',
-                    ],
+                        'format' => 'raw',
+                        'value' => function($model) {
+                            $surgeonid = $model['SURGEON_ID'];
+                            $total = $model['ประคบ'];
+                            return Html::a(Html::encode($total), ['thaimed/surgeon_compression','surgeonid'=> $surgeonid],['target'=>'_blank']);
+                        }
+                            ],
                     [
                         'attribute' => 'ส่งเสริม',
-                    ],
+                        'format' => 'raw',
+                        'value' => function($model) {
+                            $surgeonid = $model['SURGEON_ID'];
+                            $total = $model['ส่งเสริม'];
+                            return Html::a(Html::encode($total), ['thaimed/surgeon_songserm','surgeonid'=> $surgeonid],['target'=>'_blank']);
+                        }
+                            ],
                     [
                         'attribute' => 'Total ',
                         'format' => 'raw',
@@ -91,10 +135,10 @@ echo GridView::widget([
                             return Html::a(Html::encode($total), ['thaimed/surgeon_operation_list','surgeonid'=> $surgeonid],['target'=>'_blank']);
                         }
                             ],
-                  ]
+                    ]
                 ]
                     );
                     
                     ?>
-                    
-                    <div class="alert alert-danger"><?=$sql?> </div>
+                </div>
+        

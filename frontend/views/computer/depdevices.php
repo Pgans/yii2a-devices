@@ -20,28 +20,12 @@ $this->params['breadcrumbs'][] = 'รายงานจำนวนอุปก�
         echo Html::dropDownList('depid', $depid, $items, ['prompt' => '--- หน่วยบริการ ---']);
         ?>
         <button class='btn btn-success'> ตกลง </button>
-        <?
-       // if (!in_array($ex_id, $skip_id)) {
-            echo Html::a('ทั้งหมด', ['computer/depdevice_all'], ['class' => 'btn btn-warning', 'style' => 'margin-left:5px'],['target'=>'_blank']);
-        //}
-        ?>
-      <?php ActiveForm::end(); ?>
-      <div class='well'>
-    <?php
-    $skip_id = ['c10a2aa18f688027da4746eff598172b', 'eaf586ae6959ac7ef7d30513aa05a4d2'];
-
-    $form = ActiveForm::begin([
-               // 'method' => 'get',
-                //'action' => Url::to(['/hdcex/default/report-id']),
-    ]);
-    
-    
-    echo Html::a('ทั้งหมด', ['computer/depdevice_all'], ['class' => 'btn btn-warning', 'style' => 'margin-left:5px'],['target'=>'_blank']);
-    
-
-    ActiveForm::end();
-    ?>
+        <?php $form = ActiveForm::begin([ ]);
+    echo Html::a('ทั้งหมด', ['computer/depdevice_all'], ['class' => 'btn btn-warning','target'=>'_blank']);
+    ActiveForm::end();?>
+    <?php ActiveForm::end(); ?>
 </div>
+        
 <?php
 echo GridView::widget([
         'dataProvider' => $dataProvider,

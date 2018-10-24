@@ -38,7 +38,10 @@ $this->params['breadcrumbs'][] = 'รายงานผู้มารับบ�
         ]);
         ?>
         <button class='btn btn-danger'> ตกลง </button>
-
+        <?php $form = ActiveForm::begin([ ]);
+    echo Html::a('เฉพาะสอ.', ['refers/referout_sso'], ['class' => 'btn btn-success', 'style' => 'margin-left:5px','target'=>'_blank']);
+    echo Html::a('เฉพาะ รพ.', ['refers/referout_hos'], ['class' => 'btn btn-primary', 'style' => 'margin-left:5px','target'=>'_blank']);
+    ActiveForm::end();?>
     <?php ActiveForm::end(); ?>
 </div>
 <?php

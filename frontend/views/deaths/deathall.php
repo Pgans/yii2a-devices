@@ -6,7 +6,7 @@ use yii\helpers\Url;
 
 $this->title = 'DEATHS';
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['deaths/index']];
-$this->params['breadcrumbs'][] = 'รายงานผู้เสียชีวิตในโรงพยาบาล';
+$this->params['breadcrumbs'][] = 'รายงานผู้เสียชีวิตในโรงพยาบาล(OPD-IPD)';
 ?>
 <b>รายงานANC</b>
 <div class='well'>
@@ -38,39 +38,50 @@ $this->params['breadcrumbs'][] = 'รายงานผู้เสียชี�
         ]);
         ?>
         <button class='btn btn-danger'> ตกลง </button>
-        
+        <?php $form = ActiveForm::begin([ ]);
+    echo Html::a('Dxว่าง', ['deaths/death_dxnull'], ['class' => 'btn btn-success', 'style' => 'margin-left:5px','target'=>'_blank']);
+    echo Html::a('จัดกลุ่มอันดับโรค', ['deaths/death_group'], ['class' => 'btn btn-primary', 'style' => 'margin-left:5px','target'=>'_blank']);
+    ActiveForm::end();?>
     <?php ActiveForm::end(); ?>
 </div>
 <?php
 echo GridView::widget([
-        'dataProvider' => $dataProvider,
-        'panel' => [
-            'before'=>'รายงานผู้เสียชีวิตในโรงพยาบาล)',
-            'after'=>'ประมวลผล '.date('Y-m-d H:i:s')
-            ],
-    ]
-  );
+    'dataProvider' => $dataProvider,
+    'panel' => [
+        'before'=>'<b><a>รายงานผู้เสียชีวิตในโรงพยาบาล(OPD-IPD)</a></b>',
+        'after'=>'ประมวลผล '.date('Y-m-d H:i:s')
+      ],
+          'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+                [
+                    'attribute' => 'DEATHS',
+                    'header' => 'จำนวนผู้เสียชีวิต',
+                ],
+                [
+                    'attribute' => 'OPD',
+                    'header' => 'ผู้ป่วยนอก',
+                ],
+                [
+                    'attribute' => 'IPD',
+                    'header' => 'ผู้ป่วยใน',
+                ],
+                [
+                    'attribute' => 'Total',
+                    'format' => 'raw',
+                    'value' => function($model) {
+                       # $wardno = $model['WARD_NO'];
+                        $amount = $model['Total'];
+                        return Html::a(Html::encode($amount), ['deaths/death_all_list'],['target'=>'_blank']);
+                    }
+                        ],                   
+              ]
+            ]
+                )
 
-        ?>
-
-            
-                <?php
-                use miloschuman\highcharts\Highcharts;
-
-                    echo Highcharts::widget([
-                    'options' => [
-                        'title' => ['text' => 'Fruit Consumption'],
-                        'xAxis' => [
-                            'categories' => ['Apples', 'Bananas', 'Oranges']
-                        ],
-                        'yAxis' => [
-                            'title' => ['text' => 'Fruit eaten']
-                        ],
-                        'series' => [
-                            ['name' => 'Pgans', 'data' => [1, 0, 4]],
-                            ['name' => 'John', 'data' => [5, 7, 3]]
-                        ]
-                    ]
-                    ]);
                 ?>
+                <div class="alert alert-danger">
+                    <?=$sql?>
+                </div>
+
+
         

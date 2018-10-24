@@ -42,21 +42,11 @@ $this->params['breadcrumbs'][] = 'รายงานผู้ป่วยใน�
         ]);
         ?>
         <button class='btn btn-danger'> ตกลง </button>
-        <button class='btn btn-info'><?php echo Html::a('รายชื่อทั้งหมด', ['deaths/death_dsclist'],['target'=>'_blank']); ?> </button>
-        <?
-            echo Html::a('รายชื่อทั้งหมด', ['deaths/death_dsclist'], ['class' => 'btn btn-success', 'style' => 'margin-left:5px','target'=>'_blank']);
-            echo Html::a('จัดอันดับโรค', ['deaths/death_dscgroup'], ['class' => 'btn btn-primary', 'style' => 'margin-left:5px','target'=>'_blank']);
-        
-     ActiveForm::end(); ?>
-    <?php
-    $form = ActiveForm::begin([ ]);
-    
+    <?php $form = ActiveForm::begin([ ]);
     echo Html::a('รายชื่อทั้งหมด', ['deaths/death_dsclist'], ['class' => 'btn btn-success', 'style' => 'margin-left:5px','target'=>'_blank']);
-    echo Html::a('จัดอันดับโรค', ['deaths/death_dscgroup'], ['class' => 'btn btn-info', 'style' => 'margin-left:5px','target'=>'_blank']);
-    
-    ActiveForm::end();
-    ?>
-
+    echo Html::a('จัดอันดับโรค', ['deaths/death_dscgroup'], ['class' => 'btn btn-primary', 'style' => 'margin-left:5px','target'=>'_blank']);
+    ActiveForm::end();?>
+     <?php ActiveForm::end(); ?>
 </div>
 <?php //echo $sql;?>
 

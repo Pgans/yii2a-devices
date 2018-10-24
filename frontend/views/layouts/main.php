@@ -68,12 +68,12 @@ MaterialAsset::register($this);
     $report_mnu_itms4[] = ['label' => 'รายงานผู้ป่วยเสียชีวิตในโรงพยาบาลและชื่อโรคแยกตามแผนก(จากDSCนับคน)', 'url' => ['deaths/deathipd']];
     $report_mnu_itms4[] = ['label' => 'รายงานผู้เสียชีวิต10อันดับโรค(IPD)', 'url' => ['deaths/deathdx59']];
     $report_mnu_itms4[] = ['label' => 'รายงานผู้เสียชีวิต10อันดับโรค(OPD)', 'url' => ['deaths/death_opd']];
-    $report_mnu_itms4[] = ['label' => 'รายงานผู้ป่วยเสียชีวิตในโรงพยาบาลทั้งหมด(แฟ้มDeathรายคน)', 'url' => ['deaths/death_all']];
+    $report_mnu_itms4[] = ['label' => 'รายงานผู้ป่วยเสียชีวิตในโรงพยาบาลภาพรวมทั้งหมด(แฟ้มDeath IPD-OPD)', 'url' => ['deaths/death_all']];
     $report_mnu_itms4[] = ['label' => 'รายงานผู้ป่วยเสียชีวิตยังไม่จำหน่าย(43แฟ้ม (Discharge=9)', 'url' => ['deaths/persondisc']];
    
     $report_mnu_itms2[] = ['label' => 'รายงานRefersส่งต่อแยกตามแผนกบริการ(OPD)', 'url' => ['refers/referopd']];
     $report_mnu_itms2[] = ['label' => 'รายงานRefersส่งต่อแยกตามแผนกบริการ(IPD)', 'url' => ['refers/referipd']];
-    $report_mnu_itms2[] = ['label' => 'รายงานผู้มารับบริการในโรงพยาบาลที่มีการส่งต่อ(Refers)', 'url' => ['refers/referout_all']];
+    $report_mnu_itms2[] = ['label' => 'รายงานการส่งต่อแยกสถานบริการปลายทาง(Refers)', 'url' => ['refers/referout_all']];
     $report_mnu_itms2[] = ['label' => 'รายงานรับRefer', 'url' => ['refers/referin']];
     $report_mnu_itms1[] = ['label' => '43แฟ้ม(Hospital)', 'url' => ['hosp43/index']];
     $report_mnu_itms1[] = ['label' => '43แฟ้ม(Pcu)', 'url' => ['pcu43/index']];
