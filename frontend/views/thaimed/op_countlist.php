@@ -14,9 +14,9 @@ $this->title ="opcount";
 //$this->params['breadcrumbs'][] = 'รายงานผู้ปวยส่งต่อเข้ามา';
 
 ?>
-<div class="col-md-12">
-                    <div class="panel panel-danger">
-                        <div class="panel-heading"><h5><i class="glyphicon glyphicon-list-alt"></i> หัตถการแพทย์แผนไทยในสถานบริการ</h5></div>
+<div class="col-md-6">
+                    <div class="panel panel-info">
+                        <div class="panel-heading"><h5><i class="glyphicon glyphicon-list-alt"></i> หัตถการแพทย์แผนไทยmBase</h5></div>
                         <div class="panel-body">
                         
                     
@@ -35,8 +35,8 @@ $this->title ="opcount";
                                         'neverTimeout' => true,
                                     ],
                                     'panel' => [
-                                        'before'=>'<b style="color:blue ">ผู้ทำหัตถการแพทย์แผนไทย</b>(<b style="color: red">ในสถานบริการ</b>)',
-                                        //'after'=>'<b style="color:red">ประมวลผลจากวันที่ </b>'.$date1   .'<b style="color:red">ถึงวันที่</b>' .$date2 
+                                        'before'=>'<b style="color:blue ">หัตถการแพทย์แผนไทย</b>(<b style="color: red">mBase</b>)',
+                                        'after'=>'<b style="color:red">ประมวลผลจากวันที่ </b>'.$date1   .'<b style="color:red">ถึงวันที่</b>' .$date2 
                                     ],
                                     'columns' => [
                                         ['class' => 'yii\grid\SerialColumn'],
@@ -84,22 +84,20 @@ $this->title ="opcount";
                                 ?>
                             </div>
                             <div class="kv-panel-pager">
-                                หมายเหตุ :: นับหัตถการรวมทั้งการส่งเสริม ฝังเข็ม
-                                <p>
-                    
                             </div>
                         </div>
                     </div>
                 </div>
-
-            <div>
-            <div class="col-md-12">
-                                <div class="panel panel-info">
-                                    <div class="panel-heading"><h5><i class="glyphicon glyphicon-list-alt"></i>หัตถการแพทย์แผนไทยนอกสถานบริการ</h5></div>
-                                    <?php
-                                //use yii\grid\GridView;
-                                echo GridView::widget([
-                                    'dataProvider' => $outData,
+                <div class="col-md-6">
+                    <div class="panel panel-success">
+                        <div class="panel-heading"><h5><i class="glyphicon glyphicon-list-alt"></i>หัตถการแพทย์แผนไทยส่งออก43แฟ้ม</h5></div>
+                        <div class="panel-body">
+                        
+                    
+        <div>
+                                <?php
+                                 echo GridView::widget([
+                                    'dataProvider' => $iproceData,
                                     'responsive' => true,
                                     'hover' => true,
                                     'panel' => [
@@ -110,8 +108,8 @@ $this->title ="opcount";
                                         'neverTimeout' => true,
                                     ],
                                     'panel' => [
-                                        'before'=>'<b style="color:blue ">ผู้ทำหัตถการแพทย์แผนไทย</b>(<b style="color: red">นอกสถานบริการ</b>)',
-                                        //'after'=>'<b style="color:red">ประมวลผลจากวันที่ </b>'.$date1   .'<b style="color:red">ถึงวันที่</b>' .$date2 
+                                        'before'=>'<b style="color:blue ">ส่งออกหัตถการแพทย์แผนไทย</b>(<b style="color: red">43F</b>)',
+                                        'after'=>'<b style="color:red">ประมวลผลจากวันที่ </b>'.$date1   .'<b style="color:red">ถึงวันที่</b>' .$date2 
                                     ],
                                     'columns' => [
                                         ['class' => 'yii\grid\SerialColumn'],
@@ -120,32 +118,32 @@ $this->title ="opcount";
                                             'attribute' => 'MONTH'
                                         ],
                                         [
-                                            'attribute' => 'acupencture',
+                                            'attribute' => 'ฝังเข็ม',
                                             'label' => 'ฝังเข็ม',
                                             'format' => ['decimal', 0]
                                         ],
                                         [
-                                            'attribute' => 'nursing',
+                                            'attribute' => 'บริบาล',
                                             'label' => 'บริบาล',
                                             'format' => ['decimal', 0]
                                         ],
                                         [
-                                            'attribute' => 'massage',
+                                            'attribute' => 'การนวด',
                                             'label' => 'การนวด',
                                             'format' => ['decimal', 0]
                                         ],
                                         [
-                                            'attribute' => 'baked',
+                                            'attribute' => 'อบ',
                                             'label' => 'อบ',
                                             'format' => ['decimal', 0]
                                         ],
                                         [
-                                            'attribute' => 'compression',
+                                            'attribute' => 'ประคบ',
                                             'label' => 'ประคบ',
                                             'format' => ['decimal', 0]
                                         ],
                                         [
-                                            'attribute' => 'songserm',
+                                            'attribute' => 'ส่งเสริม',
                                             'label' => 'ส่งเสริม',
                                             'format' => ['decimal', 0]
                                         ],
@@ -156,19 +154,76 @@ $this->title ="opcount";
                                         ], 
                                     ],
                                 ]);
+                                
+                                // echo GridView::widget([
+                                //     'dataProvider' => $oproceData,
+                                //     'responsive' => true,
+                                //     'hover' => true,
+                                //     'panel' => [
+                                //         'before' => ' ',
+                                //     ],
+                                //     'pjax' => true,
+                                //     'pjaxSettings' => [
+                                //         'neverTimeout' => true,
+                                //     ],
+                                //     'panel' => [
+                                //         'before'=>'<b style="color:blue ">ส่งออกหัตถการแพทย์แผนไทย43F</b>(<b style="color: red">นอก</b>)',
+                                //         'after'=>'<b style="color:red">ประมวลผลจากวันที่ </b>'.$date1   .'<b style="color:red">ถึงวันที่</b>' .$date2 
+                                //     ],
+                                //     'columns' => [
+                                //         ['class' => 'yii\grid\SerialColumn'],
+                                //         [
+                                //             'label' => 'เดือน',
+                                //             'attribute' => 'MONTH'
+                                //         ],
+                                //         [
+                                //             'attribute' => 'ฝังเข็ม',
+                                //             'label' => 'ฝังเข็ม',
+                                //             'format' => ['decimal', 0]
+                                //         ],
+                                //         [
+                                //             'attribute' => 'บริบาล',
+                                //             'label' => 'บริบาล',
+                                //             'format' => ['decimal', 0]
+                                //         ],
+                                //         [
+                                //             'attribute' => 'การนวด',
+                                //             'label' => 'การนวด',
+                                //             'format' => ['decimal', 0]
+                                //         ],
+                                //         [
+                                //             'attribute' => 'อบ',
+                                //             'label' => 'อบ',
+                                //             'format' => ['decimal', 0]
+                                //         ],
+                                //         [
+                                //             'attribute' => 'ประคบ',
+                                //             'label' => 'ประคบ',
+                                //             'format' => ['decimal', 0]
+                                //         ],
+                                //         [
+                                //             'attribute' => 'ส่งเสริม',
+                                //             'label' => 'ส่งเสริม',
+                                //             'format' => ['decimal', 0]
+                                //         ],
+                                //         [
+                                //             'attribute' => 'Total',
+                                //             'label' => 'รวม',
+                                //             'format' => ['decimal', 0]
+                                //         ], 
+                                //     ],
+                                // ]);
+
                                 ?>
                             </div>
                             <div class="kv-panel-pager">
-                                หมายเหตุ :: นอกสถานบริการ
-                               
                             </div>
                         </div>
                     </div>
                 </div>
- 
- 
+                        
 
-        
-        
 
-        
+                 
+
+               

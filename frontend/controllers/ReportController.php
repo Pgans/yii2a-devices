@@ -364,12 +364,10 @@ $sql = "SELECT hospid, hosp_name, count(hosp_name) as 'Total' FROM mb_referout_l
         $data = Yii::$app->request->post();
         $date1 = isset($data['date1']) ? $data['date1'] : '';
         $date2 = isset($data['date2']) ? $data['date2'] : '';
-
-
         $sql = "SELECT ICD10_TM,ICD_NAME, COUNT(ICD_NAME) AS  amount
-FROM mb_ipddx
-WHERE DSC_DT between '$date1' and '$date2'
-GROUP BY ICD_NAME ORDER BY amount DESC LIMIT 15";
+                FROM mb_ipddx
+                WHERE DSC_DT between '$date1' and '$date2'
+                GROUP BY ICD_NAME ORDER BY amount DESC LIMIT 10";
        $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
 
       // print_r($rawData);
@@ -382,6 +380,8 @@ GROUP BY ICD_NAME ORDER BY amount DESC LIMIT 15";
            'allModels' => $rawData,
            'pagination' => FALSE,
        ]);
+       Yii::$app->session['date1'] = $date1;
+       Yii::$app->session['date2'] = $date2;
        return $this->render('ipddx', [
                    'dataProvider' => $dataProvider,
                    'sql'=>$sql,
@@ -390,6 +390,26 @@ GROUP BY ICD_NAME ORDER BY amount DESC LIMIT 15";
 
        ]);
    }
+   public function actionDxipd_all(){
+    $date1 = Yii::$app->session['date1'];
+    $date2 = Yii::$app->session['date2'];
+    $sql = "SELECT ICD10_TM,ICD_NAME, COUNT(ICD_NAME) AS  amount
+            FROM mb_ipddx
+            WHERE DSC_DT between '$date1' and '$date2'
+            GROUP BY ICD_NAME ORDER BY amount DESC";
+   $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+   $dataProvider = new \yii\data\ArrayDataProvider([
+       'allModels' => $rawData,
+       'pagination' => ['pagesize'=>10],
+   ]);
+   return $this->render('ipddx_all', [
+               'dataProvider' => $dataProvider,
+               'sql'=>$sql,
+               'date1'=>$date1,
+               'date2' =>$date2,
+
+   ]);
+}
    public function actionDxipd_reg(){
         $data = Yii::$app->request->post();
         $date1 = isset($data['date1']) ? $data['date1'] : '';

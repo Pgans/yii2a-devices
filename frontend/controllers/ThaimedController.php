@@ -38,9 +38,8 @@ class ThaimedController extends \yii\web\Controller
         }
         $dataProvider = new \yii\data\ArrayDataProvider([
             'allModels' => $rawData,
-            'pagination' => [
-                'pagesize' => 15
-            ],
+            'pagination' => FALSE,
+            //'pagination' => ['pagesize' => 5],
         ]);
         Yii::$app->session['date1'] =$date1;
         Yii::$app->session['date2'] =$date2;
@@ -157,24 +156,21 @@ GROUP BY UNIT_NAME ORDER BY amount";
         AND a.VISIT_ID NOT IN (SELECT VISIT_ID FROM ipd_reg)
         GROUP BY month";
 
-       $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+       $sData = \yii::$app->db2->createCommand($sql)->queryAll();
 
       // print_r($rawData);
        try {
-           $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+           $sData = \Yii::$app->db2->createCommand($sql)->queryAll();
        } catch (\yii\db2\Exception $e) {
            throw new \yii\web\ConflictHttpException('sql error');
        }
-       //Yii::$app->session['date1']=$date1;
-       //Yii::$app->session['date2']=$date2;
-       $dataProvider = new \yii\data\ArrayDataProvider([
-           'allModels' => $rawData,
+       
+       $smondataProvider = new \yii\data\ArrayDataProvider([
+           'allModels' => $sData,
            'pagination' => FALSE,
        ]);
-       Yii::$app->session['date1'] =$date1;
-       Yii::$app->session['date2'] =$date2;
        return $this->render('smonpri_replace', [
-                   'dataProvider' => $dataProvider,
+                   'dataProvider' => $smondataProvider,
                    'sql'=>$sql,
                    'date1'=>$date1,
                    'date2'=>$date2,
@@ -554,7 +550,7 @@ return $this->render('surgeon_operation_list', [
      $date1 = Yii::$app->session['date1'];
      $date2 = Yii::$app->session['date2'];
      $sql = " SELECT MONTH(REG_DATETIME)AS MONTH, 
-     COUNT(CASE WHEN CODE= 99.92 THEN '2' END) AS 'acupencture', 
+     #COUNT(CASE WHEN CODE= 99.92 THEN '2' END) AS 'acupencture', 
      COUNT(CASE WHEN SUBSTR(NICKNAME,4,6) ='บริบาล' THEN '3' END) AS 'nursing', 
      COUNT(case WHEN left(NICKNAME,6) = 'การนวด' THEN '4'END) AS 'massage',
      COUNT(CASE WHEN SUBSTR(NICKNAME,4,2) = 'อบ' THEN '5' END) AS 'baked', 
@@ -563,16 +559,16 @@ return $this->render('surgeon_operation_list', [
      COUNT(CODE) AS Total  
        FROM mb_opd_operations 
        WHERE REG_DATETIME BETWEEN  '$date1' AND '$date2'
-       AND VISIT_ID in (SELECT VISIT_ID FROM mobile_visits)
+       AND CGD_ID = 15  
        GROUP BY MONTH(REG_DATETIME) ORDER BY MONTH(REG_DATETIME)";
  $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
-        $top10idataProvider = new \yii\data\ArrayDataProvider([
-            'allModels' => $rawData,
-            'pagination' => [
-                'pagesize'=> 8
-            ],
-        ]);
-        
+     $itopdataProvider = new \yii\data\ArrayDataProvider([
+         'allModels' => $rawData,
+         'pagination' => [
+             'pagesize'=> 8
+         ],
+     ]);
+
         $sql = " SELECT MONTH(REG_DATETIME)AS MONTH, 
         COUNT(CASE WHEN CODE= 99.92 THEN '2' END) AS 'acupencture', 
         COUNT(CASE WHEN SUBSTR(NICKNAME,4,6) ='บริบาล' THEN '3' END) AS 'nursing', 
@@ -584,6 +580,7 @@ return $this->render('surgeon_operation_list', [
           FROM mb_opd_operations 
           WHERE REG_DATETIME BETWEEN  '$date1' AND '$date2'
           AND VISIT_ID NOT in (SELECT VISIT_ID FROM mobile_visits)
+          AND CGD_ID = 15
           GROUP BY MONTH(REG_DATETIME) ORDER BY MONTH(REG_DATETIME)";
     $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
         $topdataProvider = new \yii\data\ArrayDataProvider([
@@ -593,15 +590,59 @@ return $this->render('surgeon_operation_list', [
             ],
         ]);
 
+       $sql = "SELECT DISTINCT MONTH(a.DATE_SERV)AS MONTH,
+      # COUNT(CASE WHEN a.PROCEDCODE = 9992 THEN '2' END) AS 'ฝังเข็ม', 
+       COUNT(CASE WHEN SUBSTR(b.NAME,4,6) ='บริบาล' THEN '3' END) AS 'บริบาล', 
+       COUNT(case WHEN left(b.NAME,6) = 'การนวด' THEN '4'END) AS 'การนวด',
+       COUNT(CASE WHEN SUBSTR(b.NAME,4,2) = 'อบ' THEN '5' END) AS 'อบ', 
+       COUNT(CASE WHEN SUBSTR(b.NAME,4,5) = 'ประคบ' THEN '6' END) AS 'ประคบ', 
+       COUNT(CASE WHEN SUBSTR(b.NAME,4,8) = 'ส่งเสริม' THEN '7' END) AS 'ส่งเสริม', 
+       COUNT(a.PROCEDCODE) AS Total 
+       FROM procedure_opd a
+       INNER JOIN icd43_planthai1 b ON a.PROCEDCODE = b.CODE
+       INNER JOIN service c ON a.SEQ = c.SEQ
+       WHERE a.DATE_SERV BETWEEN '$date1' AND '$date2' 
+       GROUP BY MONTH(a.DATE_SERV)";
+        $fData = \yii::$app->db4->createCommand($sql)->queryAll();
+        $procedataProvider = new \yii\data\ArrayDataProvider([
+            'allModels' => $fData,
+            'pagination' => FALSE,
+        ]);
+
+        $sql = "SELECT DISTINCT MONTH(a.DATE_SERV)AS MONTH,
+        COUNT(CASE WHEN a.PROCEDCODE = 99.92 THEN '2' END) AS 'ฝังเข็ม', 
+        COUNT(CASE WHEN SUBSTR(b.desc_r,4,6) ='บริบาล' THEN '3' END) AS 'บริบาล', 
+        COUNT(case WHEN left(b.desc_r,6) = 'การนวด' THEN '4'END) AS 'การนวด',
+        COUNT(CASE WHEN SUBSTR(b.desc_r,4,2) = 'อบ' THEN '5' END) AS 'อบ', 
+        COUNT(CASE WHEN SUBSTR(b.desc_r,4,5) = 'ประคบ' THEN '6' END) AS 'ประคบ', 
+        COUNT(CASE WHEN SUBSTR(b.desc_r,4,8) = 'ส่งเสริม' THEN '7' END) AS 'ส่งเสริม', 
+        COUNT(a.PROCEDCODE) AS Total 
+        FROM procedure_opd a
+        INNER JOIN cicd9ttm_planthai b ON a.PROCEDCODE = b.code
+        INNER JOIN service c ON a.SEQ = c.SEQ
+        WHERE a.DATE_SERV BETWEEN '$date1' AND '$date2'
+        AND a.CLINIC = '00126' AND c.SERVPLACE =2
+        GROUP BY MONTH(a.DATE_SERV)";
+    $fData = \yii::$app->db4->createCommand($sql)->queryAll();
+    $oprocedataProvider = new \yii\data\ArrayDataProvider([
+        'allModels' => $fData,
+        'pagination' => FALSE,
+    ]);
+
 return $this->render('op_countlist', [
-           'outData' =>$top10idataProvider,
+           'outData' =>$itopdataProvider,
            'inData' => $topdataProvider,
+           'oproceData'=>$oprocedataProvider,
+           'iproceData'=>$procedataProvider,
+           'date1'=> $date1,
+           'date2'=>$date2,
+           
     ]);   
   }
   public function actionSurgeon_inout(){
     $date1 = Yii::$app->session['date1'];
     $date2 = Yii::$app->session['date2'];
-$sql = "SELECT a.SURGEON_ID,CONCAT(c.FNAME,'',TRIM(c.LNAME))AS Provider,
+$sql2 = "SELECT a.SURGEON_ID,CONCAT(c.FNAME,'',TRIM(c.LNAME))AS Provider,
 COUNT(CASE WHEN CODE= 99.92 THEN '2' END) AS 'ฝังเข็ม', 
 COUNT(CASE WHEN SUBSTR(NICKNAME,4,6) ='บริบาล' THEN '3' END) AS 'บริบาล', 
 COUNT(case WHEN left(NICKNAME,6) = 'การนวด' THEN '4'END) AS 'การนวด',
@@ -616,7 +657,7 @@ WHERE DATE(a.REG_DATETIME) between '$date1' AND '$date2'
 AND a.CGD_ID = 15
 AND a.VISIT_ID NOT in (SELECT VISIT_ID FROM mobile_visits)
 GROUP BY a.SURGEON_ID ORDER BY a.SURGEON_ID";
-$iData = \yii::$app->db2->createCommand($sql)->queryAll();
+$iData = \yii::$app->db2->createCommand($sql2)->queryAll();
 $indataProvider = new \yii\data\ArrayDataProvider([
    'allModels' => $iData,
    'pagination' => [
@@ -652,7 +693,88 @@ return $this->render('inout', [
            'date1'=>$date1,
            'date2'=>$date2,
 
- ]);   
+ ]);
 }
+public function actionCheck_operations(){
+    $sql = "SELECT a.CODE AS 43F, b.43CODE AS MCODE,b.CODE AS HCODE ,a.NAME, b.NICKNAME,COST,CGD_ID
+    FROM icd43_planthai1 a
+    RIGHT  JOIN icd9cm_planthai b ON a.CODE = b.43CODE";
+    $iData = \yii::$app->db4->createCommand($sql)->queryAll();
+    $dataProvider = new \yii\data\ArrayDataProvider([
+       'allModels' => $iData,
+       'pagination' => [
+           'pagesize'=> 8
+       ],
+    ]);
+    return $this->render('check_operations', [
+               'dataProvider' => $dataProvider,
+               'sql'=>$sql,
+               'date1'=>$date1,
+               'date2'=>$date2,
+    
+         ]);      
+        }
+ public function actionCheck_operation(){
+$sql = "SELECT a.CODE AS 43F, b.43CODE AS MCODE,b.CODE AS HCODE ,a.NAME, b.NICKNAME,COST,CGD_ID
+FROM icd43_planthai1 a
+RIGHT  JOIN icd9cm_planthai b ON a.CODE = b.43CODE";
+$iData = \yii::$app->db4->createCommand($sql)->queryAll();
+$dataProvider = new \yii\data\ArrayDataProvider([
+   'allModels' => $iData,
+   'pagination' => [
+       'pagesize'=> 8
+   ],
+]);
+return $this->render('ck_operation', [
+           'dataProvider' => $dataProvider,
+           'sql'=>$sql,
+           'date1'=>$date1,
+           'date2'=>$date2,
+
+     ]);      
+    }
+    public function actionCheck_procudure(){
+        $sql = "SELECT a.CODE AS 43F, b.43CODE AS MCODE,b.CODE AS HCODE ,a.NAME, b.NICKNAME,COST,CGD_ID
+        FROM icd43_planthai1 a
+        LEFT JOIN icd9cm_planthai b ON a.CODE = b.43CODE";
+        $ioData = \yii::$app->db4->createCommand($sql)->queryAll();
+        $dataProvider = new \yii\data\ArrayDataProvider([
+           'allModels' => $ioData,
+           'pagination' => [
+               'pagesize'=> 8
+           ],
+        ]);
+        return $this->render('ck_procudure', [
+                   'dataProvider' => $dataProvider,
+                   'sql'=>$sql,
+                   'date1'=>$date1,
+                   'date2'=>$date2,
+        
+             ]);      
+            }
+    public function actionNo_procudure(){
+                $sql = "SELECT 
+                (CASE WHEN ISNULL(a.CODE) THEN ''
+                ELSE a.CODE END) AS 43F,
+                 b.43CODE AS MCODE,b.CODE AS HCODE, b.NICKNAME,COST,CGD_ID
+                FROM icd43_planthai1 a
+                RIGHT  JOIN icd9cm_planthai b ON a.CODE = b.43CODE
+                WHERE
+                a.CODE  IS NULL";
+                $ioData = \yii::$app->db4->createCommand($sql)->queryAll();
+                $dataProvider = new \yii\data\ArrayDataProvider([
+                   'allModels' => $ioData,
+                   'pagination' => [
+                       'pagesize'=> 8
+                   ],
+                ]);
+                return $this->render('ck_procudure', [
+                           'dataProvider' => $dataProvider,
+                           'sql'=>$sql,
+                           'date1'=>$date1,
+                           'date2'=>$date2,
+                
+         ]);               
+    }
 }
 

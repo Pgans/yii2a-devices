@@ -1,6 +1,12 @@
 <?php
 use kartik\grid\GridView;
 use kartik\widgets\ActiveForm;
+use common\models\RContributionIpd;
+use yii\data\ActiveDataProvider;
+use yii\helpers\Html;
+use yii\helpers\Url;
+
+
 
 $this->title = 'IPDDX10';
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/index']];
@@ -37,7 +43,9 @@ $this->params['breadcrumbs'][] = 'รายงาน 10 อันดับโร
         ]);
         ?>
         <button class='btn btn-danger'> ตกลง </button>
-
+    <?php $form = ActiveForm::begin([ ]);
+    echo Html::a('ทั้งหมด', ['report/dxipd_all'], ['class' => 'btn btn-success', 'id'=>'modalButton','target'=>'_blank']);
+    ActiveForm::end();?>
     <?php ActiveForm::end(); ?>
 </div>
 <?php
@@ -45,10 +53,8 @@ echo GridView::widget([
         'dataProvider' => $dataProvider,
         'panel' => [
             'before'=>'<b style="color:blue ">รายงาน 10 อันดับโรคIPD</b><b style="color: red">(ตัดรหัส Z00-Z99,O00-O99)</b>',
-            
-
+            'after'=>'<b style="color:red">ประมวลผลจากวันที่ </b>'.$date1   .'<b style="color:red">ถึงวันที่</b>' .$date2
 ],
-    //'hover' => true,
     'columns' => [
         [
             'class' => 'yii\grid\SerialColumn',
@@ -64,13 +70,14 @@ echo GridView::widget([
                 ],
                 [
                     'attribute' => 'amount',
-                    'header' => 'จำนวน'
+                    'header' => 'จำนวน',
+                    'format'=>['decimal',0]
                 ],
                
             ]
         ]);
         ?>
 
-        <div class="alert alert-danger">
+        <div class="alert alert-info">
             <?=$sql?>
         </div>

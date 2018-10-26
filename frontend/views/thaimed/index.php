@@ -28,3 +28,6 @@ use yii\helpers\Html;
 <p>
   <?=  Html::a('4.รายงานผู้ทำหัตการแผทย์แผนไทยแยกตามผู้ทำหัตการ(ผู้ทำ)',['thaimed/surgeon_operation']) ?>
 </p>
+<p>
+  <?=  Html::a('5.ตรวจสอบรหัสหัตการแพทย์แผนไทยกับรหัสมาตรฐาน43แฟ้ม',['thaimed/check_operations']) ?>
+</p>
