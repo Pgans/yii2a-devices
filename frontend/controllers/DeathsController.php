@@ -86,7 +86,7 @@ class DeathsController extends \yii\web\Controller
     }
     $dataProvider = new \yii\data\ArrayDataProvider([
         'allModels' => $rawData,
-        'pagination' => FALSE,
+        'pagination' => ['pagesize'=>8],
     ]);
     return $this->render('death_list',[
         'dataProvider' => $dataProvider,
@@ -241,7 +241,7 @@ GROUP BY a.VISIT_ID ";
     }
     $dataProvider = new \yii\data\ArrayDataProvider([
         'allModels' => $rawData,
-        'pagination' => FALSE,
+        'pagination' => ['pagesize'=> 8],
     ]);
     return $this->render('deathipd_list',[
         'dataProvider' => $dataProvider,
@@ -534,7 +534,7 @@ try {
 }
 $dataProvider = new \yii\data\ArrayDataProvider([
     'allModels' => $rawData,
-    'pagination' => FALSE,
+    'pagination' => ['pagesize'=>8],
 ]);
 return $this->render('death_group', [
             'dataProvider' => $dataProvider,
