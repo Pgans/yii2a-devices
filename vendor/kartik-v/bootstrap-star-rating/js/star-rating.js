@@ -1,5 +1,4 @@
 /*!
-<<<<<<< HEAD
  * @copyright &copy; Kartik Visweswaran, Krajee.com, 2013 - 2016
  * @version 4.0.1
  *
@@ -11,20 +10,6 @@
  */
 (function (factory) {
     "use strict";
-=======
- * bootstrap-star-rating v4.0.3
- * http://plugins.krajee.com/star-rating
- *
- * Author: Kartik Visweswaran
- * Copyright: 2013 - 2017, Kartik Visweswaran, Krajee.com
- *
- * Licensed under the BSD 3-Clause
- * https://github.com/kartik-v/bootstrap-star-rating/blob/master/LICENSE.md
- */
-(function (factory) {
-    "use strict";
-    //noinspection JSUnresolvedVariable
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
     if (typeof define === 'function' && define.amd) { // jshint ignore:line
         // AMD. Register as an anonymous module.
         define(['jquery'], factory); // jshint ignore:line
@@ -42,7 +27,6 @@
     "use strict";
 
     $.fn.ratingLocales = {};
-<<<<<<< HEAD
 
     var NAMESPACE, DEFAULT_MIN, DEFAULT_MAX, DEFAULT_STEP, isEmpty, getCss, addCss, getDecimalPlaces, applyPrecision,
         handler, Rating;
@@ -70,44 +54,6 @@
         var ev = skipNS ? event : event.split(' ').join(NAMESPACE + ' ') + NAMESPACE;
         $el.off(ev).on(ev, callback);
     };
-=======
-    $.fn.ratingThemes = {};
-
-    var $h, Rating;
-
-    // global helper methods and constants
-    $h = {
-        NAMESPACE: '.rating',
-        DEFAULT_MIN: 0,
-        DEFAULT_MAX: 5,
-        DEFAULT_STEP: 0.5,
-        isEmpty: function (value, trim) {
-            return value === null || value === undefined || value.length === 0 || (trim && $.trim(value) === '');
-        },
-        getCss: function (condition, css) {
-            return condition ? ' ' + css : '';
-        },
-        addCss: function ($el, css) {
-            $el.removeClass(css).addClass(css);
-        },
-        getDecimalPlaces: function (num) {
-            var m = ('' + num).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
-            return !m ? 0 : Math.max(0, (m[1] ? m[1].length : 0) - (m[2] ? +m[2] : 0));
-        },
-        applyPrecision: function (val, precision) {
-            return parseFloat(val.toFixed(precision));
-        },
-        handler: function ($el, event, callback, skipOff, skipNS) {
-            var ev = skipNS ? event : event.split(' ').join($h.NAMESPACE + ' ') + $h.NAMESPACE;
-            if (!skipOff) {
-                $el.off(ev);
-            }
-            $el.on(ev, callback);
-        }
-    };
-
-    // rating constructor
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
     Rating = function (element, options) {
         var self = this;
         self.$element = $(element);
@@ -121,7 +67,6 @@
                 val = options[vattr] || $el.data(vattr) || $el.attr(vattr);
                 switch (vattr) {
                     case 'min':
-<<<<<<< HEAD
                         chk = DEFAULT_MIN;
                         break;
                     case 'max':
@@ -131,24 +76,12 @@
                         chk = DEFAULT_STEP;
                 }
                 finalVal = isEmpty(val) ? chk : val;
-=======
-                        chk = $h.DEFAULT_MIN;
-                        break;
-                    case 'max':
-                        chk = $h.DEFAULT_MAX;
-                        break;
-                    default:
-                        chk = $h.DEFAULT_STEP;
-                }
-                finalVal = $h.isEmpty(val) ? chk : val;
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
                 out = parseFloat(finalVal);
             } else {
                 out = parseFloat(options[vattr]);
             }
             return isNaN(out) ? chk : out;
         },
-<<<<<<< HEAD
         _setDefault: function (key, val) {
             var self = this;
             if (isEmpty(self[key])) {
@@ -282,35 +215,6 @@
             }
             if (isNaN(self.step) || isEmpty(self.step) || self.step === 0) {
                 self.step = DEFAULT_STEP;
-=======
-        _parseValue: function (val) {
-            var self = this, v = parseFloat(val);
-            if (isNaN(v)) {
-                v = self.clearValue;
-            }
-            return (self.zeroAsNull && (v === 0 || v === '0') ? null : v);
-        },
-        _setDefault: function (key, val) {
-            var self = this;
-            if ($h.isEmpty(self[key])) {
-                self[key] = val;
-            }
-        },
-        _initSlider: function (options) {
-            var self = this, v = self.$element.val();
-            self.initialValue = $h.isEmpty(v) ? 0 : v;
-            self._setDefault('min', self._parseAttr('min', options));
-            self._setDefault('max', self._parseAttr('max', options));
-            self._setDefault('step', self._parseAttr('step', options));
-            if (isNaN(self.min) || $h.isEmpty(self.min)) {
-                self.min = $h.DEFAULT_MIN;
-            }
-            if (isNaN(self.max) || $h.isEmpty(self.max)) {
-                self.max = $h.DEFAULT_MAX;
-            }
-            if (isNaN(self.step) || $h.isEmpty(self.step) || self.step === 0) {
-                self.step = $h.DEFAULT_STEP;
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
             }
             self.diff = self.max - self.min;
         },
@@ -326,21 +230,12 @@
         _getContainerCss: function () {
             var self = this;
             return 'rating-container' +
-<<<<<<< HEAD
                 getCss(self.theme, 'theme-' + self.theme) +
                 getCss(self.rtl, 'rating-rtl') +
                 getCss(self.size, 'rating-' + self.size) +
                 getCss(self.animate, 'rating-animate') +
                 getCss(self.disabled || self.readonly, 'rating-disabled') +
                 getCss(self.containerClass, self.containerClass);
-=======
-                $h.getCss(self.theme, 'theme-' + self.theme) +
-                $h.getCss(self.rtl, 'rating-rtl') +
-                $h.getCss(self.size, 'rating-' + self.size) +
-                $h.getCss(self.animate, 'rating-animate') +
-                $h.getCss(self.disabled || self.readonly, 'rating-disabled') +
-                $h.getCss(self.containerClass, self.containerClass);
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
         },
         _checkDisabled: function () {
             var self = this, $el = self.$element, opts = self.options;
@@ -360,13 +255,8 @@
         _generateRating: function () {
             var self = this, $el = self.$element, $rating, $container, w;
             $container = self.$container = $(document.createElement("div")).insertBefore($el);
-<<<<<<< HEAD
             addCss($container, self._getContainerCss());
             self.$rating = $rating = $(document.createElement("div")).attr('class', 'rating').appendTo($container)
-=======
-            $h.addCss($container, self._getContainerCss());
-            self.$rating = $rating = $(document.createElement("div")).attr('class', 'rating-stars').appendTo($container)
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
                 .append(self._getStars('empty')).append(self._getStars('filled'));
             self.$emptyStars = $rating.find('.empty-stars');
             self.$filledStars = $rating.find('.filled-stars');
@@ -378,10 +268,6 @@
                 w = Math.max(self.$emptyStars.outerWidth(), self.$filledStars.outerWidth());
                 self.$emptyStars.width(w);
             }
-<<<<<<< HEAD
-=======
-            $el.appendTo($rating);
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
         },
         _getCaption: function () {
             var self = this;
@@ -400,11 +286,7 @@
             }
             html = self.fetchCaption(val);
             if ($cap && $cap.length) {
-<<<<<<< HEAD
                 addCss($cap, 'caption');
-=======
-                $h.addCss($cap, 'caption');
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
                 $cap.html(html);
                 self.$caption = $cap;
                 return;
@@ -419,11 +301,7 @@
             }
             css = self._getClearClass();
             if ($clr.length) {
-<<<<<<< HEAD
                 addCss($clr, css);
-=======
-                $h.addCss($clr, css);
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
                 $clr.attr({"title": self.clearButtonTitle}).html(self.clearButton);
                 self.$clear = $clr;
                 return;
@@ -433,16 +311,11 @@
             self.$clear = self.$container.find('.' + self.clearButtonBaseClass);
         },
         _getClearClass: function () {
-<<<<<<< HEAD
             return this.clearButtonBaseClass + ' ' + ((this.inactive) ? '' : this.clearButtonActiveClass);
         },
         _getTouchPosition: function (e) {
             var pageX = isEmpty(e.pageX) ? e.originalEvent.touches[0].pageX : e.pageX;
             return pageX - this.$rating.offset().left;
-=======
-            var self = this;
-            return self.clearButtonBaseClass + ' ' + (self.inactive ? '' : self.clearButtonActiveClass);
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
         },
         _toggleHover: function (out) {
             var self = this, w, width, caption;
@@ -462,11 +335,7 @@
             }
         },
         _init: function (options) {
-<<<<<<< HEAD
             var self = this, $el = self.$element.addClass('hide');
-=======
-            var self = this, $el = self.$element.addClass('rating-input'), v;
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
             self.options = options;
             $.each(options, function (key, value) {
                 self[key] = value;
@@ -485,7 +354,6 @@
                 self.showCaption = false;
             }
             self._generateRating();
-<<<<<<< HEAD
             self._listen();
             return $el.removeClass('rating-loading');
         },
@@ -503,147 +371,6 @@
             }
             if ($form.length) {
                 handler($form, 'reset', $.proxy(self._resetForm, self));
-=======
-            self._initEvents();
-            self._listen();
-            v = self._parseValue($el.val());
-            $el.val(v);
-            return $el.removeClass('rating-loading');
-        },
-        _initEvents: function () {
-            var self = this;
-            self.events = {
-                _getTouchPosition: function (e) {
-                    var pageX = $h.isEmpty(e.pageX) ? e.originalEvent.touches[0].pageX : e.pageX;
-                    return pageX - self.$rating.offset().left;
-                },
-                _listenClick: function (e, callback) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    if (e.handled !== true) {
-                        callback(e);
-                        e.handled = true;
-                    } else {
-                        return false;
-                    }
-                },
-                _noMouseAction: function (e) {
-                    return !self.hoverEnabled || self.inactive || (e && e.isDefaultPrevented());
-                },
-                initTouch: function (e) {
-                    //noinspection JSUnresolvedVariable
-                    var ev, touches, pos, out, caption, w, width, params, clrVal = self.clearValue || 0,
-                        isTouchCapable = 'ontouchstart' in window ||
-                            (window.DocumentTouch && document instanceof window.DocumentTouch);
-                    if (!isTouchCapable || self.inactive) {
-                        return;
-                    }
-                    ev = e.originalEvent;
-                    //noinspection JSUnresolvedVariable
-                    touches = !$h.isEmpty(ev.touches) ? ev.touches : ev.changedTouches;
-                    pos = self.events._getTouchPosition(touches[0]);
-                    if (e.type === "touchend") {
-                        self._setStars(pos);
-                        params = [self.$element.val(), self._getCaption()];
-                        self.$element.trigger('change').trigger('rating:change', params);
-                        self.starClicked = true;
-                    } else {
-                        out = self.calculate(pos);
-                        caption = out.val <= clrVal ? self.fetchCaption(clrVal) : out.caption;
-                        w = self.getWidthFromValue(clrVal);
-                        width = out.val <= clrVal ? w + '%' : out.width;
-                        self._setCaption(caption);
-                        self.$filledStars.css('width', width);
-                    }
-                },
-                starClick: function (e) {
-                    var pos, params;
-                    self.events._listenClick(e, function (ev) {
-                        if (self.inactive) {
-                            return false;
-                        }
-                        pos = self.events._getTouchPosition(ev);
-                        self._setStars(pos);
-                        params = [self.$element.val(), self._getCaption()];
-                        self.$element.trigger('change').trigger('rating:change', params);
-                        self.starClicked = true;
-                    });
-                },
-                clearClick: function (e) {
-                    self.events._listenClick(e, function () {
-                        if (!self.inactive) {
-                            self.clear();
-                            self.clearClicked = true;
-                        }
-                    });
-                },
-                starMouseMove: function (e) {
-                    var pos, out;
-                    if (self.events._noMouseAction(e)) {
-                        return;
-                    }
-                    self.starClicked = false;
-                    pos = self.events._getTouchPosition(e);
-                    out = self.calculate(pos);
-                    self._toggleHover(out);
-                    self.$element.trigger('rating:hover', [out.val, out.caption, 'stars']);
-                },
-                starMouseLeave: function (e) {
-                    var out;
-                    if (self.events._noMouseAction(e) || self.starClicked) {
-                        return;
-                    }
-                    out = self.cache;
-                    self._toggleHover(out);
-                    self.$element.trigger('rating:hoverleave', ['stars']);
-                },
-                clearMouseMove: function (e) {
-                    var caption, val, width, out;
-                    if (self.events._noMouseAction(e) || !self.hoverOnClear) {
-                        return;
-                    }
-                    self.clearClicked = false;
-                    caption = '<span class="' + self.clearCaptionClass + '">' + self.clearCaption + '</span>';
-                    val = self.clearValue;
-                    width = self.getWidthFromValue(val) || 0;
-                    out = {caption: caption, width: width, val: val};
-                    self._toggleHover(out);
-                    self.$element.trigger('rating:hover', [val, caption, 'clear']);
-                },
-                clearMouseLeave: function (e) {
-                    var out;
-                    if (self.events._noMouseAction(e) || self.clearClicked || !self.hoverOnClear) {
-                        return;
-                    }
-                    out = self.cache;
-                    self._toggleHover(out);
-                    self.$element.trigger('rating:hoverleave', ['clear']);
-                },
-                resetForm: function (e) {
-                    if (e && e.isDefaultPrevented()) {
-                        return;
-                    }
-                    if (!self.inactive) {
-                        self.reset();
-                    }
-                }
-            };
-        },
-        _listen: function () {
-            var self = this, $el = self.$element, $form = $el.closest('form'), $rating = self.$rating,
-                $clear = self.$clear, events = self.events;
-            $h.handler($rating, 'touchstart touchmove touchend', $.proxy(events.initTouch, self));
-            $h.handler($rating, 'click touchstart', $.proxy(events.starClick, self));
-            $h.handler($rating, 'mousemove', $.proxy(events.starMouseMove, self));
-            $h.handler($rating, 'mouseleave', $.proxy(events.starMouseLeave, self));
-            if (self.showClear && $clear.length) {
-                $h.handler($clear, 'click touchstart', $.proxy(events.clearClick, self));
-                $h.handler($clear, 'mousemove', $.proxy(events.clearMouseMove, self));
-                $h.handler($clear, 'mouseleave', $.proxy(events.clearMouseLeave, self));
-            }
-            if ($form.length) {
-                $h.handler($form, 'reset', $.proxy(events.resetForm, self), true);
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
             }
             return $el;
         },
@@ -655,52 +382,30 @@
             return stars + '</span>';
         },
         _setStars: function (pos) {
-<<<<<<< HEAD
             var self = this, out = arguments.length ? self.calculate(pos) : self.calculate(), $el = self.$element;
             $el.val(out.val);
-=======
-            var self = this, out = arguments.length ? self.calculate(pos) : self.calculate(), $el = self.$element,
-                v = self._parseValue(out.val);
-            $el.val(v);
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
             self.$filledStars.css('width', out.width);
             self._setCaption(out.caption);
             self.cache = out;
             return $el;
         },
         showStars: function (val) {
-<<<<<<< HEAD
             var self = this, v = parseFloat(val);
             self.$element.val(isNaN(v) ? self.clearValue : v);
             return self._setStars();
         },
         calculate: function (pos) {
             var self = this, defaultVal = isEmpty(self.$element.val()) ? 0 : self.$element.val(),
-=======
-            var self = this, v = self._parseValue(val);
-            self.$element.val(v);
-            return self._setStars();
-        },
-        calculate: function (pos) {
-            var self = this, defaultVal = $h.isEmpty(self.$element.val()) ? 0 : self.$element.val(),
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
                 val = arguments.length ? self.getValueFromPosition(pos) : defaultVal,
                 caption = self.fetchCaption(val), width = self.getWidthFromValue(val);
             width += '%';
             return {caption: caption, width: width, val: val};
         },
         getValueFromPosition: function (pos) {
-<<<<<<< HEAD
             var self = this, precision = getDecimalPlaces(self.step), val, factor, maxWidth = self.$rating.width();
             factor = (self.diff * pos) / (maxWidth * self.step);
             factor = self.rtl ? Math.floor(factor) : Math.ceil(factor);
             val = applyPrecision(parseFloat(self.min + factor * self.step), precision);
-=======
-            var self = this, precision = $h.getDecimalPlaces(self.step), val, factor, maxWidth = self.$rating.width();
-            factor = (self.diff * pos) / (maxWidth * self.step);
-            factor = self.rtl ? Math.floor(factor) : Math.ceil(factor);
-            val = $h.applyPrecision(parseFloat(self.min + factor * self.step), precision);
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
             val = Math.max(Math.min(val, self.max), self.min);
             return self.rtl ? (self.max - val) : val;
         },
@@ -720,39 +425,22 @@
             var self = this, val = parseFloat(rating) || self.clearValue, css, cap, capVal, cssVal, caption,
                 vCap = self.starCaptions, vCss = self.starCaptionClasses;
             if (val && val !== self.clearValue) {
-<<<<<<< HEAD
                 val = applyPrecision(val, getDecimalPlaces(self.step));
             }
             cssVal = typeof vCss === "function" ? vCss(val) : vCss[val];
             capVal = typeof vCap === "function" ? vCap(val) : vCap[val];
             cap = isEmpty(capVal) ? self.defaultCaption.replace(/\{rating}/g, val) : capVal;
             css = isEmpty(cssVal) ? self.clearCaptionClass : cssVal;
-=======
-                val = $h.applyPrecision(val, $h.getDecimalPlaces(self.step));
-            }
-            cssVal = typeof vCss === "function" ? vCss(val) : vCss[val];
-            capVal = typeof vCap === "function" ? vCap(val) : vCap[val];
-            cap = $h.isEmpty(capVal) ? self.defaultCaption.replace(/\{rating}/g, val) : capVal;
-            css = $h.isEmpty(cssVal) ? self.clearCaptionClass : cssVal;
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
             caption = (val === self.clearValue) ? self.clearCaption : cap;
             return '<span class="' + css + '">' + caption + '</span>';
         },
         destroy: function () {
             var self = this, $el = self.$element;
-<<<<<<< HEAD
             if (!isEmpty(self.$container)) {
                 self.$container.before($el).remove();
             }
             $.removeData($el.get(0));
             return $el.off('rating').removeClass('hide');
-=======
-            if (!$h.isEmpty(self.$container)) {
-                self.$container.before($el).remove();
-            }
-            $.removeData($el.get(0));
-            return $el.off('rating').removeClass('rating rating-input');
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
         },
         create: function (options) {
             var self = this, opts = options || self.options || {};
@@ -763,19 +451,11 @@
             if (!self.inactive) {
                 self._setCaption(title);
             }
-<<<<<<< HEAD
             return self.showStars(self.clearValue).trigger('change').trigger('rating.clear');
         },
         reset: function () {
             var self = this;
             return self.showStars(self.initialValue).trigger('rating.reset');
-=======
-            return self.showStars(self.clearValue).trigger('change').trigger('rating:clear');
-        },
-        reset: function () {
-            var self = this;
-            return self.showStars(self.initialValue).trigger('rating:reset');
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
         },
         update: function (val) {
             var self = this;
@@ -786,11 +466,7 @@
             if (!options) {
                 return $el;
             }
-<<<<<<< HEAD
             return self.destroy().rating($.extend(true, self.options, options)).trigger('rating.refresh');
-=======
-            return self.destroy().rating($.extend(true, self.options, options)).trigger('rating:refresh');
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
         }
     };
 
@@ -799,7 +475,6 @@
         args.shift();
         this.each(function () {
             var self = $(this), data = self.data('rating'), options = typeof option === 'object' && option,
-<<<<<<< HEAD
                 lang = options.language || self.data('language') || 'en', loc = {}, opts;
 
             if (!data) {
@@ -807,18 +482,6 @@
                     loc = $.fn.ratingLocales[lang];
                 }
                 opts = $.extend(true, {}, $.fn.rating.defaults, $.fn.ratingLocales.en, loc, options, self.data());
-=======
-                theme = options.theme || self.data('theme'), lang = options.language || self.data('language') || 'en',
-                thm = {}, loc = {}, opts;
-            if (!data) {
-                if (theme) {
-                    thm = $.fn.ratingThemes[theme] || {};
-                }
-                if (lang !== 'en' && !$h.isEmpty($.fn.ratingLocales[lang])) {
-                    loc = $.fn.ratingLocales[lang];
-                }
-                opts = $.extend(true, {}, $.fn.rating.defaults, thm, $.fn.ratingLocales.en, loc, options, self.data());
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
                 data = new Rating(this, opts);
                 self.data('rating', data);
             }
@@ -851,7 +514,6 @@
         showClear: true,
         showCaption: true,
         starCaptionClasses: {
-<<<<<<< HEAD
             0.5: 'label label-danger',
             1: 'label label-danger',
             1.5: 'label label-warning',
@@ -862,18 +524,6 @@
             4: 'label label-primary',
             4.5: 'label label-success',
             5: 'label label-success'
-=======
-            0.5: 'label label-danger badge-danger',
-            1: 'label label-danger badge-danger',
-            1.5: 'label label-warning badge-warning',
-            2: 'label label-warning badge-warning',
-            2.5: 'label label-info badge-info',
-            3: 'label label-info badge-info',
-            3.5: 'label label-primary badge-primary',
-            4: 'label label-primary badge-primary',
-            4.5: 'label label-success badge-success',
-            5: 'label label-success badge-success'
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
         },
         clearButton: '<i class="glyphicon glyphicon-minus-sign"></i>',
         clearButtonBaseClass: 'clear-rating',
@@ -885,12 +535,7 @@
         hoverEnabled: true,
         hoverChangeCaption: true,
         hoverChangeStars: true,
-<<<<<<< HEAD
         hoverOnClear: true
-=======
-        hoverOnClear: true,
-        zeroAsNull: true
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
     };
 
     $.fn.ratingLocales.en = {
@@ -922,8 +567,4 @@
             $input.removeClass('rating-loading').addClass('rating-loading').rating();
         }
     });
-<<<<<<< HEAD
 }));
-=======
-}));
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-Copyright (c) 2014 - 2016, Kartik Visweswaran  
-=======
 Copyright (c) 2014 - 2017, Kartik Visweswaran  
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
 Krajee.com  
 All rights reserved.  
 

@@ -2,7 +2,6 @@ Contributing to yii2-grid
 =========================
 Looking to contribute something to yii2-grid? **Here's how you can help.**
 
-<<<<<<< HEAD
 Please take a moment to review this document in order to make the contribution
 process easy and effective for everyone involved.
 
@@ -11,8 +10,6 @@ the developers managing and developing this open source project. In return,
 they should reciprocate that respect in addressing your issue or assessing
 patches and features.
 
-=======
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
 Using the issue tracker
 -----------------------
 When [reporting bugs][reporting-bugs] or
@@ -20,7 +17,6 @@ When [reporting bugs][reporting-bugs] or
 [issue tracker on GitHub][issue-tracker] is the recommended channel to use.
 
 The issue tracker **is not** a place for support requests. Refer the 
-<<<<<<< HEAD
 [extension documentation and demos](http://demos.krajee.com/grid) and/or refer to the
 [webtips Q & A forum](http://webtips.krajee.com/questions) which are the better places to get help.
 
@@ -28,19 +24,6 @@ Reporting bugs with yii2-grid
 -----------------------------
 We really appreciate clear bug reports that _consistently_ show an issue
 _within yii2-grid_.
-=======
-[extension documentation and demos](http://demos.krajee.com/dynagrid) and/or refer to the
-[webtips Q & A forum](http://webtips.krajee.com/questions) which are the better places to get help.
-
-How to contribute via a pull request?
--------------------------------------
-Refer this [git workflow for contributors](.github/GIT-WORKFLOW.md).
-
-Reporting bugs with yii2-grid
----------------------------------
-We really appreciate clear bug reports that _consistently_ show an issue
-within _yii2-grid_.
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
 
 The ideal bug report follows these guidelines:
 
@@ -67,7 +50,6 @@ All of these questions will help others fix and identify any potential bugs.
 Requesting features in yii2-grid
 ------------------------------------------
 Before starting work on a major feature for yii2-grid, **read the
-<<<<<<< HEAD
 [documentation](http://demos.krajee.com/grid)  first** or you may risk spending a considerable amount of
 time on something which the project developers are not interested in bringing into the project.
 
@@ -130,11 +112,6 @@ best if you can include more information on the issue. Common bugs and feature
 requests are more likely to be fixed, whether it is by the community or the
 developers, so keeping tickets up to date is encouraged.
 
-=======
-[documentation](http://demos.krajee.com/dynagrid)  first** or you may risk spending a considerable amount of
-time on something which the project developers are not interested in bringing into the project.
-
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
 Licensing
 ---------
 

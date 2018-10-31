@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2017
+ * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2016
  * @package yii2-widgets
  * @subpackage yii2-widget-rating
- * @version 1.0.3
+ * @version 1.0.2
  */
 
 namespace kartik\rating;
@@ -23,15 +23,13 @@ class StarRatingThemeAsset extends AssetBundle
      * @inheritdoc
      */
     public $sourcePath = '@vendor/kartik-v/bootstrap-star-rating';
- 
+
     /**
      * @inheritdoc
      */
-    public function init()
-    {
-        $this->depends = array_merge($this->depends, ['kartik\rating\StarRatingAsset']);
-        parent::init();
-    }
+    public $depends = [
+        'kartik\rating\StarRatingAsset'
+    ];
     
     /**
      * Add star rating theme file
@@ -40,7 +38,6 @@ class StarRatingThemeAsset extends AssetBundle
      */
     public function addTheme($theme) 
     {
-        $this->js[] = "themes/{$theme}/theme." . (YII_DEBUG ? "js" : "min.js");
-        $this->css[] = "themes/{$theme}/theme." . (YII_DEBUG ? "css" : "min.css");
+        $this->css[] = "css/theme-{$theme}." . (YII_DEBUG ? "css" : "min.css");
     }
 }

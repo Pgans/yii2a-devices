@@ -1,8 +1,3 @@
 nuget/content/
 nuget/bootstrap-fileinput.*.nupkg
-<<<<<<< HEAD
 .DS_Store
-=======
-.DS_Store
-.idea
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4

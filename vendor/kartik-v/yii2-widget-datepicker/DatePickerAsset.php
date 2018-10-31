@@ -1,17 +1,10 @@
 <?php
 
 /**
-<<<<<<< HEAD
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2016
  * @package yii2-widgets
  * @subpackage yii2-widget-datepicker
  * @version 1.4.2
-=======
- * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2017
- * @package yii2-widgets
- * @subpackage yii2-widget-datepicker
- * @version 1.4.4
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
  */
 
 namespace kartik\date;

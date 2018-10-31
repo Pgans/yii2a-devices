@@ -3,12 +3,13 @@
 /**
  * @package   yii2-grid
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
- * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2017
- * @version   3.1.8
+ * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2016
+ * @version   3.1.3
  */
 
 namespace kartik\grid;
 
+use Yii;
 use Closure;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
@@ -44,9 +45,6 @@ class EditableColumn extends DataColumn
      * - `$key`: _string|object_, is the primary key value associated with the data model.
      * - `$index`: _integer_, is the zero-based index of the data model among the model array returned by [[dataProvider]].
      * - `$column`: _EditableColumn_, is the column object instance.
-     *
-     * This property allows to configure these additional settings for configuring the widget options:
-     * - `class`: _string_, the Editable widget class name. If not set this defaults to `kartik\editable\Editable`.
      */
     public $editableOptions = [];
 
@@ -82,6 +80,7 @@ class EditableColumn extends DataColumn
     public function init()
     {
         parent::init();
+        Config::checkDependency('editable\Editable', 'yii2-editable', 'for GridView EditableColumn');
         $this->_css = 'kv-edcol-' . hash('crc32', uniqid(rand(1, 100), true));
         if ($this->refreshGrid) {
             EditableColumnAsset::register($this->_view);
@@ -108,13 +107,6 @@ class EditableColumn extends DataColumn
         if (!is_array($this->_editableOptions)) {
             $this->_editableOptions = [];
         }
-        if (empty($this->_editableOptions['class'])) {
-            Config::checkDependency('editable\Editable', 'yii2-editable', 'for GridView EditableColumn');
-        } elseif (!class_exists($this->_editableOptions['class'])) {
-            throw new InvalidConfigException(
-                "The widget class '" . $this->_editableOptions['class'] . "' set in `editableOptions` does not exist."
-            );
-        }
         $options = ArrayHelper::getValue($this->_editableOptions, 'containerOptions', []);
         Html::addCssClass($options, $this->_css);
         $this->_editableOptions['containerOptions'] = $options;
@@ -122,7 +114,7 @@ class EditableColumn extends DataColumn
             $this->_editableOptions['pjaxContainerId'] = $this->grid->pjaxSettings['options']['id'];
         }
         if (!isset($key)) {
-            throw new InvalidConfigException('Invalid or no primary key found for the grid data.');
+            throw new InvalidConfigException("Invalid or no primary key found for the grid data.");
         }
         $strKey = !is_string($key) && !is_numeric($key) ? (is_array($key) ? Json::encode($key) : (string) $key) : $key;
         if ($this->attribute !== null) {
@@ -154,7 +146,6 @@ class EditableColumn extends DataColumn
             $id = $this->grid->options['id'];
             $this->_view->registerJs("kvRefreshEC('{$id}','{$this->_css}');");
         }
-        $editableClass = ArrayHelper::remove($this->_editableOptions, 'class', Editable::className());
-        return $editableClass::widget($this->_editableOptions);
+        return Editable::widget($this->_editableOptions);
     }
 }

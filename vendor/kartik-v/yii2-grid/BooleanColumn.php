@@ -3,13 +3,14 @@
 /**
  * @package   yii2-grid
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
- * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2017
- * @version   3.1.8
+ * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2016
+ * @version   3.1.3
  */
 
 namespace kartik\grid;
 
 use Yii;
+use Closure;
 
 /**
  * A BooleanColumn will convert true/false values as user friendly indicators with an automated drop down filter for the

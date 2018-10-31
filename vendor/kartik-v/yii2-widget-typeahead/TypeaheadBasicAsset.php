@@ -1,15 +1,13 @@
 <?php
 
 /**
- * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2017
+ * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2015
  * @package yii2-widgets
  * @subpackage yii2-widget-typeahead
- * @version 1.0.2
+ * @version 1.0.1
  */
 
 namespace kartik\typeahead;
-
-use kartik\base\AssetBundle;
 
 /**
  * Asset bundle for Typeahead Widget (Basic)
@@ -17,11 +15,9 @@ use kartik\base\AssetBundle;
  * @author Kartik Visweswaran <kartikv2@gmail.com>
  * @since 1.0
  */
-class TypeaheadBasicAsset extends AssetBundle
+class TypeaheadBasicAsset extends \kartik\base\AssetBundle
 {
-    /**
-     * @inheritdoc
-     */
+
     public function init()
     {
         $this->setSourcePath(__DIR__ . '/assets');

@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Select all' => '全选',
-    'Unselect all' => '取消全选',
+    'Select all' => '',
+    'Unselect all' => '',
 ];

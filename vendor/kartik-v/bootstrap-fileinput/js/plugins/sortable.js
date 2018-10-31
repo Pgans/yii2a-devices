@@ -6,7 +6,6 @@
  * Changed kvsortable plugin naming to prevent conflict with JQuery UI Sortable
  * @author Kartik Visweswaran
  */
-
 (function kvsortableModule(factory) {
 	"use strict";
 
@@ -23,7 +22,7 @@
 })(function kvsortableFactory() {
 	"use strict";
 
-	if (typeof window === "undefined" || !window.document) {
+	if (typeof window == "undefined" || !window.document) {
 		return function kvsortableError() {
 			throw new Error("KvSortable.js requires a window with a document");
 		};
@@ -67,18 +66,16 @@
 		win = window,
 		document = win.document,
 		parseInt = win.parseInt,
-		setTimeout = win.setTimeout,
 
 		$ = win.jQuery || win.Zepto,
 		Polymer = win.Polymer,
 
 		captureMode = false,
-		passiveMode = false,
 
-		supportDraggable = ('draggable' in document.createElement('div')),
+		supportDraggable = !!('draggable' in document.createElement('div')),
 		supportCssPointerEvents = (function (el) {
 			// false when IE11
-			if (!!navigator.userAgent.match(/(?:Trident.*rv[ :]?11\.|msie)/i)) {
+			if (!!navigator.userAgent.match(/Trident.*rv[ :]?11\./)) {
 				return false;
 			}
 			el = document.createElement('x');
@@ -114,7 +111,7 @@
 
 					scrollOffsetX,
 					scrollOffsetY
-				;
+					;
 
 				// Delect scrollEl
 				if (scrollParentEl !== rootEl) {
@@ -198,7 +195,7 @@
 							: value && (value.join
 								? value.indexOf(fromGroup) > -1
 								: (fromGroup == value)
-							);
+						);
 					};
 				}
 			}
@@ -217,22 +214,8 @@
 
 			options.group = group;
 		}
-	;
+		;
 
-	// Detect support a passive mode
-	try {
-		window.addEventListener('test', null, Object.defineProperty({}, 'passive', {
-			get: function () {
-				// `false`, because everything starts to work incorrectly and instead of d'n'd,
-				// begins the page has scrolled.
-				passiveMode = false;
-				captureMode = {
-					capture: false,
-					passive: passiveMode
-				};
-			}
-		}));
-	} catch (err) {}
 
 	/**
 	 * @class  KvSortable
@@ -280,8 +263,7 @@
 			fallbackClass: 'kvsortable-fallback',
 			fallbackOnBody: false,
 			fallbackTolerance: 0,
-			fallbackOffset: {x: 0, y: 0},
-			supportPointer: KvSortable.supportPointer !== false
+			fallbackOffset: {x: 0, y: 0}
 		};
 
 
@@ -305,7 +287,7 @@
 		// Bind events
 		_on(el, 'mousedown', this._onTapStart);
 		_on(el, 'touchstart', this._onTapStart);
-		options.supportPointer && _on(el, 'pointerdown', this._onTapStart);
+		_on(el, 'pointerdown', this._onTapStart);
 
 		if (this.nativeDraggable) {
 			_on(el, 'dragover', this);
@@ -330,7 +312,7 @@
 				type = evt.type,
 				touch = evt.touches && evt.touches[0],
 				target = (touch || evt).target,
-				originalTarget = evt.target.shadowRoot && (evt.path && evt.path[0]) || target,
+				originalTarget = evt.target.shadowRoot && evt.path[0] || target,
 				filter = options.filter,
 				startIndex;
 
@@ -342,14 +324,10 @@
 				return;
 			}
 
-			if (/mousedown|pointerdown/.test(type) && evt.button !== 0 || options.disabled) {
+			if (type === 'mousedown' && evt.button !== 0 || options.disabled) {
 				return; // only left button or enabled
 			}
 
-			// cancel dnd if original target is content editable
-			if (originalTarget.isContentEditable) {
-				return;
-			}
 
 			target = _closest(target, options.draggable, el);
 
@@ -368,7 +346,7 @@
 			// Check filter
 			if (typeof filter === 'function') {
 				if (filter.call(this, evt, target, this)) {
-					_dispatchEvent(_this, originalTarget, 'filter', target, el, el, startIndex);
+					_dispatchEvent(_this, originalTarget, 'filter', target, el, startIndex);
 					preventOnFilter && evt.preventDefault();
 					return; // cancel dnd
 				}
@@ -378,7 +356,7 @@
 					criteria = _closest(originalTarget, criteria.trim(), el);
 
 					if (criteria) {
-						_dispatchEvent(_this, criteria, 'filter', target, el, el, startIndex);
+						_dispatchEvent(_this, criteria, 'filter', target, el, startIndex);
 						return true;
 					}
 				});
@@ -418,7 +396,7 @@
 				this._lastX = (touch || evt).clientX;
 				this._lastY = (touch || evt).clientY;
 
-				dragEl.style['will-change'] = 'all';
+				dragEl.style['will-change'] = 'transform';
 
 				dragStartFn = function () {
 					// Delayed drag has been triggered
@@ -435,7 +413,7 @@
 					_this._triggerDragStart(evt, touch);
 
 					// Drag start event
-					_dispatchEvent(_this, rootEl, 'choose', dragEl, rootEl, rootEl, oldIndex);
+					_dispatchEvent(_this, rootEl, 'choose', dragEl, rootEl, oldIndex);
 				};
 
 				// Disable "draggable"
@@ -446,8 +424,8 @@
 				_on(ownerDocument, 'mouseup', _this._onDrop);
 				_on(ownerDocument, 'touchend', _this._onDrop);
 				_on(ownerDocument, 'touchcancel', _this._onDrop);
+				_on(ownerDocument, 'pointercancel', _this._onDrop);
 				_on(ownerDocument, 'selectstart', _this);
-				options.supportPointer && _on(ownerDocument, 'pointercancel', _this._onDrop);
 
 				if (options.delay) {
 					// If the user moves the pointer or let go the click or touch
@@ -458,7 +436,7 @@
 					_on(ownerDocument, 'touchcancel', _this._disableDelayedDrag);
 					_on(ownerDocument, 'mousemove', _this._disableDelayedDrag);
 					_on(ownerDocument, 'touchmove', _this._disableDelayedDrag);
-					options.supportPointer && _on(ownerDocument, 'pointermove', _this._disableDelayedDrag);
+					_on(ownerDocument, 'pointermove', _this._disableDelayedDrag);
 
 					_this._dragStartTimer = setTimeout(dragStartFn, options.delay);
 				} else {
@@ -504,8 +482,8 @@
 
 			try {
 				if (document.selection) {
-					// Timeout neccessary for IE9
-					_nextTick(function () {
+					// Timeout neccessary for IE9					
+					setTimeout(function () {
 						document.selection.empty();
 					});
 				} else {
@@ -526,7 +504,7 @@
 				KvSortable.active = this;
 
 				// Drag start event
-				_dispatchEvent(this, rootEl, 'start', dragEl, rootEl, rootEl, oldIndex);
+				_dispatchEvent(this, rootEl, 'start', dragEl, rootEl, oldIndex);
 			} else {
 				this._nulling();
 			}
@@ -545,14 +523,9 @@
 					_css(ghostEl, 'display', 'none');
 				}
 
-				var target = document.elementFromPoint(touchEvt.clientX, touchEvt.clientY);
-				var parent = target;
-				var i = touchDragOverListeners.length;
-
-				if (target && target.shadowRoot) {
-					target = target.shadowRoot.elementFromPoint(touchEvt.clientX, touchEvt.clientY);
-					parent = target;
-				}
+				var target = document.elementFromPoint(touchEvt.clientX, touchEvt.clientY),
+					parent = target,
+					i = touchDragOverListeners.length;
 
 				if (parent) {
 					do {
@@ -571,7 +544,7 @@
 
 						target = parent; // store last element
 					}
-					/* jshint boss:true */
+						/* jshint boss:true */
 					while (parent = parent.parentNode);
 				}
 
@@ -650,26 +623,22 @@
 		},
 
 		_onDragStart: function (/**Event*/evt, /**boolean*/useFallback) {
-			var _this = this;
-			var dataTransfer = evt.dataTransfer;
-			var options = _this.options;
+			var dataTransfer = evt.dataTransfer,
+				options = this.options;
 
-			_this._offUpEvents();
+			this._offUpEvents();
 
-			if (activeGroup.checkPull(_this, _this, dragEl, evt)) {
+			if (activeGroup.checkPull(this, this, dragEl, evt)) {
 				cloneEl = _clone(dragEl);
 
 				cloneEl.draggable = false;
 				cloneEl.style['will-change'] = '';
 
 				_css(cloneEl, 'display', 'none');
-				_toggleClass(cloneEl, _this.options.chosenClass, false);
+				_toggleClass(cloneEl, this.options.chosenClass, false);
 
-				// #1143: IFrame support workaround
-				_this._cloneId = _nextTick(function () {
-					rootEl.insertBefore(cloneEl, dragEl);
-					_dispatchEvent(_this, rootEl, 'clone', dragEl);
-				});
+				rootEl.insertBefore(cloneEl, dragEl);
+				_dispatchEvent(this, rootEl, 'clone', dragEl);
 			}
 
 			_toggleClass(dragEl, options.dragClass, true);
@@ -677,36 +646,27 @@
 			if (useFallback) {
 				if (useFallback === 'touch') {
 					// Bind touch events
-					_on(document, 'touchmove', _this._onTouchMove);
-					_on(document, 'touchend', _this._onDrop);
-					_on(document, 'touchcancel', _this._onDrop);
-
-					if (options.supportPointer) {
-						_on(document, 'pointermove', _this._onTouchMove);
-						_on(document, 'pointerup', _this._onDrop);
-					}
+					_on(document, 'touchmove', this._onTouchMove);
+					_on(document, 'touchend', this._onDrop);
+					_on(document, 'touchcancel', this._onDrop);
+					_on(document, 'pointermove', this._onTouchMove);
+					_on(document, 'pointerup', this._onDrop);
 				} else {
 					// Old brwoser
-					_on(document, 'mousemove', _this._onTouchMove);
-					_on(document, 'mouseup', _this._onDrop);
+					_on(document, 'mousemove', this._onTouchMove);
+					_on(document, 'mouseup', this._onDrop);
 				}
 
-				_this._loopId = setInterval(_this._emulateDragOver, 50);
+				this._loopId = setInterval(this._emulateDragOver, 50);
 			}
 			else {
 				if (dataTransfer) {
 					dataTransfer.effectAllowed = 'move';
-					options.setData && options.setData.call(_this, dataTransfer, dragEl);
+					options.setData && options.setData.call(this, dataTransfer, dragEl);
 				}
 
-				_on(document, 'drop', _this);
-
-				// #1143: Бывает элемент с IFrame внутри блокирует `drop`,
-				// поэтому если вызвался `mouseover`, значит надо отменять весь d'n'd.
-				// Breaking Chrome 62+
-				// _on(document, 'mouseover', _this);
-
-				_this._dragStartId = _nextTick(_this._dragStarted);
+				_on(document, 'drop', this);
+				setTimeout(this._dragStarted, 0);
 			}
 		},
 
@@ -736,8 +696,8 @@
 
 			if (activeKvSortable && !options.disabled &&
 				(isOwner
-					? canSort || (revert = !rootEl.contains(dragEl)) // Reverting item into the original list
-					: (
+						? canSort || (revert = !rootEl.contains(dragEl)) // Reverting item into the original list
+						: (
 						putKvSortable === this ||
 						(
 							(activeKvSortable.lastPullMode = activeGroup.checkPull(this, activeKvSortable, dragEl, evt)) &&
@@ -778,13 +738,8 @@
 
 
 				if ((el.children.length === 0) || (el.children[0] === ghostEl) ||
-					(el === evt.target) && (_ghostIsLast(el, evt))
+					(el === evt.target) && (target = _ghostIsLast(el, evt))
 				) {
-					//assign target only if condition is true
-					if (el.children.length !== 0 && el.children[0] !== ghostEl && el === evt.target) {
-						target = el.lastElementChild;
-					}
-
 					if (target) {
 						if (target.animated) {
 							return;
@@ -822,36 +777,34 @@
 						isLong = (target.offsetHeight > dragEl.offsetHeight),
 						halfway = (floating ? (evt.clientX - targetRect.left) / width : (evt.clientY - targetRect.top) / height) > 0.5,
 						nextSibling = target.nextElementSibling,
+						moveVector = _onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt),
 						after = false
-					;
-
-					if (floating) {
-						var elTop = dragEl.offsetTop,
-							tgTop = target.offsetTop;
-
-						if (elTop === tgTop) {
-							after = (target.previousElementSibling === dragEl) && !isWide || halfway && isWide;
-						}
-						else if (target.previousElementSibling === dragEl || dragEl.previousElementSibling === target) {
-							after = (evt.clientY - targetRect.top) / height > 0.5;
-						} else {
-							after = tgTop > elTop;
-						}
-						} else if (!isMovingBetweenKvSortable) {
-						after = (nextSibling !== dragEl) && !isLong || halfway && isLong;
-					}
-
-					var moveVector = _onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt, after);
+						;
 
 					if (moveVector !== false) {
-						if (moveVector === 1 || moveVector === -1) {
-							after = (moveVector === 1);
-						}
-
 						_silent = true;
 						setTimeout(_unsilent, 30);
 
 						_cloneHide(activeKvSortable, isOwner);
+
+						if (moveVector === 1 || moveVector === -1) {
+							after = (moveVector === 1);
+						}
+						else if (floating) {
+							var elTop = dragEl.offsetTop,
+								tgTop = target.offsetTop;
+
+							if (elTop === tgTop) {
+								after = (target.previousElementSibling === dragEl) && !isWide || halfway && isWide;
+							}
+							else if (target.previousElementSibling === dragEl || dragEl.previousElementSibling === target) {
+								after = (evt.clientY - targetRect.top) / height > 0.5;
+							} else {
+								after = tgTop > elTop;
+							}
+						} else if (!isMovingBetweenKvSortable) {
+							after = (nextSibling !== dragEl) && !isLong || halfway && isLong;
+						}
 
 						if (!dragEl.contains(el)) {
 							if (after && !nextSibling) {
@@ -909,7 +862,6 @@
 			_off(ownerDocument, 'touchend', this._onDrop);
 			_off(ownerDocument, 'pointerup', this._onDrop);
 			_off(ownerDocument, 'touchcancel', this._onDrop);
-			_off(ownerDocument, 'pointercancel', this._onDrop);
 			_off(ownerDocument, 'selectstart', this);
 		},
 
@@ -921,11 +873,7 @@
 			clearInterval(autoScroll.pid);
 			clearTimeout(this._dragStartTimer);
 
-			_cancelNextTick(this._cloneId);
-			_cancelNextTick(this._dragStartId);
-
 			// Unbind events
-			_off(document, 'mouseover', this);
 			_off(document, 'mousemove', this._onTouchMove);
 
 			if (this.nativeDraggable) {
@@ -941,11 +889,11 @@
 					!options.dropBubble && evt.stopPropagation();
 				}
 
-				ghostEl && ghostEl.parentNode && ghostEl.parentNode.removeChild(ghostEl);
+				ghostEl && ghostEl.parentNode.removeChild(ghostEl);
 
 				if (rootEl === parentEl || KvSortable.active.lastPullMode !== 'clone') {
 					// Remove clone
-					cloneEl && cloneEl.parentNode && cloneEl.parentNode.removeChild(cloneEl);
+					cloneEl && cloneEl.parentNode.removeChild(cloneEl);
 				}
 
 				if (dragEl) {
@@ -960,22 +908,19 @@
 					_toggleClass(dragEl, this.options.ghostClass, false);
 					_toggleClass(dragEl, this.options.chosenClass, false);
 
-					// Drag stop event
-					_dispatchEvent(this, rootEl, 'unchoose', dragEl, parentEl, rootEl, oldIndex);
-
 					if (rootEl !== parentEl) {
 						newIndex = _index(dragEl, options.draggable);
 
 						if (newIndex >= 0) {
 							// Add event
-							_dispatchEvent(null, parentEl, 'add', dragEl, parentEl, rootEl, oldIndex, newIndex);
+							_dispatchEvent(null, parentEl, 'add', dragEl, rootEl, oldIndex, newIndex);
 
 							// Remove event
-							_dispatchEvent(this, rootEl, 'remove', dragEl, parentEl, rootEl, oldIndex, newIndex);
+							_dispatchEvent(this, rootEl, 'remove', dragEl, rootEl, oldIndex, newIndex);
 
 							// drag from one list and drop into another
-							_dispatchEvent(null, parentEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex);
-							_dispatchEvent(this, rootEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex);
+							_dispatchEvent(null, parentEl, 'sort', dragEl, rootEl, oldIndex, newIndex);
+							_dispatchEvent(this, rootEl, 'sort', dragEl, rootEl, oldIndex, newIndex);
 						}
 					}
 					else {
@@ -985,8 +930,8 @@
 
 							if (newIndex >= 0) {
 								// drag & drop within the same list
-								_dispatchEvent(this, rootEl, 'update', dragEl, parentEl, rootEl, oldIndex, newIndex);
-								_dispatchEvent(this, rootEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex);
+								_dispatchEvent(this, rootEl, 'update', dragEl, rootEl, oldIndex, newIndex);
+								_dispatchEvent(this, rootEl, 'sort', dragEl, rootEl, oldIndex, newIndex);
 							}
 						}
 					}
@@ -997,7 +942,7 @@
 							newIndex = oldIndex;
 						}
 
-						_dispatchEvent(this, rootEl, 'end', dragEl, parentEl, rootEl, oldIndex, newIndex);
+						_dispatchEvent(this, rootEl, 'end', dragEl, rootEl, oldIndex, newIndex);
 
 						// Save sorting
 						this.save();
@@ -1011,28 +956,28 @@
 
 		_nulling: function() {
 			rootEl =
-			dragEl =
-			parentEl =
-			ghostEl =
-			nextEl =
-			cloneEl =
-			lastDownEl =
+				dragEl =
+					parentEl =
+						ghostEl =
+							nextEl =
+								cloneEl =
+									lastDownEl =
 
-			scrollEl =
-			scrollParentEl =
+										scrollEl =
+											scrollParentEl =
 
-			tapEvt =
-			touchEvt =
+												tapEvt =
+													touchEvt =
 
-			moved =
-			newIndex =
+														moved =
+															newIndex =
 
-			lastEl =
-			lastCSS =
+																lastEl =
+																	lastCSS =
 
-			putKvSortable =
-			activeGroup =
-			KvSortable.active = null;
+																		putKvSortable =
+																			activeGroup =
+																				KvSortable.active = null;
 
 			savedInputChecked.forEach(function (el) {
 				el.checked = true;
@@ -1053,10 +998,6 @@
 						this._onDragOver(evt);
 						_globalDragOver(evt);
 					}
-					break;
-
-				case 'mouseover':
-					this._onDrop(evt);
 					break;
 
 				case 'selectstart':
@@ -1306,7 +1247,7 @@
 
 
 
-	function _dispatchEvent(kvsortable, rootEl, name, targetEl, toEl, fromEl, startIndex, newIndex) {
+	function _dispatchEvent(kvsortable, rootEl, name, targetEl, fromEl, startIndex, newIndex) {
 		kvsortable = (kvsortable || rootEl[expando]);
 
 		var evt = document.createEvent('Event'),
@@ -1315,7 +1256,7 @@
 
 		evt.initEvent(name, true, true);
 
-		evt.to = toEl || rootEl;
+		evt.to = rootEl;
 		evt.from = fromEl || rootEl;
 		evt.item = targetEl || rootEl;
 		evt.clone = cloneEl;
@@ -1331,7 +1272,7 @@
 	}
 
 
-	function _onMove(fromEl, toEl, dragEl, dragRect, targetEl, targetRect, originalEvt, willInsertAfter) {
+	function _onMove(fromEl, toEl, dragEl, dragRect, targetEl, targetRect, originalEvt) {
 		var evt,
 			kvsortable = fromEl[expando],
 			onMoveFn = kvsortable.options.onMove,
@@ -1346,7 +1287,6 @@
 		evt.draggedRect = dragRect;
 		evt.related = targetEl || toEl;
 		evt.relatedRect = targetRect || toEl.getBoundingClientRect();
-		evt.willInsertAfter = willInsertAfter;
 
 		fromEl.dispatchEvent(evt);
 
@@ -1375,8 +1315,10 @@
 
 		// 5 — min delta
 		// abs — нельзя добавлять, а то глюки при наведении сверху
-		return (evt.clientY - (rect.top + rect.height) > 5) ||
-			(evt.clientX - (rect.left + rect.width) > 5);
+		return (
+				(evt.clientY - (rect.top + rect.height) > 5) ||
+				(evt.clientX - (rect.right + rect.width) > 5)
+			) && lastEl;
 	}
 
 
@@ -1471,15 +1413,12 @@
 	}
 
 	function _clone(el) {
-		if (Polymer && Polymer.dom) {
-			return Polymer.dom(el).cloneNode(true);
-		}
-		else if ($) {
-			return $(el).clone(true)[0];
-		}
-		else {
-			return el.cloneNode(true);
-		}
+		return $
+			? $(el).clone(true)[0]
+			: (Polymer && Polymer.dom
+				? Polymer.dom(el).cloneNode(true)
+				: el.cloneNode(true)
+		);
 	}
 
 	function _saveInputCheckedState(root) {
@@ -1492,20 +1431,23 @@
 		}
 	}
 
-	function _nextTick(fn) {
-		return setTimeout(fn, 0);
-	}
-
-	function _cancelNextTick(id) {
-		return clearTimeout(id);
-	}
-
-	// Fixed #973:
+	// Fixed #973: 
 	_on(document, 'touchmove', function (evt) {
 		if (KvSortable.active) {
 			evt.preventDefault();
 		}
 	});
+
+	try {
+		window.addEventListener('test', null, Object.defineProperty({}, 'passive', {
+			get: function () {
+				captureMode = {
+					capture: false,
+					passive: false
+				};
+			}
+		}));
+	} catch (err) {}
 
 	// Export utils
 	KvSortable.utils = {
@@ -1521,9 +1463,7 @@
 		closest: _closest,
 		toggleClass: _toggleClass,
 		clone: _clone,
-		index: _index,
-		nextTick: _nextTick,
-		cancelNextTick: _cancelNextTick
+		index: _index
 	};
 
 
@@ -1538,53 +1478,53 @@
 
 
 	// Export
-	KvSortable.version = '1.7.0';
+	KvSortable.version = '1.5.1';
 	return KvSortable;
 });
 /**
  * jQuery plugin for KvSortable
  */
 (function (factory) {
-    "use strict";
+	"use strict";
 
-    if (typeof define === "function" && define.amd) {
-        define(["jquery"], factory);
-    }
-    else {
-        /* jshint sub:true */
-        factory(jQuery);
-    }
+	if (typeof define === "function" && define.amd) {
+		define(["jquery"], factory);
+	}
+	else {
+		/* jshint sub:true */
+		factory(jQuery);
+	}
 })(function ($) {
-    "use strict";
-    $.fn.kvsortable = function (options) {
-        var retVal,
-            args = arguments;
+	"use strict";
+	$.fn.kvsortable = function (options) {
+		var retVal,
+			args = arguments;
 
-        this.each(function () {
-            var $el = $(this), kvsortable = $el.data('kvsortable');
+		this.each(function () {
+			var $el = $(this), kvsortable = $el.data('kvsortable');
 
-            if (!kvsortable && (options instanceof Object || !options)) {
-                kvsortable = new KvSortable(this, options);
-                $el.data('kvsortable', kvsortable);
-            }
+			if (!kvsortable && (options instanceof Object || !options)) {
+				kvsortable = new KvSortable(this, options);
+				$el.data('kvsortable', kvsortable);
+			}
 
-            if (kvsortable) {
-                if (options === 'widget') {
-                    retVal = kvsortable;
-                }
-                else if (options === 'destroy') {
-                    kvsortable.destroy();
-                    $el.removeData('kvsortable');
-                }
-                else if (typeof kvsortable[options] === 'function') {
-                    retVal = kvsortable[options].apply(kvsortable, [].slice.call(args, 1));
-                }
-                else if (options in kvsortable.options) {
-                    retVal = kvsortable.option.apply(kvsortable, args);
-                }
-            }
-        });
+			if (kvsortable) {
+				if (options === 'widget') {
+					retVal = kvsortable;
+				}
+				else if (options === 'destroy') {
+					kvsortable.destroy();
+					$el.removeData('kvsortable');
+				}
+				else if (typeof kvsortable[options] === 'function') {
+					retVal = kvsortable[options].apply(kvsortable, [].slice.call(args, 1));
+				}
+				else if (options in kvsortable.options) {
+					retVal = kvsortable.option.apply(kvsortable, args);
+				}
+			}
+		});
 
-        return (retVal === void 0) ? this : retVal;
-    };
+		return (retVal === void 0) ? this : retVal;
+	};
 });

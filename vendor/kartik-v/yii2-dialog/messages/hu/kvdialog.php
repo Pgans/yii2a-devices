@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Cancel' => 'Mégse',
-    'Confirmation' => 'Megerősítés',
-    'Information' => 'Információ',
-    'Ok' => 'Ok',
+    'Cancel' => '',
+    'Confirmation' => '',
+    'Information' => '',
+    'Ok' => '',
 ];

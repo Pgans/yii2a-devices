@@ -26,9 +26,8 @@
         msgNo: 'No',
         msgNoFilesSelected: '',
         msgCancelled: 'Annullato',
-        msgPlaceholder: 'Select {files}...',
         msgZoomModalHeading: 'Anteprima dettagliata',
-        msgFileRequired: 'Devi selezionare un file per continuare.',
+        msgFileRequired: 'You must select a file to upload.',
         msgSizeTooSmall: 'File "{name}" (<b>{size} KB</b>) is too small and must be larger than <b>{minSize} KB</b>.',
         msgSizeTooLarge: 'Il file "{name}" (<b>{size} KB</b>) eccede la dimensione massima di caricamento di <b>{maxSize} KB</b>.',
         msgFilesTooLess: 'Devi selezionare almeno <b>{n}</b> {files} da caricare.',
@@ -52,11 +51,10 @@
             'object': 'object'
         },
         msgUploadAborted: 'Il caricamento del file è stata interrotta',
-        msgUploadThreshold: 'Processo...',
-        msgUploadBegin: 'Inizializzazione...',
-        msgUploadEnd: 'Fatto',
-        msgUploadEmpty: 'Dati non disponibili',
-        msgUploadError: 'Errore',
+        msgUploadThreshold: 'Processing...',
+        msgUploadBegin: 'Initializing...',
+        msgUploadEnd: 'Done',
+        msgUploadEmpty: 'No valid data available for upload.',
         msgValidationError: 'Errore di convalida',
         msgLoading: 'Caricamento file {index} di {files}&hellip;',
         msgProgress: 'Caricamento file {index} di {files} - {name} - {percent}% completato.',
@@ -81,8 +79,6 @@
         fileActionSettings: {
             removeTitle: 'Rimuovere il file',
             uploadTitle: 'Caricare un file',
-            uploadRetryTitle: 'Retry upload',
-            downloadTitle: 'Download file',
             zoomTitle: 'Guarda i dettagli',
             dragTitle: 'Move / Rearrange',
             indicatorNewTitle: 'Non ancora caricato',
@@ -91,12 +87,12 @@
             indicatorLoadingTitle: 'Caricamento ...'
         },
         previewZoomButtonTitles: {
-            prev: 'Vedi file precedente',
-            next: 'Vedi file seguente',
-            toggleheader: 'Aziona header',
-            fullscreen: 'Aziona full screen',
-            borderless: 'Abilita modalità senza bordi',
-            close: 'Chiudi'
+            prev: 'View previous file',
+            next: 'View next file',
+            toggleheader: 'Toggle header',
+            fullscreen: 'Toggle full screen',
+            borderless: 'Toggle borderless mode',
+            close: 'Close detailed preview'
         }
     };
 })(window.jQuery);

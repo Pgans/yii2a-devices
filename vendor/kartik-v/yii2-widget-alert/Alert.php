@@ -1,59 +1,37 @@
 <?php
 
 /**
- * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2017
+ * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014
  * @package yii2-widgets
  * @subpackage yii2-widget-alert
- * @version 1.1.1
+ * @version 1.1.0
  */
 
 namespace kartik\alert;
 
 use Yii;
-use yii\bootstrap\Alert as BsAlert;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 
 /**
- * Alert widget extends the [[BsAlert]] widget with an easier configuration and additional styling options including
- * auto fade out.
+ * Extends the \yii\bootstrap\Alert widget with additional styling and auto fade out options.
  *
  * @author Kartik Visweswaran <kartikv2@gmail.com>
  * @since 1.0
  */
-class Alert extends BsAlert
+class Alert extends \yii\bootstrap\Alert
 {
-    /**
-     * information alert
-     */
     const TYPE_INFO = 'alert-info';
-    /**
-     * danger/error alert
-     */
     const TYPE_DANGER = 'alert-danger';
-    /**
-     * success alert
-     */
     const TYPE_SUCCESS = 'alert-success';
-    /**
-     * warning alert
-     */
     const TYPE_WARNING = 'alert-warning';
-    /**
-     * primary alert
-     */
     const TYPE_PRIMARY = 'bg-primary';
-    /**
-     * default alert
-     */
     const TYPE_DEFAULT = 'well';
-    /**
-     * custom alert
-     */
     const TYPE_CUSTOM = 'alert-custom';
 
     /**
-     * @var string the type of the alert to be displayed. One of the `TYPE_` constants. Defaults to [[TYPE_INFO]].
+     * @var string the type of the alert to be displayed. One of the `TYPE_` constants.
+     * Defaults to `TYPE_INFO`
      */
     public $type = self::TYPE_INFO;
 
@@ -63,7 +41,8 @@ class Alert extends BsAlert
     public $iconType = 'class';
 
     /**
-     * @var string the class name for the icon to be displayed. If set to empty or null, will not be displayed.
+     * @var string the class name for the icon to be displayed. If set to empty or null, will not be
+     * displayed.
      */
     public $icon = '';
 
@@ -73,30 +52,30 @@ class Alert extends BsAlert
     public $iconOptions = [];
 
     /**
-     * @var string the title for the alert. If set to empty or null, will not be displayed.
+     * @var string the title for the alert. If set to empty or null, will not be
+     * displayed.
      */
     public $title = '';
 
     /**
      * @var array the HTML attributes for the title. The following options are additionally recognized:
-     *
-     * - `tag`: _string_, the HTML tag to render the title. Defaults to `span`.
+     * - tag: the tag to display the title. Defaults to 'span'.
      */
     public $titleOptions = ['class' => 'kv-alert-title'];
 
     /**
-     * @var boolean show the title separator. Only applicable if [[title]] is set.
+     * @var bool show title separator. Only applicable if `title` is set.
      */
     public $showSeparator = false;
 
     /**
-     * @var integer the delay in microseconds after which the alert will be displayed. Will be useful when multiple
-     * alerts are to be shown.
+     * @var integer the delay in microseconds after which the alert will be displayed.
+     * Will be useful when multiple alerts are to be shown.
      */
     public $delay;
 
     /**
-     * @inheritdoc
+     * Runs the widget
      */
     public function run()
     {
@@ -131,7 +110,8 @@ class Alert extends BsAlert
     }
 
     /**
-     * @inheritdoc
+     * Initializes the widget options.
+     * This method sets the default values for various options.
      */
     protected function initOptions()
     {
@@ -144,7 +124,7 @@ class Alert extends BsAlert
     }
 
     /**
-     * Register the client assets for the [[Alert]] widget.
+     * Register client assets
      */
     protected function registerAssets()
     {

@@ -17,11 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-<<<<<<< HEAD
     'Clear field' => '',
     'Select date' => '',
-=======
-    'Clear field' => 'Leeg veld',
-    'Select date' => 'Selecteer datum',
->>>>>>> b387a46f1b7c33470b2f075a6172115dcf06b4d4
 ];
