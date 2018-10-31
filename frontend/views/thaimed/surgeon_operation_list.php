@@ -2,14 +2,7 @@
 use kartik\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\Pjax;
-use yii\bootstrap\Modal;
-use yii\helpers\Url;
-use yii\data\ArrayDataProvider;
-use common\models\RContributionIpd;
-use yii\data\ActiveDataProvider;
-use \miloschuman\highcharts\Highcharts;
-use yii\web\JsExpression;
-use kartik\export\ExportMenu;
+
 
 $this->title ="Surgeon-LIST";
 //$this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/referin']];

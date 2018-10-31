@@ -6,10 +6,7 @@ use yii\helpers\Url;
 use yii\data\ArrayDataProvider;
 use common\models\RContributionIpd;
 use yii\data\ActiveDataProvider;
-use yii\widgets\Pjax;
-use \miloschuman\highcharts\Highcharts;
-use yii\web\JsExpression;
-use kartik\export\ExportMenu;
+
 
 
 $this->title = 'SURGEON_OPERATON';
