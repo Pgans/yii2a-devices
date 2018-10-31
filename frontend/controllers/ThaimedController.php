@@ -708,9 +708,7 @@ public function actionCheck_operations(){
     return $this->render('check_operations', [
                'dataProvider' => $dataProvider,
                'sql'=>$sql,
-               'date1'=>$date1,
-               'date2'=>$date2,
-    
+               
          ]);      
         }
  public function actionCheck_operation(){
