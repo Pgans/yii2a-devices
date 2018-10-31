@@ -13,7 +13,6 @@ $this->title ="Surgeon-9007810";
         'dataProvider' => $dataProvider,
         'panel' => [
             'before'=>'<b style="color:blue ">ผู้ทำหัตถการแพทย์แผนไทย</b>(<b style="color: red">xx</b>)',
-           // 'after'=>'<b style="color:red">ประมวลผลจากวันที่ </b>'.$date1   .'<b style="color:red">ถึงวันที่</b>' .$date2 
             ]]
         )
 

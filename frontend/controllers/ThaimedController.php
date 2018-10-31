@@ -799,7 +799,7 @@ return $this->render('ck_operation', [
                'dataProvider' => $dataProvider,
                'sql'=>$sql,
                'date1'=>$date1,
-               'date2'=>$date2
+               'date2'=>$date2,
      ]);   
     }
     public function actionSurgeon_9007810_list($inscl){
@@ -830,6 +830,8 @@ return $this->render('ck_operation', [
     return $this->render('surgeon_9007810_list', [
                 'dataProvider' => $dataProvider,
                 'sql'=>$sql,
+                'date1'=>$date1,
+               'date2'=>$date2,
     
         ]);
       } 
@@ -872,8 +874,7 @@ return $this->render('ck_operation', [
         INNER JOIN main_inscls d ON a.inscl = d.inscl
         WHERE a.REG_DATETIME BETWEEN '$date1' and '$date2'
         AND a.visit_id NOT in (SELECT VISIT_ID FROM mobile_visits)
-        GROUP BY MONTH WITH ROLLUP
-         ";
+        GROUP BY MONTH WITH ROLLUP ";
     $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
     $dataProvider = new \yii\data\ArrayDataProvider([
         'allModels' => $rawData,
