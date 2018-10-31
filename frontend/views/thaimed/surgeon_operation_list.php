@@ -10,16 +10,6 @@ $this->title ="Surgeon-LIST";
 ?>
 <div class="surgrn-thaimed">
     
-    <?php Modal::begin([
-        'id' => 'modal',
-        'header' => '<h4><a color-blue>CREATE xxx</a></h4>',
-        'size'=>'modal-lg',
-        'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">ปิด</a>',
-        ]);
-        echo "<div id='modalContent'></div>";
-        Modal::end();
-        ?>
-    <?php Pjax::begin(); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'panel' => [
@@ -28,5 +18,4 @@ $this->title ="Surgeon-LIST";
             ]]
         )
         ?>
-    <?php Pjax::end() ?>
 </div>
