@@ -570,7 +570,6 @@ return $this->render('surgeon_operation_list', [
      ]);
 
         $sql = " SELECT MONTH(REG_DATETIME)AS MONTH, 
-        COUNT(CASE WHEN CODE= 99.92 THEN '2' END) AS 'acupencture', 
         COUNT(CASE WHEN SUBSTR(NICKNAME,4,6) ='บริบาล' THEN '3' END) AS 'nursing', 
         COUNT(case WHEN left(NICKNAME,6) = 'การนวด' THEN '4'END) AS 'massage',
         COUNT(CASE WHEN SUBSTR(NICKNAME,4,2) = 'อบ' THEN '5' END) AS 'baked', 
@@ -610,7 +609,7 @@ return $this->render('surgeon_operation_list', [
         ]);
 
         $sql = "SELECT DISTINCT MONTH(a.DATE_SERV)AS MONTH,
-        COUNT(CASE WHEN a.PROCEDCODE = 99.92 THEN '2' END) AS 'ฝังเข็ม', 
+        #COUNT(CASE WHEN a.PROCEDCODE = 99.92 THEN '2' END) AS 'ฝังเข็ม', 
         COUNT(CASE WHEN SUBSTR(b.desc_r,4,6) ='บริบาล' THEN '3' END) AS 'บริบาล', 
         COUNT(case WHEN left(b.desc_r,6) = 'การนวด' THEN '4'END) AS 'การนวด',
         COUNT(CASE WHEN SUBSTR(b.desc_r,4,2) = 'อบ' THEN '5' END) AS 'อบ', 
@@ -728,8 +727,7 @@ $dataProvider = new \yii\data\ArrayDataProvider([
 return $this->render('ck_operation', [
            'dataProvider' => $dataProvider,
            'sql'=>$sql,
-           'date1'=>$date1,
-           'date2'=>$date2,
+           
 
      ]);      
     }
@@ -747,8 +745,7 @@ return $this->render('ck_operation', [
         return $this->render('ck_procudure', [
                    'dataProvider' => $dataProvider,
                    'sql'=>$sql,
-                   'date1'=>$date1,
-                   'date2'=>$date2,
+                   
         
              ]);      
             }
@@ -770,11 +767,127 @@ return $this->render('ck_operation', [
                 ]);
                 return $this->render('ck_procudure', [
                            'dataProvider' => $dataProvider,
-                           'sql'=>$sql,
-                           'date1'=>$date1,
-                           'date2'=>$date2,
-                
+                           'sql'=>$sql,         
          ]);               
     }
+    public function actionSurgeon_9007810(){
+        $data = Yii::$app->request->post();
+        $date1 = isset($data['date1']) ? $data['date1'] : '';
+        $date2 = isset($data['date2']) ? $data['date2'] : '';
+    
+    $sql = "SELECT DISTINCT k.INSCL, k.INSCL_NAME, COUNT(k.INSCL) as AMOUNT
+    FROM (
+    SELECT DISTINCT date(a.REG_DATETIME) as REGDATE, d.INSCL , d.INSCL_NAME,a.HN , c.CODE, c.NICKNAME, b.STAFF_ID ,b.SURGEON_ID
+    FROM opd_visits a
+    INNER JOIN opd_operations b ON a.visit_id = b.visit_id and a.is_cancel = 0
+    INNER JOIN icd9cm c ON b.icd9 = c.icd9 AND c.code = 9007810 AND c.CGD_ID = 15
+    INNER JOIN main_inscls d ON a.inscl = d.inscl
+    WHERE a.REG_DATETIME BETWEEN '$date1' and '$date2'
+    AND a.visit_id NOT in (SELECT VISIT_ID FROM mobile_visits)
+    ) as k 
+    GROUP BY k.INSCL ORDER BY COUNT(k.INSCL) DESC";
+    $rowData = \yii::$app->db2->createCommand($sql)->queryAll();
+    Yii::$app->session['date1']=$date1;
+    Yii::$app->session['date2']=$date2;
+    $dataProvider = new \yii\data\ArrayDataProvider([
+       'allModels' => $rowData,
+       'pagination' => [
+           'pagesize'=> 15
+       ],
+    ]);
+    return $this->render('surgeon_9007810', [
+               'dataProvider' => $dataProvider,
+               'sql'=>$sql,
+               'date1'=>$date1,
+               'date2'=>$date2
+     ]);   
+    }
+    public function actionSurgeon_9007810_list($inscl){
+        $date1 = Yii::$app->session['date1'];
+        $date2 = Yii::$app->session['date2'];
+        $sql = "SELECT DISTINCT date(a.REG_DATETIME) as REGDATE, d.INSCL , d.INSCL_NAME,a.HN , c.CODE, c.NICKNAME, b.STAFF_ID ,b.SURGEON_ID
+        FROM opd_visits a
+        INNER JOIN opd_operations b ON a.visit_id = b.visit_id and a.is_cancel = 0
+        INNER JOIN icd9cm c ON b.icd9 = c.icd9 AND c.code = 9007810 AND c.CGD_ID = 15
+        INNER JOIN main_inscls d ON a.inscl = d.inscl
+        WHERE a.REG_DATETIME BETWEEN '$date1' and '$date2'
+        AND d.inscl =$inscl
+        AND a.visit_id NOT in (SELECT VISIT_ID FROM mobile_visits)";
+    $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+    
+    // print_r($rawData);
+    try {
+        $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+    } catch (\yii\db\Exception $e) {
+        throw new \yii\web\ConflictHttpException('sql error');
+    }
+    $dataProvider = new \yii\data\ArrayDataProvider([
+        'allModels' => $rawData,
+        'pagination' => [
+            'pagesize'=> 10
+        ],
+    ]);
+    return $this->render('surgeon_9007810_list', [
+                'dataProvider' => $dataProvider,
+                'sql'=>$sql,
+    
+        ]);
+      } 
+      public function actionSurgeon_9007810all(){
+        $date1 = Yii::$app->session['date1'];
+        $date2 = Yii::$app->session['date2'];
+        $sql = "SELECT DISTINCT date(a.REG_DATETIME) as REGDATE, d.INSCL , d.INSCL_NAME,a.HN , c.CODE, c.NICKNAME, b.STAFF_ID ,b.SURGEON_ID
+        FROM opd_visits a
+        INNER JOIN opd_operations b ON a.visit_id = b.visit_id and a.is_cancel = 0
+        INNER JOIN icd9cm c ON b.icd9 = c.icd9 AND c.code = 9007810 AND c.CGD_ID = 15
+        INNER JOIN main_inscls d ON a.inscl = d.inscl
+        WHERE a.REG_DATETIME BETWEEN '$date1' and '$date2'
+        AND a.visit_id NOT in (SELECT VISIT_ID FROM mobile_visits) ORDER BY inscl";
+    $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+    $dataProvider = new \yii\data\ArrayDataProvider([
+        'allModels' => $rawData,
+        'pagination' => [
+            'pagesize'=> 10
+        ],
+    ]);
+    return $this->render('surgeon_9007810_list', [
+                'dataProvider' => $dataProvider,
+                'sql'=>$sql,
+    
+        ]);
+      } 
+      public function actionSurgeon_9007810month(){
+        $date1 = Yii::$app->session['date1'];
+        $date2 = Yii::$app->session['date2'];
+        $sql = "SELECT DISTINCT YEAR(REG_DATETIME) AS YEAR,MONTH(a.REG_DATETIME) as MONTH,
+        COUNT(CASE WHEN d.INSCL in(01,12,25) THEN 1 END) AS 'ข้าราชการ',
+        COUNT(CASE WHEN d.INSCL in(08,09) THEN 1 END) AS 'ประกันสังคม',
+        COUNT(CASE WHEN d.INSCL in(14,36) THEN 1 END) AS 'รัฐวิสาหกิจ/ข้าราชการ กทม',
+        COUNT(CASE WHEN d.INSCL =23 THEN 1 END) AS 'มาตรา8',
+        COUNT(CASE WHEN d.INSCL =03 THEN 1 END) AS 'ประกันสุขภาพ',
+        COUNT(CASE WHEN d.INSCL BETWEEN '01' AND '37' THEN 1 END) AS 'รวม'
+        FROM opd_visits a
+        INNER JOIN opd_operations b ON a.visit_id = b.visit_id and a.is_cancel = 0
+        INNER JOIN icd9cm c ON b.icd9 = c.icd9 AND c.code = 9007810 AND c.CGD_ID = 15
+        INNER JOIN main_inscls d ON a.inscl = d.inscl
+        WHERE a.REG_DATETIME BETWEEN '$date1' and '$date2'
+        AND a.visit_id NOT in (SELECT VISIT_ID FROM mobile_visits)
+        GROUP BY MONTH WITH ROLLUP
+         ";
+    $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+    $dataProvider = new \yii\data\ArrayDataProvider([
+        'allModels' => $rawData,
+        'pagination' => [
+            'pagesize'=> 10
+        ],
+    ]);
+    return $this->render('surgeon_9007810_list', [
+                'dataProvider' => $dataProvider,
+                'sql'=>$sql,
+                'date1'=>$date1,
+               'date2'=>$date2
+    
+        ]);
+      } 
 }
 

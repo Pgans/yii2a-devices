@@ -44,11 +44,11 @@ $this->title ="opcount";
                                             'label' => 'เดือน',
                                             'attribute' => 'MONTH'
                                         ],
-                                        [
-                                            'attribute' => 'acupencture',
-                                            'label' => 'ฝังเข็ม',
-                                            'format' => ['decimal', 0]
-                                        ],
+                                        // [
+                                        //     'attribute' => 'acupencture',
+                                        //     'label' => 'ฝังเข็ม',
+                                        //     'format' => ['decimal', 0]
+                                        // ],
                                         [
                                             'attribute' => 'nursing',
                                             'label' => 'บริบาล',
@@ -117,11 +117,11 @@ $this->title ="opcount";
                                             'label' => 'เดือน',
                                             'attribute' => 'MONTH'
                                         ],
-                                        [
-                                            'attribute' => 'ฝังเข็ม',
-                                            'label' => 'ฝังเข็ม',
-                                            'format' => ['decimal', 0]
-                                        ],
+                                        // [
+                                        //     'attribute' => 'ฝังเข็ม',
+                                        //     'label' => 'ฝังเข็ม',
+                                        //     'format' => ['decimal', 0]
+                                        // ],
                                         [
                                             'attribute' => 'บริบาล',
                                             'label' => 'บริบาล',
