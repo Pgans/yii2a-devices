@@ -48,7 +48,7 @@ class PersonController extends Controller
                         'actions'=>['update'],
                         'allow'=> true,
                         'roles'=>[
-                           // User::ROLE_EMPLOYEE,
+                            User::ROLE_USER,
                             User::ROLE_ADMIN
                         ]
                     ],

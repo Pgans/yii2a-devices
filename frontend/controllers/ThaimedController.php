@@ -870,7 +870,7 @@ return $this->render('ck_operation', [
         INNER JOIN opd_operations b ON a.visit_id = b.visit_id and a.is_cancel = 0
         INNER JOIN icd9cm c ON b.icd9 = c.icd9 AND c.code = 9007810 AND c.CGD_ID = 15
         INNER JOIN main_inscls d ON a.inscl = d.inscl
-        WHERE a.REG_DATETIME BETWEEN '$date1' and '$date2'
+        WHERE a.REG_DATETIME > '2018-10-01' 
         AND a.visit_id NOT in (SELECT VISIT_ID FROM mobile_visits)
         GROUP BY MONTH WITH ROLLUP ";
     $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
