@@ -888,5 +888,112 @@ return $this->render('ck_operation', [
     
         ]);
       } 
+      public function actionU_thaimed(){
+        $data = Yii::$app->request->post();
+        $date1 = isset($data['date1']) ? $data['date1'] : '';
+        $date2 = isset($data['date2']) ? $data['date2'] : '';
+    
+        $sql = "SELECT 'ประเภทU (ยกเว้นU778)' as 'ICD10_NAME',
+        COUNT(k.VISIT_ID) AS VISITS,
+        COUNT(DISTINCT k.hn)  AS KON
+        FROM
+        (SELECT a.REG_DATETIME ,a.VISIT_ID,a.HN ,c.ICD10_TM,c.ICD_NAME
+        FROM opd_visits a
+        INNER JOIN opd_diagnosis b ON a.VISIT_ID = b.VISIT_ID AND b.is_cancel = 0
+        INNER JOIN icd10new c ON b.ICD10 = c.ICD10 AND LEFT(c.icd10_tm,1) = 'U' AND c.icd10_tm <> 'U778'
+        WHERE a.REG_DATETIME BETWEEN '$date1' AND '$date2'
+        AND a.is_inscl = 0) as k 
+         ";
+    $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+    Yii::$app->session['date1']=$date1;
+    Yii::$app->session['date2']=$date2;
+    $dataProvider = new \yii\data\ArrayDataProvider([
+        'allModels' => $rawData,
+        'pagination' => [
+            'pagesize'=> 10
+        ],
+    ]);
+    return $this->render('u_thaimed', [
+                'dataProvider' => $dataProvider,
+                'sql'=>$sql,
+                'date1'=>$date1,
+               'date2'=>$date2
+    
+        ]);
+      } 
+      public function actionU_krung(){
+        $date1 = Yii::$app->session['date1'];
+        $date2 = Yii::$app->session['date2'];
+        $sql = "SELECT a.REG_DATETIME ,a.VISIT_ID,a.HN ,c.ICD10_TM,c.ICD_NAME
+        FROM opd_visits a
+        INNER JOIN opd_diagnosis b ON a.VISIT_ID = b.VISIT_ID AND b.is_cancel = 0
+        INNER JOIN icd10new c ON b.ICD10 = c.ICD10 AND LEFT(c.icd10_tm,1) = 'U' AND c.icd10_tm <> 'U778'
+        WHERE a.REG_DATETIME BETWEEN '$date1' AND '$date2'
+        AND a.is_inscl = 0 ";
+    $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+    $dataProvider = new \yii\data\ArrayDataProvider([
+        'allModels' => $rawData,
+        'pagination' => [
+            'pagesize'=> 10
+        ],
+    ]);
+    return $this->render('u_krung', [
+                'dataProvider' => $dataProvider,
+                'sql'=>$sql,
+                'date1'=>$date1,
+               'date2'=>$date2
+    
+        ]);
+      } 
+      public function actionU_kon(){
+        $date1 = Yii::$app->session['date1'];
+        $date2 = Yii::$app->session['date2'];
+        $sql = "SELECT a.REG_DATETIME ,a.VISIT_ID,a.HN ,c.ICD10_TM,c.ICD_NAME
+        FROM opd_visits a
+        INNER JOIN opd_diagnosis b ON a.VISIT_ID = b.VISIT_ID AND b.is_cancel = 0
+        INNER JOIN icd10new c ON b.ICD10 = c.ICD10 AND LEFT(c.icd10_tm,1) = 'U' AND c.icd10_tm <> 'U778'
+        WHERE a.REG_DATETIME BETWEEN '$date1' AND '$date2'
+        AND a.is_inscl = 0 GROUP BY a.HN";
+    $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+    $dataProvider = new \yii\data\ArrayDataProvider([
+        'allModels' => $rawData,
+        'pagination' => [
+            'pagesize'=> 10
+        ],
+    ]);
+    return $this->render('u_kon', [
+                'dataProvider' => $dataProvider,
+                'sql'=>$sql,
+                'date1'=>$date1,
+               'date2'=>$date2
+    
+        ]);
+      }
+      public function actionU_list(){
+        $date1 = Yii::$app->session['date1'];
+        $date2 = Yii::$app->session['date2'];
+        $sql = "SELECT k.ICD10_TM, k.ICD_NAME, COUNT(k.ICD10_TM) AS TOTAL
+        FROM 
+        (SELECT a.REG_DATETIME ,a.VISIT_ID,a.HN ,c.ICD10_TM,c.ICD_NAME
+        FROM opd_visits a
+        INNER JOIN opd_diagnosis b ON a.VISIT_ID = b.VISIT_ID AND b.is_cancel = 0
+        INNER JOIN icd10new c ON b.ICD10 = c.ICD10 AND LEFT(c.icd10_tm,1) = 'U' AND c.icd10_tm <> 'U778'
+        WHERE a.REG_DATETIME BETWEEN '2018.10.01 00:01' AND '2018.10.31 23:59'
+        AND a.is_inscl = 0) as k  GROUP BY k.ICD10_TM  ORDER BY TOTAL DESC";
+    $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+    $dataProvider = new \yii\data\ArrayDataProvider([
+        'allModels' => $rawData,
+        'pagination' => [
+            'pagesize'=> 10
+        ],
+    ]);
+    return $this->render('u_list', [
+                'dataProvider' => $dataProvider,
+                'sql'=>$sql,
+                'date1'=>$date1,
+               'date2'=>$date2
+    
+        ]);
+      }  
 }
 
