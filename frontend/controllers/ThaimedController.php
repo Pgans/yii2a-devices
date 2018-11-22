@@ -900,7 +900,7 @@ return $this->render('ck_operation', [
         (SELECT a.REG_DATETIME ,a.VISIT_ID,a.HN ,c.ICD10_TM,c.ICD_NAME
         FROM opd_visits a
         INNER JOIN opd_diagnosis b ON a.VISIT_ID = b.VISIT_ID AND b.is_cancel = 0
-        INNER JOIN icd10new c ON b.ICD10 = c.ICD10 AND LEFT(c.icd10_tm,1) = 'U' AND c.icd10_tm <> 'U778'
+        INNER JOIN icd10new c ON b.ICD10 = c.ICD10 AND LEFT(c.icd10_tm,1) = 'U' AND c.icd10_tm not in ('U778','U771')
         WHERE a.REG_DATETIME BETWEEN '$date1' AND '$date2'
         AND a.is_inscl = 0) as k 
          ";
@@ -927,7 +927,7 @@ return $this->render('ck_operation', [
         $sql = "SELECT a.REG_DATETIME ,a.VISIT_ID,a.HN ,c.ICD10_TM,c.ICD_NAME
         FROM opd_visits a
         INNER JOIN opd_diagnosis b ON a.VISIT_ID = b.VISIT_ID AND b.is_cancel = 0
-        INNER JOIN icd10new c ON b.ICD10 = c.ICD10 AND LEFT(c.icd10_tm,1) = 'U' AND c.icd10_tm <> 'U778'
+        INNER JOIN icd10new c ON b.ICD10 = c.ICD10 AND LEFT(c.icd10_tm,1) = 'U' AND c.icd10_tm not in ('U778','U771')
         WHERE a.REG_DATETIME BETWEEN '$date1' AND '$date2'
         AND a.is_inscl = 0 ";
     $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
@@ -951,7 +951,7 @@ return $this->render('ck_operation', [
         $sql = "SELECT a.REG_DATETIME ,a.VISIT_ID,a.HN ,c.ICD10_TM,c.ICD_NAME
         FROM opd_visits a
         INNER JOIN opd_diagnosis b ON a.VISIT_ID = b.VISIT_ID AND b.is_cancel = 0
-        INNER JOIN icd10new c ON b.ICD10 = c.ICD10 AND LEFT(c.icd10_tm,1) = 'U' AND c.icd10_tm <> 'U778'
+        INNER JOIN icd10new c ON b.ICD10 = c.ICD10 AND LEFT(c.icd10_tm,1) = 'U' AND c.icd10_tm not in ('U778','U771')
         WHERE a.REG_DATETIME BETWEEN '$date1' AND '$date2'
         AND a.is_inscl = 0 GROUP BY a.HN";
     $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
@@ -977,7 +977,7 @@ return $this->render('ck_operation', [
         (SELECT a.REG_DATETIME ,a.VISIT_ID,a.HN ,c.ICD10_TM,c.ICD_NAME
         FROM opd_visits a
         INNER JOIN opd_diagnosis b ON a.VISIT_ID = b.VISIT_ID AND b.is_cancel = 0
-        INNER JOIN icd10new c ON b.ICD10 = c.ICD10 AND LEFT(c.icd10_tm,1) = 'U' AND c.icd10_tm <> 'U778'
+        INNER JOIN icd10new c ON b.ICD10 = c.ICD10 AND LEFT(c.icd10_tm,1) = 'U' AND c.icd10_tm not in ('U778','U771')
         WHERE a.REG_DATETIME BETWEEN '$date1' AND '$date2'
         AND a.is_inscl = 0) as k  GROUP BY k.ICD10_TM  ORDER BY TOTAL DESC";
     $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
