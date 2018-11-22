@@ -978,7 +978,7 @@ return $this->render('ck_operation', [
         FROM opd_visits a
         INNER JOIN opd_diagnosis b ON a.VISIT_ID = b.VISIT_ID AND b.is_cancel = 0
         INNER JOIN icd10new c ON b.ICD10 = c.ICD10 AND LEFT(c.icd10_tm,1) = 'U' AND c.icd10_tm <> 'U778'
-        WHERE a.REG_DATETIME BETWEEN '2018.10.01 00:01' AND '2018.10.31 23:59'
+        WHERE a.REG_DATETIME BETWEEN '$date1' AND '$date2'
         AND a.is_inscl = 0) as k  GROUP BY k.ICD10_TM  ORDER BY TOTAL DESC";
     $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
     $dataProvider = new \yii\data\ArrayDataProvider([
