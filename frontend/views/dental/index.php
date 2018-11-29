@@ -17,6 +17,6 @@ use yii\helpers\Html;
   <?= Html::a('3.ผู้มารับบริการทันตกรรมอายุมากกว่า60ปี',['dental/reg_dent'])?>
 </p>
 <p>
-  <?= Html::a('4.xxxxxxxxxxxxxxxxx',['dental/old60'])?>
+  <?= Html::a('4.รายงานKPI ตรวจฟันทั้งปาก(2330011)',['dental/dent2330011'])?>
 </p>
 

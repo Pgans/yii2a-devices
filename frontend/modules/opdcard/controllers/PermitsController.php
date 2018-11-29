@@ -70,9 +70,6 @@ class PermitsController extends Controller
      public function sendLine($model)  {
        
             $line_token = 'XTvLuqnWGaQ7h2P4smFrxbekF1GJrSBEfLuU9NimrG3';
-           // $line_token = 'Lt6mXnC22zJRNgp5SRGqiGToCt6NOZyHr4v1Rn830Wvปป';
-            
-
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL,"https://notify-api.line.me/api/notify");
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
