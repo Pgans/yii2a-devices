@@ -134,5 +134,204 @@ class AddictiveController extends \yii\web\Controller
     
     ]);
   }
+  public function actionSpecailpp(){
+      $data = Yii::$app->request->post();
+        $townid = isset($data['townid']) ? $data['townid'] : 'null';
+ 
+  $sql = "SELECT a.CID ,b.HN, CONCAT(trim(a.FNAME),'   ',trim(a.LNAME)) as FULLNAME,
+  CASE 
+      WHEN a.SEX=1 THEN 'ชาย'
+      WHEN a.SEX=2 THEN 'หญิง'
+  END as SEX, a.BIRTHDATE ,
+	TIMESTAMPDIFF(YEAR,a.BIRTHDATE,CURDATE()) as CNT_YEAR,
+	TIMESTAMPDIFF(MONTH,a.BIRTHDATE,CURDATE())-(TIMESTAMPDIFF(YEAR,a.BIRTHDATE,CURDATE())*12) as CNT_MONTH,
+	TIMESTAMPDIFF(DAY,DATE_ADD(a.BIRTHDATE,INTERVAL (TIMESTAMPDIFF(MONTH,a.BIRTHDATE,CURDATE())) month),curdate()) as CNT_DAY,
+  c.TOWN_NAME AS 'MOOBAN', d.TOWN_NAME AS 'TUMBON', e.TOWN_NAME as 'AMPUR'
+  FROM population a
+  INNER JOIN cid_hn b ON a.CID = b.CID
+  INNER JOIN towns c ON a.TOWN_ID = c.TOWN_ID
+  INNER JOIN towns d ON CONCAT(left(a.town_id,6),'00') = d.town_id
+  INNER JOIN towns e ON CONCAT(left(a.town_id,4),'0000') = e.TOWN_ID
+  WHERE TIMESTAMPDIFF(YEAR,a.BIRTHDATE,CURDATE())= 0
+	AND TIMESTAMPDIFF(MONTH,a.BIRTHDATE,CURDATE())-(TIMESTAMPDIFF(YEAR,a.BIRTHDATE,CURDATE())*12) = 8
+    AND left(a.TOWN_ID,6)=$townid ";
+                
+ $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+
+    Yii::$app->session['townid']=$townid;
+    try {
+        $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+    } catch (\yii\db2\Exception $e) {
+        throw new \yii\web\ConflictHttpException('sql error');
+    }
+    $dataProvider = new \yii\data\ArrayDataProvider([
+        'allModels' => $rawData,
+        'pagination' => FALSE,
+    ]);
+    
+    return $this->render('specailpp', [
+                'dataProvider' => $dataProvider,
+                'sql'=>$sql,
+                'townid'=>$townid,
+                
+
+     ]);
+    }
+    public function actionSpecailpp18(){
+        $townid = Yii::$app->session['townid'];
+    $sql = "SELECT a.CID ,b.HN, CONCAT(trim(a.FNAME),'   ',trim(a.LNAME)) as FULLNAME,
+    CASE 
+        WHEN a.SEX=1 THEN 'ชาย'
+        WHEN a.SEX=2 THEN 'หญิง'
+    END as SEX, a.BIRTHDATE ,
+      TIMESTAMPDIFF(YEAR,a.BIRTHDATE,CURDATE()) as CNT_YEAR,
+      TIMESTAMPDIFF(MONTH,a.BIRTHDATE,CURDATE())-(TIMESTAMPDIFF(YEAR,a.BIRTHDATE,CURDATE())*12) as CNT_MONTH,
+      TIMESTAMPDIFF(DAY,DATE_ADD(a.BIRTHDATE,INTERVAL (TIMESTAMPDIFF(MONTH,a.BIRTHDATE,CURDATE())) month),curdate()) as CNT_DAY,
+    c.TOWN_NAME AS 'MOOBAN', d.TOWN_NAME AS 'TUMBON', e.TOWN_NAME as 'AMPUR'
+    FROM population a
+    INNER JOIN cid_hn b ON a.CID = b.CID
+    INNER JOIN towns c ON a.TOWN_ID = c.TOWN_ID
+    INNER JOIN towns d ON CONCAT(left(a.town_id,6),'00') = d.town_id
+    INNER JOIN towns e ON CONCAT(left(a.town_id,4),'0000') = e.TOWN_ID
+    WHERE TIMESTAMPDIFF(YEAR,a.BIRTHDATE,CURDATE())= 1
+      AND TIMESTAMPDIFF(MONTH,a.BIRTHDATE,CURDATE())-(TIMESTAMPDIFF(YEAR,a.BIRTHDATE,CURDATE())*12) = 6
+      AND left(a.TOWN_ID,6)=$townid ";
+                  
+   $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+  
+      //print_r($rawData);
+      try {
+          $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+      } catch (\yii\db2\Exception $e) {
+          throw new \yii\web\ConflictHttpException('sql error');
+      }
+      $dataProvider = new \yii\data\ArrayDataProvider([
+          'allModels' => $rawData,
+          'pagination' => FALSE,
+      ]);
+      
+      return $this->render('specailpp18', [
+                  'dataProvider' => $dataProvider,
+                  'sql'=>$sql,
+                  'townid'=>$townid,              
+      ]);
+  }
+  public function actionSpecailpp30(){
+    $townid = Yii::$app->session['townid'];
+$sql = "SELECT a.CID ,b.HN, CONCAT(trim(a.FNAME),'   ',trim(a.LNAME)) as FULLNAME,
+CASE 
+    WHEN a.SEX=1 THEN 'ชาย'
+    WHEN a.SEX=2 THEN 'หญิง'
+END as SEX, a.BIRTHDATE ,
+  TIMESTAMPDIFF(YEAR,a.BIRTHDATE,CURDATE()) as CNT_YEAR,
+  TIMESTAMPDIFF(MONTH,a.BIRTHDATE,CURDATE())-(TIMESTAMPDIFF(YEAR,a.BIRTHDATE,CURDATE())*12) as CNT_MONTH,
+  TIMESTAMPDIFF(DAY,DATE_ADD(a.BIRTHDATE,INTERVAL (TIMESTAMPDIFF(MONTH,a.BIRTHDATE,CURDATE())) month),curdate()) as CNT_DAY,
+c.TOWN_NAME AS 'MOOBAN', d.TOWN_NAME AS 'TUMBON', e.TOWN_NAME as 'AMPUR'
+FROM population a
+INNER JOIN cid_hn b ON a.CID = b.CID
+INNER JOIN towns c ON a.TOWN_ID = c.TOWN_ID
+INNER JOIN towns d ON CONCAT(left(a.town_id,6),'00') = d.town_id
+INNER JOIN towns e ON CONCAT(left(a.town_id,4),'0000') = e.TOWN_ID
+WHERE TIMESTAMPDIFF(YEAR,a.BIRTHDATE,CURDATE())= 2
+  AND TIMESTAMPDIFF(MONTH,a.BIRTHDATE,CURDATE())-(TIMESTAMPDIFF(YEAR,a.BIRTHDATE,CURDATE())*12) = 6
+  AND left(a.TOWN_ID,6)=$townid ";
+              
+$rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+
+  //print_r($rawData);
+  try {
+      $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+  } catch (\yii\db2\Exception $e) {
+      throw new \yii\web\ConflictHttpException('sql error');
+  }
+  $dataProvider = new \yii\data\ArrayDataProvider([
+      'allModels' => $rawData,
+      'pagination' => FALSE,
+  ]);
+  
+  return $this->render('specailpp30', [
+              'dataProvider' => $dataProvider,
+              'sql'=>$sql,
+              'townid'=>$townid,              
+  ]);
+ }
+ public function actionSpecailpp42(){
+    $townid = Yii::$app->session['townid'];
+$sql = "SELECT a.CID ,b.HN, CONCAT(trim(a.FNAME),'   ',trim(a.LNAME)) as FULLNAME,
+CASE 
+    WHEN a.SEX=1 THEN 'ชาย'
+    WHEN a.SEX=2 THEN 'หญิง'
+END as SEX, a.BIRTHDATE ,
+  TIMESTAMPDIFF(YEAR,a.BIRTHDATE,CURDATE()) as CNT_YEAR,
+  TIMESTAMPDIFF(MONTH,a.BIRTHDATE,CURDATE())-(TIMESTAMPDIFF(YEAR,a.BIRTHDATE,CURDATE())*12) as CNT_MONTH,
+  TIMESTAMPDIFF(DAY,DATE_ADD(a.BIRTHDATE,INTERVAL (TIMESTAMPDIFF(MONTH,a.BIRTHDATE,CURDATE())) month),curdate()) as CNT_DAY,
+c.TOWN_NAME AS 'MOOBAN', d.TOWN_NAME AS 'TUMBON', e.TOWN_NAME as 'AMPUR'
+FROM population a
+INNER JOIN cid_hn b ON a.CID = b.CID
+INNER JOIN towns c ON a.TOWN_ID = c.TOWN_ID
+INNER JOIN towns d ON CONCAT(left(a.town_id,6),'00') = d.town_id
+INNER JOIN towns e ON CONCAT(left(a.town_id,4),'0000') = e.TOWN_ID
+WHERE TIMESTAMPDIFF(YEAR,a.BIRTHDATE,CURDATE())= 3
+  AND TIMESTAMPDIFF(MONTH,a.BIRTHDATE,CURDATE())-(TIMESTAMPDIFF(YEAR,a.BIRTHDATE,CURDATE())*12) = 6
+  AND left(a.TOWN_ID,6)=$townid ";
+              
+$rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+
+  //print_r($rawData);
+  try {
+      $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+  } catch (\yii\db2\Exception $e) {
+      throw new \yii\web\ConflictHttpException('sql error');
+  }
+  $dataProvider = new \yii\data\ArrayDataProvider([
+      'allModels' => $rawData,
+      'pagination' => FALSE,
+  ]);
+  
+  return $this->render('specailpp42', [
+              'dataProvider' => $dataProvider,
+              'sql'=>$sql,
+              'townid'=>$townid,              
+     ]);
+    }
+    public function actionSpecailpp60(){
+        $townid = Yii::$app->session['townid'];
+    $sql = "SELECT a.CID ,b.HN, CONCAT(trim(a.FNAME),'   ',trim(a.LNAME)) as FULLNAME,
+    CASE 
+        WHEN a.SEX=1 THEN 'ชาย'
+        WHEN a.SEX=2 THEN 'หญิง'
+    END as SEX, a.BIRTHDATE ,
+      TIMESTAMPDIFF(YEAR,a.BIRTHDATE,CURDATE()) as CNT_YEAR,
+      TIMESTAMPDIFF(MONTH,a.BIRTHDATE,CURDATE())-(TIMESTAMPDIFF(YEAR,a.BIRTHDATE,CURDATE())*12) as CNT_MONTH,
+      TIMESTAMPDIFF(DAY,DATE_ADD(a.BIRTHDATE,INTERVAL (TIMESTAMPDIFF(MONTH,a.BIRTHDATE,CURDATE())) month),curdate()) as CNT_DAY,
+    c.TOWN_NAME AS 'MOOBAN', d.TOWN_NAME AS 'TUMBON', e.TOWN_NAME as 'AMPUR'
+    FROM population a
+    INNER JOIN cid_hn b ON a.CID = b.CID
+    INNER JOIN towns c ON a.TOWN_ID = c.TOWN_ID
+    INNER JOIN towns d ON CONCAT(left(a.town_id,6),'00') = d.town_id
+    INNER JOIN towns e ON CONCAT(left(a.town_id,4),'0000') = e.TOWN_ID
+    WHERE TIMESTAMPDIFF(YEAR,a.BIRTHDATE,CURDATE())= 5
+      AND TIMESTAMPDIFF(MONTH,a.BIRTHDATE,CURDATE())-(TIMESTAMPDIFF(YEAR,a.BIRTHDATE,CURDATE())*12) = 0
+      AND left(a.TOWN_ID,6)=$townid ";
+                  
+    $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+    
+      //print_r($rawData);
+      try {
+          $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+      } catch (\yii\db2\Exception $e) {
+          throw new \yii\web\ConflictHttpException('sql error');
+      }
+      $dataProvider = new \yii\data\ArrayDataProvider([
+          'allModels' => $rawData,
+          'pagination' => FALSE,
+      ]);
+      
+      return $this->render('specailpp60', [
+                  'dataProvider' => $dataProvider,
+                  'sql'=>$sql,
+                  'townid'=>$townid,              
+      ]);
+    }
 }
 
