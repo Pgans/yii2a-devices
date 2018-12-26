@@ -37,8 +37,9 @@ MaterialAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
-     $report_mnu_itms8[] = ['label' => 'ประวัติบริการ', 'url' => ['ehr/index']];
+     $report_mnu_itms8[] = ['label' => 'ตรวจสอบการถ่นโอนข้อมูลระหว่างSERVER', 'url' => ['check/index']];
     $report_mnu_itms7[] = ['label' => 'ยืมเวชระเบียน', 'url' => ['opdcard/permits']];
+    $report_mnu_itms7[] = ['label' => 'xxxx', 'url' => ['search/index']];
 
     $report_mnu_itms6[] = ['label' => 'รายงานจำนวนอุปกรณ์คอมพิวเตอร์', 'url' => ['computer/devicenew']];
     $report_mnu_itms6[] = ['label' => 'รายงานอุปกรณ์คอมพิวเตอร์แยกตามประเภทและหมายเลขครุภัณฑ์', 'url' => ['computer/devices_all']];
@@ -88,7 +89,7 @@ MaterialAsset::register($this);
     $report_mnu_itms[] = ['label' => 'ยาเสพติด-จิตเวช', 'url' => ['addictive/index']];
     $report_mnu_itms[] = ['label' => 'เวชปฏิบัติ', 'url' => ['wech/index']];
     $report_mnu_itms[] = ['label' => 'กายภาพบำบัด', 'url' => ['phisical/index']];
-  
+    
   
     $menuItems = [
         ['label' => 'Home', 'url' => ['/site/index']],
@@ -111,12 +112,12 @@ MaterialAsset::register($this);
               ['label' => 'Comp',
            'items' => $report_mnu_itms6
               ],
-              ['label' => 'MRS',
-           'items' => $report_mnu_itms7
-              ],
-        //        ['label' => 'การบริการ',
-        //    'items' => $report_mnu_itms8
-        //        ],
+        //       ['label' => 'MRS',
+        //    'items' => $report_mnu_itms7
+        //       ],
+                ['label' => 'Check',
+            'items' => $report_mnu_itms8
+                ],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
