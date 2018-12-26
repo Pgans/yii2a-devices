@@ -35,7 +35,6 @@ class CheckController extends \yii\web\Controller
    return $this->render('check-data', [
                'dataProvider' => $dataProvider,
                'sql'=>$sql,
-               'cid'=>$cid,
         
          ]);
     }
@@ -61,8 +60,7 @@ class CheckController extends \yii\web\Controller
     return $this->render('check-data', [
                 'dataProvider' => $dataProvider,
                 'sql'=>$sql,
-                'cid'=>$cid,
-         
+            
           ]);
      }
 }
