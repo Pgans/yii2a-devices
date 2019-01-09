@@ -93,6 +93,7 @@ MaterialAsset::register($this);
   
     $menuItems = [
         ['label' => 'Home', 'url' => ['/site/index']],
+        ['label' => 'ประวัติบริการ', 'url' => ['/ehr']],
              
               ['label' => 'mBase',
           'items' => $report_mnu_itms
@@ -100,9 +101,9 @@ MaterialAsset::register($this);
             ['label' => 'Deaths',
           'items' => $report_mnu_itms4
             ],
-        //       ['label' => '43แฟ้ม',
-        //    'items' => $report_mnu_itms1
-        //       ],
+               ['label' => '43แฟ้ม',
+            'items' => $report_mnu_itms1
+               ],
               ['label' => 'Refers',
            'items' => $report_mnu_itms2
               ],
