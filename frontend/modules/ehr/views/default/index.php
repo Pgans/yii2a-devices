@@ -59,9 +59,10 @@ $formatter = new Formatter();
                             <img src="<?= $ipath ?>" class="img-circle" alt="User Image" height="100" width="100" >
                         </div>
                         <div class="col-md-10">
-                            <p> ชื่อ-สกุล  : <?= $tname ?>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; เลขบัตรประชาชน : <?=$cid?> </p>
-                            <p> ที่อยู่  : <?= $taddr ?></p>
-                            <p> โรคประจำตัว  : <?= $chronic ?></p>
+                            <p> ชื่อ-สกุล  : <?= $tname ?>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; เลขบัตรประชาชน : <?=$cid?> 
+                            &nbsp;&nbsp;HN:<?=$hn?>  &nbsp;&nbsp;เบอร์โทร:<?=$telephone?></p>
+                            <p> ที่อยู่  : <?= $taddr ?> </p> 
+                            <p> โรคประจำตัว  : <?= $chronic ?> </p>
                             <p> วันเกิด  : <?= $formatter->asDate($birth) ?></p>
                         </div>
                     </div>
@@ -198,12 +199,12 @@ $formatter = new Formatter();
                                 'headerOptions' => ['style' => 'font-weight:bold'],
                                 'options' => ['id' => 'myveryownID'],
                             ],
-                                [
-                                'label' => 'ANC',
-                                'content' => "รออัพเดท",
-                                'headerOptions' => ['style' => 'font-weight:bold'],
-                                'options' => ['id' => 'myveryownID'],
-                            ],
+                            //     [
+                            //     'label' => 'ANC',
+                            //     'content' => "รออัพเดท",
+                            //     'headerOptions' => ['style' => 'font-weight:bold'],
+                            //     'options' => ['id' => 'myveryownID'],
+                            // ],
                         /* [
                           'label' => 'Dropdown',
                           'items' => [

@@ -20,24 +20,6 @@ class DefaultController extends Controller {
 
     public $enableCsrfValidation = false; //เพิ่ม
     
-    // public function behaviors() {
-    //     return[
-    //         'access' => [
-    //             'class' => \yii\filters\AccessControl::className(), 
-    //             'only'=>['index'],
-                //         'actions' => ['index'],
-                //        // 'allow'=> true,
-                //        // 'allow' => MyHelper::modIsOn(),
-                //         'roles' => ['User'],
-                       
-
-                //         ]
-                //     ],
-                    
-    //             ],
-           
-    //     ];
-    // }
     public function behaviors(){
         return [
             'verbs' => [
@@ -95,6 +77,8 @@ class DefaultController extends Controller {
         $hospname = '';
         $timeserv = '';
         $birth = '';
+        $tel = '';
+        $hn = '';
 
 
         if (\Yii::$app->request->isPost) {
@@ -125,18 +109,19 @@ class DefaultController extends Controller {
 
         // ข้อมูลบุคคล
         $sql = "SELECT p.cid,CONCAT(n.prename,p.name,' ',p.lname) AS tname,sex,
-                CONCAT('เลขที่ ',h.HOUSE,' ต.',t.tambonname,' อ.',a.ampurname,' จ.',c.changwatname) AS taddr,
-                CONCAT(tc.chronic,' ',i.diagename)  as chronic,birth
-                FROM person p
-                LEFT JOIN cprename n ON n.id_prename = p.prename
-                LEFT JOIN home h ON h.HOSPCODE = p.HOSPCODE AND h.HID = p.HID
-                LEFT JOIN dhdc_tmp_chronic tc on tc.cid = p.cid
-                LEFT JOIN cicd10tm i ON i.diagcode = tc.chronic
-                LEFT JOIN campur a ON a.ampurcode = h.AMPUR AND a.changwatcode =  h.CHANGWAT
-                LEFT JOIN cchangwat c  ON c.changwatcode = h.CHANGWAT
-                LEFT JOIN ctambon t ON t.tamboncode = h.TAMBON AND t.ampurcode = CONCAT(c.changwatcode,a.ampurcode)
-                WHERE  p.cid = '$cid' 
-                LIMIT 1";
+        CONCAT('เลขที่ ',trim(h.HOUSE),' ต.',t.tambonname,' อ.',a.ampurname,' จ.',c.changwatname) AS taddr,h.TELEPHONE AS telephone,
+        p.hn as hn,
+        CONCAT(tc.chronic,' ',i.diagename)  as chronic,birth
+        FROM person p
+        LEFT JOIN cprename n ON n.id_prename = p.prename
+        LEFT JOIN home1 h ON h.HOSPCODE = p.HOSPCODE AND h.HID = p.HN
+        LEFT JOIN dhdc_tmp_chronic tc on tc.cid = p.cid
+        LEFT JOIN cicd10tm i ON i.diagcode = tc.chronic
+        LEFT JOIN campur a ON a.ampurcode = h.AMPUR AND a.changwatcode =  h.CHANGWAT
+        LEFT JOIN cchangwat c  ON c.changwatcode = h.CHANGWAT
+        LEFT JOIN ctambon t ON t.tamboncode = h.TAMBON AND t.ampurcode = CONCAT(c.changwatcode,a.ampurcode)
+        WHERE  p.cid = '$cid' 
+        LIMIT 1";
 
         $data = $connection->createCommand($sql)
                 ->queryAll();
@@ -145,6 +130,8 @@ class DefaultController extends Controller {
             $tname = $data[$i]['tname'];
             $taddr = $data[$i]['taddr'];
             $sex = $data[$i]['sex'];
+            $hn = $data[$i]['hn'];
+            $telephone = $data[$i]['telephone'];
             $chronic = $data[$i]['chronic'];
             $birth = $data[$i]['birth'];
         }
@@ -182,7 +169,7 @@ class DefaultController extends Controller {
                     SELECT d.diagcode,diagename,diagtype
                     FROM diagnosis_ipd d
                     LEFT JOIN cicd10tm i ON i.diagcode = d.diagcode
-                    WHERE an ='$an'  AND hospcode = '$hospcode'    ";
+                    WHERE an ='$an'  AND hospcode = '$hospcode'  ";
         $rawi = $connection->createCommand($sqli)
                 ->queryAll();
 
@@ -214,6 +201,7 @@ class DefaultController extends Controller {
             $hospname = $datacc[$i]['hospname'];
             $hospname = str_replace("โรงพยาบาลส่งเสริมสุขภาพตำบล", "รพสต.", $hospname);
             $timeserv = $datacc[$i]['time_serv'];
+            $req = $datacc[$i]['seq'];
         }
         //LAB
         $sqll = "SELECT l.labtest, t.labtest AS tlname,labresult
@@ -267,7 +255,10 @@ class DefaultController extends Controller {
                     'btemp' => $btemp,
                     'hospcode' => $hospcode,
                     'hospname' => $hospname,
-                    'timeserv' => $timeserv
+                    'timeserv' => $timeserv,
+                    'telephone'=> $telephone,
+                    'hn' => $hn,
+                    'seq' => $seq,
         ]);
     }
 

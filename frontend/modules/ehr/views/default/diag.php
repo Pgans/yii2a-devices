@@ -16,9 +16,8 @@ use kartik\grid\GridView;
         <p class="text-left text-red">: BP = <?=$sbp.':'.$dbp.' ,T='.$btemp.' ,P='.$pr.' ,R='.$rr?> </p>
     </div>
     <div class="col-lg-6">
-        <p class="text-left "> <?= ' สถานที่รับบริการ :'.$hospcode.' '.$hospname?></p>
+        <p class="text-left "> <?= ' สถานที่รับบริการ :'.$hospcode.' '.$hospname?> </p>
     </div>
-
 </div>
 <div class="row">
     <div class="col-lg-12">
