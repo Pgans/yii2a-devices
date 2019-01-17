@@ -1054,6 +1054,32 @@ return $this->render('ck_operation', [
                'date2'=>$date2,
     
         ]);
+      } 
+      public function actionU_9007712month(){
+        $date1 = Yii::$app->session['date1'];
+        $date2 = Yii::$app->session['date2'];
+        $sql = "SELECT MONTH(k.REGDATE)AS MONTH, COUNT(CODE) AS AMOUNT 
+        FROM (SELECT DISTINCT date(a.REG_DATETIME) as REGDATE, d.INSCL , d.INSCL_NAME,a.HN , 
+        c.CODE, c.NICKNAME, b.STAFF_ID ,b.SURGEON_ID FROM opd_visits a 
+        INNER JOIN opd_operations b ON a.visit_id = b.visit_id and a.is_cancel = 0 
+        INNER JOIN icd9cm c ON b.icd9 = c.icd9 AND c.code = '900-77-12' AND c.CGD_ID = 15 
+        INNER JOIN main_inscls d ON a.inscl = d.inscl 
+        WHERE a.REG_DATETIME BETWEEN '$date1' and '$date2' ) AS k 
+        GROUP BY MONTH(k.REGDATE) WITH ROLLUP ";
+    $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+    $dataProvider = new \yii\data\ArrayDataProvider([
+        'allModels' => $rawData,
+        'pagination' => [
+            'pagesize'=> 10
+        ],
+    ]);
+    return $this->render('9007712_list', [
+                'dataProvider' => $dataProvider,
+                'sql'=>$sql,
+                'date1'=>$date1,
+               'date2'=>$date2
+    
+        ]);
       }  
 }
 

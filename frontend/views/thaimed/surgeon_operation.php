@@ -44,8 +44,8 @@ $this->params['breadcrumbs'][] = 'รายงานการทำหัตถ�
         ?>
         <button class='btn btn-danger'> ตกลง </button>
         <?php $form = ActiveForm::begin([ ]);
-    echo Html::a('แยกเดือน(ใน-นอกสถานบริการ)', ['thaimed/op_count'], ['class' => 'btn btn-success', 'style' => 'margin-left:5px','target'=>'_blank']);
-    echo Html::a('เปรียบเทียบ', ['thaimed/surgeon_inout'], ['class' => 'btn btn-info', 'style' => 'margin-left:5px','target'=>'_blank']);
+    echo Html::a('แยกเดือน', ['thaimed/op_count'], ['class' => 'btn btn-success', 'style' => 'margin-left:5px','target'=>'_blank']);
+    echo Html::a('เปรียบเทียบ(ใน-นอกสถานบริการ)', ['thaimed/surgeon_inout'], ['class' => 'btn btn-info', 'style' => 'margin-left:5px','target'=>'_blank']);
     // echo Html::a('ตรวจรหัสหัตถการmBase', ['thaimed/check_operation'], ['class' => 'btn btn-primary', 'id'=>'modalButton','target'=>'_blank']);
   //echo Html::a('ตรวจรหัสหัตถการ43แฟ้ม', ['thaimed/check_procudure'], ['class' => 'btn btn-warning', 'id'=>'modalButton','target'=>'_blank']);
     ActiveForm::end();?>

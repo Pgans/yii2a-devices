@@ -161,7 +161,7 @@ class DefaultController extends Controller {
 
         //วินิจฉัย
         $sqli = "SELECT d.diagcode,diagename,diagtype
-                    FROM tmp_diag_opd  d
+                    FROM mb_diagnosis_opd d 
                     LEFT JOIN cicd10tm i ON i.diagcode = d.diagcode
                     WHERE cid ='$cid'
                     AND seq='$seq' AND hospcode = '$hospcode'    
@@ -201,14 +201,14 @@ class DefaultController extends Controller {
             $hospname = $datacc[$i]['hospname'];
             $hospname = str_replace("โรงพยาบาลส่งเสริมสุขภาพตำบล", "รพสต.", $hospname);
             $timeserv = $datacc[$i]['time_serv'];
-            $req = $datacc[$i]['seq'];
+            
         }
         //LAB
         $sqll = "SELECT l.labtest, t.labtest AS tlname,labresult
-                    FROM  tmp_labfu l
-                    LEFT JOIN clabtest t ON t.id_labtest = l.labtest
+                    FROM  labfu l
+                    LEFT JOIN clabtest t ON t.icd10_tm = l.labtest
                     WHERE cid ='$cid'
-                    AND seq='$seq' AND hospcode = '$hospcode'    ";
+                    AND seq='$seq' AND hospcode = '$hospcode' ";
         $rawl = $connection->createCommand($sqll)
                 ->queryAll();
 
@@ -222,14 +222,14 @@ class DefaultController extends Controller {
 
         //ยา
         $sqldr = "SELECT d.dname,d.AMOUNT
-                FROM tmp_drug_opd  d 
+                FROM mb_drug_opd  d 
                 WHERE cid = '$cid'
                       AND HOSPCODE ='$hospcode' AND seq ='$seq' 
                 UNION ALL
                 SELECT d.dname,d.AMOUNT
                 FROM drug_ipd  d
                
-                WHERE an ='$an'  AND hospcode = '$hospcode'  ";
+                WHERE an ='$an'  AND hospcode = '$hospcode' ";
         $rawdr = $connection->createCommand($sqldr)
                 ->queryAll();
 
@@ -258,7 +258,7 @@ class DefaultController extends Controller {
                     'timeserv' => $timeserv,
                     'telephone'=> $telephone,
                     'hn' => $hn,
-                    'seq' => $seq,
+                    
         ]);
     }
 

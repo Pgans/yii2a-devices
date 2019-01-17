@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = 'การบริบาลหญิงหล�
         ?>
         <button class='btn btn-danger'> ตกลง </button>
         <?php $form = ActiveForm::begin([ ]);
-    // echo Html::a('ข้อมูลการส่ง43แฟ้ม', ['thaimed/u_list'], ['class' => 'btn btn-success', 'style' => 'margin-left:5px','target'=>'_blank']);
+     echo Html::a('แยกรายเดือน', ['thaimed/u_9007712month'], ['class' => 'btn btn-success', 'style' => 'margin-left:5px','target'=>'_blank']);
     // echo Html::a('เปรียบเทียบ', ['thaimed/surgeon_inout'], ['class' => 'btn btn-info', 'style' => 'margin-left:5px','target'=>'_blank']);
   
     ActiveForm::end();?>

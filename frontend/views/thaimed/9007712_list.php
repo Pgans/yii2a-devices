@@ -9,9 +9,10 @@ echo GridView::widget([
         'dataProvider' => $dataProvider,
         'panel' => [
             'before'=>'<b style="color:blue ">การบริบาลหญิงหลังคลอกด้วยทับหม้อเกลือ</b>(<b style="color: red">แยกตามสิทธิ์การรักษา</b>)',
-            'after'=>'<b style="color:red">ประมวลผล </b>'.date('Y-m-d H:i:s')
+            'after'=>'<b style="color:red">ประมวลผลจากวันที่ </b>'.$date1   .'<b style="color:red">ถึงวันที่</b>' .$date2 
             ]]
-        )
-
-        ?>
-        <div class="alert alert-info"><?=$sql?><div>
+            )
+            ?>
+            <div class="alert alert-info"><?=$sql?></div>
+        
+        
