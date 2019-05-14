@@ -279,4 +279,44 @@ GROUP BY opd_visits.HN ORDER BY opd_visits.REG_DATETIME,icd10new.ICD10";
 
        ]);   
    }
+   public function actionCa(){
+    $data = Yii::$app->request->post();
+    $date1 = isset($data['date1']) ? $data['date1'] : '';
+    $date2 = isset($data['date2']) ? $data['date2'] : '';
+
+$sql = "SELECT date(a.REG_DATETIME) as REGDATE, p.CID, a.HN, p.FNAME, p.LNAME,
+CASE
+	WHEN p.SEX = 1 THEN 'ชาย'
+	WHEN p.SEX = 2 THEN 'หญิง'
+END as SEX, p.BIRTHDATE, FLOOR(DATEDIFF(NOW(),p.BIRTHDATE)/365.25) as AGE, c.ICD10_TM,p.TOWN_ID
+FROM opd_visits a
+INNER JOIN opd_diagnosis b ON a.VISIT_ID = b.VISIT_ID AND b.IS_CANCEL = 0
+INNER JOIN icd10new c ON b.ICD10 = c.ICD10 AND c.ICD10_TM  BETWEEN 'C00' AND 'D48'
+INNER JOIN cid_hn d ON a.HN = d.HN
+INNER JOIN population p ON d.CID = p.CID
+WHERE a.REG_DATETIME BETWEEN '$date1' AND '$date2'
+AND a.IS_CANCEL =0
+GROUP BY p.CID ";
+$rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+
+// print_r($rawData);
+try {
+   $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+} catch (\yii\db2\Exception $e) {
+   throw new \yii\web\ConflictHttpException('sql error');
+}
+Yii::$app->session['date1']=$date1;
+Yii::$app->session['date2']=$date2;
+$dataProvider = new \yii\data\ArrayDataProvider([
+   'allModels' => $rawData,
+   'pagination' => FALSE,
+]);
+return $this->render('ca', [
+           'dataProvider' => $dataProvider,
+           'sql'=>$sql,
+           'date1'=>$date1,
+           'date2'=>$date2,
+
+]);   
+}
 }

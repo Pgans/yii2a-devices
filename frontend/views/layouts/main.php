@@ -93,7 +93,7 @@ MaterialAsset::register($this);
   
     $menuItems = [
         ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'ประวัติบริการ', 'url' => ['/ehr']],
+      //  ['label' => 'ประวัติบริการ', 'url' => ['/ehr']],
              
               ['label' => 'mBase',
           'items' => $report_mnu_itms

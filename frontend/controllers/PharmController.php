@@ -17,11 +17,10 @@ class PharmController extends \yii\web\Controller
         $sql = "SELECT a.CID, a.FNAME, a.LNAME, a.SEX, a.AGE, b.TOWN_NAME AS 'MOOBAN' , c.TOWN_NAME AS 'TUMBOL',
 a.DRUG_NAME, a.ALLERGY_DATE , a.`LEVEL`, a.ALLERGY_NOTE
 FROM mb_drug_allergy a, towns b, towns c ,towns d
-WHERE a.ALLERGY_DATE BETWEEN '$date1' AND '$date2'
-AND a.TOWN_ID = b.TOWN_ID
+WHERE  a.TOWN_ID = b.TOWN_ID
 AND CONCAT(left(a.TOWN_ID,6),'00') = c.TOWN_ID
 AND CONCAT(left(a.TOWN_ID,4),'0000') = d.TOWN_ID
-GROUP BY a.DRUG_NAME  ORDER BY a.ALLERGY_DATE";
+ORDER BY a.CID";
 
       $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
 
