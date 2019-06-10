@@ -319,4 +319,48 @@ return $this->render('ca', [
 
 ]);   
 }
+public function actionSura(){
+    $data = Yii::$app->request->post();
+    $date1 = isset($data['date1']) ? $data['date1'] : '';
+    $date2 = isset($data['date2']) ? $data['date2'] : '';
+
+$sql = "SELECT  MONTH(a.reg_datetime) as month2562 ,
+COUNT(CASE WHEN(b.ppspecial in ( '1B601','1B602', '1B603','1B604', '1B609', '1B6010', '1B611', '1B612')) THEN '1' END) AS 'TOTAL' ,
+COUNT(CASE WHEN (b.ppspecial= '1B600') THEN '2' END) AS  '1B600',
+COUNT(CASE WHEN(b.ppspecial = '1B601') THEN '3' END) AS '1B601' ,
+COUNT(CASE WHEN(b.ppspecial = '1B602') THEN '4' END) AS '1B602' ,
+COUNT(CASE WHEN(b.ppspecial = '1B603') THEN '5' END) AS '1B603' ,
+COUNT(CASE WHEN(b.ppspecial= '1B604') THEN '6' END) AS '1B604' ,
+COUNT(CASE WHEN(b.ppspecial = '1B609') THEN '7' END) AS '1B609' ,
+COUNT(CASE WHEN(b.ppspecial = '1B610') THEN '8' END) AS '1B610' ,
+COUNT(CASE WHEN(b.ppspecial = '1B611') THEN '9' END) AS '1B611' ,
+COUNT(CASE WHEN(b.ppspecial = '1B612') THEN '10' END) AS '1B612' 
+
+FROM  opd_visits a
+INNER JOIN specialpp b ON a.visit_id = b.visit_id and b.is_cancel = 0
+WHERE a.reg_datetime  BETWEEN '$date1' AND '$date2'
+AND a.is_cancel = 0
+GROUP BY month2562 ";
+$rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+
+// print_r($rawData);
+try {
+   $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+} catch (\yii\db2\Exception $e) {
+   throw new \yii\web\ConflictHttpException('sql error');
+}
+Yii::$app->session['date1']=$date1;
+Yii::$app->session['date2']=$date2;
+$dataProvider = new \yii\data\ArrayDataProvider([
+   'allModels' => $rawData,
+   'pagination' => FALSE,
+]);
+return $this->render('sura', [
+           'dataProvider' => $dataProvider,
+           'sql'=>$sql,
+           'date1'=>$date1,
+           'date2'=>$date2,
+
+]);   
+}   
 }
