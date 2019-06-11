@@ -1080,6 +1080,66 @@ return $this->render('ck_operation', [
                'date2'=>$date2
     
         ]);
-      }  
+      }
+      public function actionU_9007800(){
+        $data = Yii::$app->request->post();
+        $date1 = isset($data['date1']) ? $data['date1'] : '';
+        $date2 = isset($data['date2']) ? $data['date2'] : '';
+        $sql = "SELECT k.INSCL, k.INSCL_NAME , COUNT(CODE) AS AMOUNT
+        FROM 
+        (SELECT DISTINCT date(a.REG_DATETIME) as REGDATE, d.INSCL , d.INSCL_NAME,a.HN , c.CODE, c.NICKNAME, b.STAFF_ID ,b.SURGEON_ID 
+        FROM opd_visits a 
+        INNER JOIN opd_operations b ON a.visit_id = b.visit_id and a.is_cancel = 0 
+        INNER JOIN icd9cm c ON b.icd9 = c.icd9 AND c.code in ('900-78-00','9007800') AND c.CGD_ID = 15 
+        INNER JOIN main_inscls d ON a.inscl = d.inscl 
+        WHERE a.REG_DATETIME BETWEEN '$date1' and '$date2' ) AS k
+        GROUP BY k.INSCL_NAME order by AMOUNT DESC ";
+    $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+    Yii::$app->session['date1']=$date1;
+    Yii::$app->session['date2']=$date2;
+    $dataProvider = new \yii\data\ArrayDataProvider([
+        'allModels' => $rawData,
+        'pagination' => [
+            'pagesize'=> 10
+        ],
+    ]);
+    return $this->render('9007800', [
+                'dataProvider' => $dataProvider,
+                'sql'=>$sql,
+                'date1'=>$date1,
+               'date2'=>$date2
+    
+        ]);
+      } 
+      public function actionU_9007800_list($inscl){
+        $date1 = Yii::$app->session['date1'];
+        $date2 = Yii::$app->session['date2'];
+        $sql = "SELECT DISTINCT date(a.REG_DATETIME) as REGDATE, d.INSCL , d.INSCL_NAME,a.HN ,a.VISIT_ID ,c.CODE, c.NICKNAME, b.STAFF_ID ,b.SURGEON_ID 
+        FROM opd_visits a 
+        INNER JOIN opd_operations b ON a.visit_id = b.visit_id and a.is_cancel = 0 
+        INNER JOIN icd9cm c ON b.icd9 = c.icd9 AND c.code in ('900-78-00','9007800') AND c.CGD_ID = 15 
+        INNER JOIN main_inscls d ON a.inscl = d.inscl 
+        WHERE a.REG_DATETIME BETWEEN '$date1' and '$date2' 
+        AND d.INSCL =$inscl ";
+    $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+    try {
+        $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+    } catch (\yii\db\Exception $e) {
+        throw new \yii\web\ConflictHttpException('sql error');
+    }
+    $dataProvider = new \yii\data\ArrayDataProvider([
+        'allModels' => $rawData,
+        'pagination' => [
+            'pagesize'=> 10
+        ],
+    ]);
+    return $this->render('9007800_list', [
+                'dataProvider' => $dataProvider,
+                'sql'=>$sql,
+                'date1'=>$date1,
+               'date2'=>$date2,
+    
+        ]);
+      }   
 }
 
