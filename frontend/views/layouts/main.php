@@ -57,13 +57,11 @@ MaterialAsset::register($this);
     //$report_mnu_itms5[] = ['label' => 'รายงานผู้ป่วยในแยกตามเดือน(Graph)', 'url' => ['ipd/ipddx59']];
     $report_mnu_itms5[] = ['label' => 'รายงานผู้ป่วยในแยกตามหอผู้ป่วย', 'url' => ['reg/depregipd']];
     $report_mnu_itms5[] = ['label' => 'รายงานผู้ป่วยอุบัติเหตุ', 'url' => ['report/accidents']];
-
-
-
     $report_mnu_itms5[] = ['label' => 'รายงาน5อันดับโรคอุบัติเหตุฉุกเฉิน (mb_visitsdx)', 'url' => ['report/er5dx']];
     $report_mnu_itms5[] = ['label' => 'รายงาน5อันดับโรคตรวจโรคทั่วไป (mb_visitsdx)', 'url' => ['report/examination']];
     $report_mnu_itms5[] = ['label' => 'รายงาน10อันดับโรคOPD', 'url' => ['report/dxopd59']];
     $report_mnu_itms5[] = ['label' => 'รายงาน10อันดับโรคIPD', 'url' => ['report/dxipd']];
+    $report_mnu_itms5[] = ['label' => 'รายงานผู้ป่วยในแสดงค่าRWและวันนอนแยกตามสิทธิ์', 'url' => ['rw/index']];
     
     //$report_mnu_itms4[] = ['label' => 'รายงานผู้ป่วยในเสียชีวิตแบบจัดกลุ่มและรายคน(DSC)', 'url' => ['deaths/death_dsclist']];
     $report_mnu_itms4[] = ['label' => 'รายงานผู้ป่วยเสียชีวิตในโรงพยาบาลและชื่อโรคแยกตามแผนก(จากDSCนับคน)', 'url' => ['deaths/deathipd']];
