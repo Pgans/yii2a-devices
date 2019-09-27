@@ -62,6 +62,7 @@ MaterialAsset::register($this);
     $report_mnu_itms5[] = ['label' => 'รายงาน10อันดับโรคOPD', 'url' => ['report/dxopd59']];
     $report_mnu_itms5[] = ['label' => 'รายงาน10อันดับโรคIPD', 'url' => ['report/dxipd']];
     $report_mnu_itms5[] = ['label' => 'รายงานผู้ป่วยในแสดงค่าRWและวันนอนแยกตามสิทธิ์', 'url' => ['rw/index']];
+    $report_mnu_itms5[] = ['label' => 'รายงานผู้ป่วยSepsis', 'url' => ['sepsis/sepsis']];
     
     //$report_mnu_itms4[] = ['label' => 'รายงานผู้ป่วยในเสียชีวิตแบบจัดกลุ่มและรายคน(DSC)', 'url' => ['deaths/death_dsclist']];
     $report_mnu_itms4[] = ['label' => 'รายงานผู้ป่วยเสียชีวิตในโรงพยาบาลและชื่อโรคแยกตามแผนก(จากDSCนับคน)', 'url' => ['deaths/deathipd']];

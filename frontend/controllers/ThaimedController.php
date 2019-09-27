@@ -1140,6 +1140,42 @@ return $this->render('ck_operation', [
                'date2'=>$date2,
     
         ]);
+      } 
+      public function actionInscl_smonpai6(){
+        $data = Yii::$app->request->post();
+        $date1 = isset($data['date1']) ? $data['date1'] : '';
+        $date2 = isset($data['date2']) ? $data['date2'] : '';
+        $sql = "SELECT c.DRUG_ID, c.DRUG_NAME,
+        COUNT(CASE WHEN(d.INSCL in (01,25,35,37,40)) THEN '1' END) AS 'ข้าราชการ' ,
+				COUNT(CASE WHEN(d.INSCL in (08,09,21)) THEN '2' END) AS 'ประกันสังคม' ,
+				COUNT(CASE WHEN(d.INSCL in (11,12)) THEN '3' END) AS 'อปท' ,
+				COUNT(CASE WHEN(d.INSCL = 23) THEN '4' END) AS 'มาตรา8' ,
+				COUNT(CASE WHEN(d.INSCL  = 00) THEN '5' END) AS 'สิทธิ์ว่าง' ,
+        COUNT(CASE WHEN(d.INSCL IN(00,08,09,11,12,21,23,01,25,35,37,40)) THEN '6' END) AS 'รวม'
+        FROM opd_visits a
+				INNER JOIN prescriptions b ON a.VISIT_ID = b.VISIT_ID
+				INNER JOIN drugs c ON  b.DRUG_ID = c.DRUG_ID
+				INNER JOIN main_inscls d ON a.INSCL = d.INSCL 
+                WHERE a.REG_DATETIME BETWEEN '$date1' AND '$date2'
+                AND a.IS_CANCEL =0
+                AND a.VISIT_ID NOT IN (SELECT VISIT_ID FROM ipd_reg)
+				AND c.DRUG_ID in (0664,2358,0491,2443,2280,1393,2364,2282,0262,0263,0266,2362,2359,2363,2295,2314,0261,1392,2289,
+			    1389,2294,1395,2419,0666,0265,1394,1388,2360,2354,2311)
+        GROUP BY c.DRUG_ID ";
+    $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+    Yii::$app->session['date1']=$date1;
+    Yii::$app->session['date2']=$date2;
+    $dataProvider = new \yii\data\ArrayDataProvider([
+        'allModels' => $rawData,
+        'pagination' => false
+    ]);
+    return $this->render('inscl_smonpai6', [
+                'dataProvider' => $dataProvider,
+                'sql'=>$sql,
+                'date1'=>$date1,
+               'date2'=>$date2
+    
+        ]);
       }   
 }
 
