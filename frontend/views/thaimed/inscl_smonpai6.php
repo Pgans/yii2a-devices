@@ -54,10 +54,43 @@ $this->params['breadcrumbs'][] = 'การจ่ายสมุนไพรแ�
 
 
 <?php echo GridView::widget([
+        
         'dataProvider' => $dataProvider,
         'panel' => [
             'before'=>'<b style="color:blue">การจ่ายสมุนไพรแยกตามสิทธิ์การรักษา </b>',
             'after'=>'<b style="color:red">ประมวลผลจากวันที่ </b>'.$date1   .'<b style="color:red">ถึงวันที่</b>' .$date2 
+            ],
+            'columns'=>[
+                //['class' => 'yii\grid\SerialColumn'],
+                [
+                    'attribute' => 'DRUG_ID',
+                    'format'=> 'raw',
+                    'header' => 'รหัสยา.',
+                    'value' => function ($model) {
+                        return '<span class="badge" style="background-color:#009966">' . $model['DRUG_ID'] . '</span>';
+                    },
+                ],
+                [
+                    'attribute'=>'DRUG_NAME',
+                    'header'=>'ชื่อยา',
+                ],
+                ['attribute'=> 'ข้าราชการ'],
+                ['attribute'=>'ประกันสังคม'],
+                ['attribute'=>'อปท'],
+                ['attribute'=>'มาตรา8'],
+                ['attribute'=>'สิทธิ์ว่าง'],
+                [
+                    'attribute'=>'รวม',
+                    'format'=>'raw',
+                    'value'=>function ($model) {
+                        $drugid = $model['DRUG_ID'];
+                        $amount = $model['รวม'];
+                     return html::a(Html::encode($amount),['thaimed/inscl_drugttm_list','drugid'=>$drugid],['class' => 'badge btn-info','target'=>'_blank']);
+                    
+                    }
+            
+            
+            ],
             ],
         ]
   );

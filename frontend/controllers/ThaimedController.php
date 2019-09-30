@@ -1145,23 +1145,28 @@ return $this->render('ck_operation', [
         $data = Yii::$app->request->post();
         $date1 = isset($data['date1']) ? $data['date1'] : '';
         $date2 = isset($data['date2']) ? $data['date2'] : '';
-        $sql = "SELECT c.DRUG_ID, c.DRUG_NAME,
-        COUNT(CASE WHEN(d.INSCL in (01,25,35,37,40)) THEN '1' END) AS 'ข้าราชการ' ,
-				COUNT(CASE WHEN(d.INSCL in (08,09,21)) THEN '2' END) AS 'ประกันสังคม' ,
-				COUNT(CASE WHEN(d.INSCL in (11,12)) THEN '3' END) AS 'อปท' ,
-				COUNT(CASE WHEN(d.INSCL = 23) THEN '4' END) AS 'มาตรา8' ,
-				COUNT(CASE WHEN(d.INSCL  = 00) THEN '5' END) AS 'สิทธิ์ว่าง' ,
-        COUNT(CASE WHEN(d.INSCL IN(00,08,09,11,12,21,23,01,25,35,37,40)) THEN '6' END) AS 'รวม'
-        FROM opd_visits a
-				INNER JOIN prescriptions b ON a.VISIT_ID = b.VISIT_ID
-				INNER JOIN drugs c ON  b.DRUG_ID = c.DRUG_ID
-				INNER JOIN main_inscls d ON a.INSCL = d.INSCL 
-                WHERE a.REG_DATETIME BETWEEN '$date1' AND '$date2'
-                AND a.IS_CANCEL =0
-                AND a.VISIT_ID NOT IN (SELECT VISIT_ID FROM ipd_reg)
-				AND c.DRUG_ID in (0664,2358,0491,2443,2280,1393,2364,2282,0262,0263,0266,2362,2359,2363,2295,2314,0261,1392,2289,
-			    1389,2294,1395,2419,0666,0265,1394,1388,2360,2354,2311)
-        GROUP BY c.DRUG_ID ";
+        $sql = "SELECT k.DRUG_ID, k.DRUG_NAME,
+        COUNT(CASE WHEN(k.INSCL in (01,25,35,37,40)) THEN '1' END) AS 'ข้าราชการ' ,
+        COUNT(CASE WHEN(k.INSCL in (08,09,21)) THEN '2' END) AS 'ประกันสังคม' ,
+        COUNT(CASE WHEN(k.INSCL in (11,12)) THEN '3' END) AS 'อปท' ,
+        COUNT(CASE WHEN(k.INSCL = 23) THEN '4' END) AS 'มาตรา8' ,
+        COUNT(CASE WHEN(k.INSCL  = 00) THEN '5' END) AS 'สิทธิ์ว่าง' ,
+COUNT(CASE WHEN(k.INSCL IN(00,08,09,11,12,21,23,01,25,35,37,40)) THEN '6' END) AS 'รวม'
+FROM (
+SELECT a.VISIT_ID,a.HN, f.CID, CONCAT(trim(f.FNAME),'   ',f.LNAME) as FULLNAME,FLOOR(DATEDIFF(a.REG_DATETIME,f.BIRTHDATE)/365.25) as AGE,
+d.INSCL, d.INSCL_NAME,c.DRUG_ID,c. DRUG_NAME
+FROM opd_visits a
+INNER JOIN prescriptions b ON a.VISIT_ID = b.VISIT_ID
+INNER JOIN drugs c ON  b.DRUG_ID = c.DRUG_ID
+                INNER JOIN main_inscls d ON a.INSCL = d.INSCL AND d.inscl IN(00,08,09,11,12,21,23,01,25,35,37,40)
+                INNER JOIN cid_hn e on a.HN = e.HN
+                INNER JOIN population f ON e.CID = f.CID
+        WHERE a.REG_DATETIME BETWEEN '$date1' AND '$date2'
+        AND a.IS_CANCEL =0
+        AND a.VISIT_ID NOT IN (SELECT VISIT_ID FROM ipd_reg)
+        AND c.DRUG_ID in (0664,2358,0491,2443,2280,1393,2364,2282,0262,0263,0266,2362,2359,2363,2295,2314,0261,1392,2289,
+                1389,2294,1395,2419,0666,0265,1394,1388,2360,2354,2311)
+        ) as k  GROUP BY k.DRUG_ID ";
     $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
     Yii::$app->session['date1']=$date1;
     Yii::$app->session['date2']=$date2;
@@ -1176,6 +1181,44 @@ return $this->render('ck_operation', [
                'date2'=>$date2
     
         ]);
-      }   
+      }  
+      public function actionInscl_drugttm_list($drugid){
+        $date1 = Yii::$app->session['date1'];
+        $date2 = Yii::$app->session['date2'];
+        $sql = "SELECT a.VISIT_ID,a.HN, f.CID, CONCAT(trim(f.FNAME),'   ',f.LNAME) as FULLNAME,FLOOR(DATEDIFF(a.REG_DATETIME,f.BIRTHDATE)/365.25) as AGE,
+        d.INSCL, d.INSCL_NAME,c.DRUG_ID,c. DRUG_NAME
+                FROM opd_visits a
+                        INNER JOIN prescriptions b ON a.VISIT_ID = b.VISIT_ID
+                        INNER JOIN drugs c ON  b.DRUG_ID = c.DRUG_ID
+                        INNER JOIN main_inscls d ON a.INSCL = d.INSCL AND d.inscl IN(00,08,09,11,12,21,23,01,25,35,37,40)
+                        INNER JOIN cid_hn e on a.HN = e.HN
+                        INNER JOIN population f ON e.CID = f.CID
+                WHERE a.REG_DATETIME BETWEEN '$date1' AND '$date2'
+                AND a.IS_CANCEL =0
+                AND c.DRUG_ID = $drugid
+                AND a.VISIT_ID NOT IN (SELECT VISIT_ID FROM ipd_reg)
+                AND c.DRUG_ID in (0664,2358,0491,2443,2280,1393,2364,2282,0262,0263,0266,2362,2359,2363,2295,2314,0261,1392,2289,
+                        1389,2294,1395,2419,0666,0265,1394,1388,2360,2354,2311)
+                ORDER BY d.inscl";
+    $rawData = \yii::$app->db2->createCommand($sql)->queryAll();
+    try {
+        $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+    } catch (\yii\db\Exception $e) {
+        throw new \yii\web\ConflictHttpException('sql error');
+    }
+    $dataProvider = new \yii\data\ArrayDataProvider([
+        'allModels' => $rawData,
+        'pagination' => [
+            'pagesize'=> 10
+        ],
+    ]);
+    return $this->render('drugttm_list', [
+                'dataProvider' => $dataProvider,
+                'sql'=>$sql,
+                'date1'=>$date1,
+               'date2'=>$date2,
+    
+        ]);
+      }  
 }
 
