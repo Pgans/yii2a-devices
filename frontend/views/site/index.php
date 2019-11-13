@@ -136,12 +136,12 @@ $this->title = 'M30hospital(045489064)';
                                                 'data' => $ivisits,
                                             //'color' => '#F5C4B6',
                                             ],
-                                            [
-                                                'type' => 'column',
-                                                'name' => 'จำนวน (วันนอน)',
-                                                'data' => $sleepday,
-                                            //'color' => '#BF0B23',
-                                            ],
+                                            // [
+                                            //     'type' => 'column',
+                                            //     'name' => 'จำนวน (วันนอน)',
+                                            //     'data' => $sleepday,
+                                            // //'color' => '#BF0B23',
+                                            // ],
                                         ]
                                     ]
                                 ]);
