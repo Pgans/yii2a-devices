@@ -136,7 +136,7 @@ class SiteController extends Controller
         for ($i = 0; $i < sizeof($datai); $i++) {
             $ifiscal[] = $datai[$i]['fiscal'];
             $ivisits[] = (int) $datai[$i]['ivisits'];
-            $sleepday[] = (int) $datai[$i]['sleepday'];
+           # $sleepday[] = (int) $datai[$i]['sleepday'];
         }
         //Refers ผู้ป่วยนอกส่งต่อ
        $datarf = $connection->createCommand("
