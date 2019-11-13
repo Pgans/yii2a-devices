@@ -264,7 +264,7 @@ class SiteController extends Controller
                     'opddataProvider' => $opddataProvider,
                     'ifiscal' => $ifiscal,
                     'ivisits' =>$ivisits,
-                    'sleepday' =>$sleepday,
+                    //'sleepday' =>$sleepday,
                     'idataProvider'=> $idataProvider,
                     'rfiscal' =>$rfiscal,
                     'rfvisits' => $rfvisits,
