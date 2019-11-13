@@ -11,7 +11,8 @@ $this->title = 'DXOPD';
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/index']];
 $this->params['breadcrumbs'][] = 'รายงาน 10 อันดับโรคOPD';
 ?>
- <b>รายงาน 10 อันดับโรคOPD</b>
+    <br>
+ <b><a>รายงาน 10 อันดับโรคOPD</a></b>
     <div class='well'>
 
     <?php $form = ActiveForm::begin(); ?>

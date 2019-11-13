@@ -8,7 +8,8 @@ $this->title = "REG-DM+HT";
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/index']];
 $this->params['breadcrumbs'][] = 'รายงาน5อันดับโรค(ตรวจโรคทั่วไป)';
 ?>
-<b>รายงาน5อันดับโรคตรวจโรคทั่วไป</b>
+<br>
+<b><a>รายงาน5อันดับโรคตรวจโรคทั่วไป</a></b>
 <div class='well'>
     <?php $form = ActiveForm::begin(); ?>
      วันที่ระหว่าง:

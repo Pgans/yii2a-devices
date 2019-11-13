@@ -12,6 +12,7 @@ $this->title = 'SMONPRI';
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['thaimed/index']];
 $this->params['breadcrumbs'][] = 'รายงานการจ่ายยาสมุนไพรทดแทน แยกตามรายเดือน';
 ?>
+<br>
 <b><a>รายงานการจ่ายยาสมุนไพรทดแทน แยกตามรายเดือน</a></b>
 <div class='well'>
     <?php $form = ActiveForm::begin(); ?>

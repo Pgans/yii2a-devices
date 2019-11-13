@@ -23,7 +23,8 @@ return [
         'view'=>[
             'theme'=>[
                 'pathMap'=>[
-                    '@app/views'=>'@common/themes/material'
+                    //'@app/views'=>'@common/themes/agency',
+                    '@app/views' => '@frontend/themes/material',
                 ]
             ]
         ],

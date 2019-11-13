@@ -8,7 +8,8 @@ $this->title = "REFER-IPD";
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['refers/index']];
 $this->params['breadcrumbs'][] = 'รายงานRefersผู้ป่วยในแยกตามหน่วยบริการ';
 ?>
-<b>รายงานRefersผู้ป่วยในแยกตามหน่วยบริการ</b>
+<br>
+<b><a>รายงานRefersผู้ป่วยในแยกตามหน่วยบริการ</a></b>
 <div class='well'>
     <?php $form = ActiveForm::begin(); ?>
      วันที่ระหว่าง:

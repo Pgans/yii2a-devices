@@ -18,10 +18,14 @@ class MaterialAsset extends AssetBundle
     public $sourcePath = '@themes/material';
     public $baseUrl = '@web';
     public $css = [
-        'css/material-wfont.min.css',
+       // 'css/material-wfont.min.css',
+        'css/makerstrap.min.css',
+         'css/material.css',
+        'css/ripples.css',
         'css/material.min.css',
         'css/ripples.min.css',
         'css/style.css',
+        'css/site.css'
     ];
     public $js = [
         'js/material.min.js',

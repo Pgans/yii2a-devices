@@ -13,6 +13,7 @@ $this->title = 'SURGEON_OPERATON';
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['computer/index']];
 $this->params['breadcrumbs'][] = 'รายงานการทำหัตถการแพทย์แผนไทยแยกตามผู้ทำหัตถการ';
 ?>
+<br>
 <b><a>รายงานการทำหัตถการแพทย์แผนไทยแยกตามผู้ทำหัตถการ</a></b>
 <div class='well'>
     <?php $form = ActiveForm::begin(); ?>

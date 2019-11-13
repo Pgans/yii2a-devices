@@ -8,7 +8,8 @@ $this->title = "REFER-IN";
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/index']];
 $this->params['breadcrumbs'][] = 'รายงานรับRefers';
 ?>
-<b>รายงานรับRefers</b>
+<br>
+<b><a>รายงานรับRefers</a></b>
 <div class='well'>
     <?php $form = ActiveForm::begin(); ?>
      วันที่ระหว่าง:

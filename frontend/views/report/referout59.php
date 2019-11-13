@@ -8,7 +8,8 @@ $this->title ="REFER-OUT";
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/index']];
 $this->params['breadcrumbs'][] = 'รายงานผู้ป่วยส่งต่อสูงกว่า';
 ?>
-<b>รายงานผู้ป่วยส่งต่อสูงกว่า</b>
+<br>
+<b><a>รายงานผู้ป่วยส่งต่อสูงกว่า</a></b>
 <div class='well'>
     <?php $form = ActiveForm::begin(); ?>
      ระหว่างวันที่:

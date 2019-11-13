@@ -8,7 +8,8 @@ $this->title ="OPERATION";
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/index']];
 $this->params['breadcrumbs'][] = 'รายงานการทำหัตถการแยกลำดับโรค';
 ?>
-<b>รายงานการทำหัตถการแยกลำดับโรค</b>
+<br>
+<b><a>รายงานการทำหัตถการแยกลำดับโรค</a></b>
 <div class='well'>
     <?php $form = ActiveForm::begin(); ?>
      ระหว่างวันที่:

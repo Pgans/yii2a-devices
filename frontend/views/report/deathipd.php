@@ -12,7 +12,8 @@ $this->title='Death-ipd';
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/index']];
 $this->params['breadcrumbs'][] = 'รายงานผู้ป่วยในเสียชีวิตและระบุชื่อโรค';
 ?>
-<b>รายงานผู้ป่วยในเสียชีวิตและระบุชื่อโรค</b>
+<br>
+<b><a>รายงานผู้ป่วยในเสียชีวิตและระบุชื่อโรค</a></b>
 <div class='well'>
     <?php $form = ActiveForm::begin(); ?>
      วันที่ระหว่าง:

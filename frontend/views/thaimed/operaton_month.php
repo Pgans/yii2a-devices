@@ -12,7 +12,8 @@ $this->title = 'OPER_MONTH';
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['thaimed/index']];
 $this->params['breadcrumbs'][] = 'รายงานการทำหัตถการแพทย์แผนไทย แยกรายเดือน';
 ?>
-<b>รายงานการทำหัตถการแพทย์แผนไทย แยกรายเดือน</b>
+<br>
+<b><a>รายงานการทำหัตถการแพทย์แผนไทย แยกรายเดือน</a></b>
 <div class='well'>
     <?php $form = ActiveForm::begin(); ?>
      ระหว่างวันที่:

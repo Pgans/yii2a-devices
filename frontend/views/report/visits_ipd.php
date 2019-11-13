@@ -8,7 +8,8 @@ $this->title="Visits-IPD";
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/index']];
 $this->params['breadcrumbs'][] = 'รายงานนับจำนวนVisitsผู้ป่วยใน';
 ?>
-<b>รายงานนับจำนวนVisitsผู้ป่วยใน</b>
+<br>
+<b><a>รายงานนับจำนวนVisitsผู้ป่วยใน</a></b>
 <div class='well'>
     <?php $form = ActiveForm::begin(); ?>
      วันที่ระหว่าง:

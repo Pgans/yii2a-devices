@@ -3,7 +3,7 @@ use kartik\grid\GridView;
 use yii\helpers\Html;
 
 $this->title ="dead_sepsis";
-//$this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/referin']];
+$this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/referin']];
 //$this->params['breadcrumbs'][] = 'รายงานผู้ปวยส่งต่อเข้ามา';
 echo GridView::widget([
         'dataProvider' => $dataProvider,

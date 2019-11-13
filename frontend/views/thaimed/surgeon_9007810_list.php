@@ -5,7 +5,7 @@ use yii\widgets\Pjax;
 use yii\bootstrap\Modal;
 
 $this->title ="Surgeon-9007810";
-//$this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/referin']];
+$this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/referin']];
 //$this->params['breadcrumbs'][] = 'รายงานผู้ปวยส่งต่อเข้ามา';
 ?>
 
@@ -18,4 +18,4 @@ $this->title ="Surgeon-9007810";
 
         ?>
         
-        <div class="alert alert-info"><?=$sql?><div>
+        

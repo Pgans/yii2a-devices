@@ -8,7 +8,8 @@ $this->title = 'DSC';
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/index']];
 $this->params['breadcrumbs'][] = 'รายงานนับผู้ป่วยDischargeแยกตามแผนก';
 ?>
-<b>รายงานผู้ป่วยDischarge</b>
+<br>
+<b><a>รายงานผู้ป่วยDischarge</a></b>
 <div class='well'>
     <?php $form = ActiveForm::begin(); ?>
      ระหว่างวันที่:

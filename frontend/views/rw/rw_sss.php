@@ -13,6 +13,7 @@ $this->title = 'rw_sss';
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['thaimed/index']];
 $this->params['breadcrumbs'][] = 'รายงานผู้ป่วยในสิทธิ์ประกันสังคมAdjRWและคำนวนวันนอน';
 ?>
+<br>
         <b><a>รายงานผู้ป่วยในสิทธิ์ประกันสังคมAdjRWและคำนวนวันนอน</a></b>
 <div class='well'>
     <?php $form = ActiveForm::begin(); ?>

@@ -16,7 +16,7 @@ $this->title = 'ck_operations';
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['computer/index']];
 $this->params['breadcrumbs'][] = 'รายงานการทำหัตถการแพทย์แผนไทยแยกตามผู้ทำหัตถการ';
 ?>
-
+<br>
         <?php $form = ActiveForm::begin([ ]);
      echo Html::a('เทียบรหัสหัตถการmBase', ['thaimed/check_operation'], ['class' => 'btn btn-primary', 'id'=>'modalButton','target'=>'_blank']);
     echo Html::a('เทียบรหัสหัตถการ43แฟ้ม', ['thaimed/check_procudure'], ['class' => 'btn btn-info', 'id'=>'modalButton','target'=>'_blank']);

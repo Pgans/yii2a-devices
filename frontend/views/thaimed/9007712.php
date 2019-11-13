@@ -7,12 +7,11 @@ use yii\data\ArrayDataProvider;
 use common\models\RContributionIpd;
 use yii\data\ActiveDataProvider;
 
-
-
 $this->title = '9007712';
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['thaimed/index']];
 $this->params['breadcrumbs'][] = 'การบริบาลหญิงหลังคลอดด้วยวิธีการทับหม้อเกลือ';
 ?>
+<br>
         <b><a>การบริบาลหญิงหลังคลอดด้วยวิธีการทับหม้อเกลือทั่วร่างกาย</a></b>
 <div class='well'>
     <?php $form = ActiveForm::begin(); ?>

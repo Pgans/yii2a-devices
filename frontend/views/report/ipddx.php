@@ -12,7 +12,8 @@ $this->title = 'IPDDX10';
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/index']];
 $this->params['breadcrumbs'][] = 'รายงาน 10 อันดับโรคIPD ';
 ?>
-    <b>รายงาน 10 อันดับโรคIPD</b>
+<br>
+    <b><a>รายงาน 10 อันดับโรคIPD</a></b>
     <div class='well'>
 
     <?php $form = ActiveForm::begin(); ?>

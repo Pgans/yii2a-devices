@@ -8,7 +8,8 @@ $this->title="OPD_VISITS";
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/index']];
 $this->params['breadcrumbs'][] = 'รายงานนับจำนวนVisitsผู้ป่วยนอก';
 ?>
-<b>รายงานนับจำนวนVisitsผู้ป่วยนอก</b>
+<br>
+<b><a>รายงานนับจำนวนVisitsผู้ป่วยนอก</a></b>
 <div class='well'>
     <?php $form = ActiveForm::begin(); ?>
      วันที่ระหว่าง:

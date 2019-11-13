@@ -12,7 +12,8 @@ $this->title = 'OPERATION';
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['thaimed/index']];
 $this->params['breadcrumbs'][] = 'รายงานนับหัตถการแพทย์ทางเลือกนอกโรงพยาบาล';
 ?>
-<b>รายงานนับหัตถการแพทย์ทางเลือกนอกโรงพยาบาล</b>
+<br>
+<b><a>รายงานนับหัตถการแพทย์ทางเลือกนอกโรงพยาบาล</a></b>
 <div class='well'>
     <?php $form = ActiveForm::begin(); ?>
      ระหว่างวันที่:

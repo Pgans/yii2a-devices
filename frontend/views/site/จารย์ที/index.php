@@ -271,7 +271,7 @@ $this->title = 'ระบบรายงานสารสนเทศ โรง
                                 //use yii\grid\GridView;
 
                                 echo GridView::widget([
-                                    'dataProvider' => $top10o,
+                                    'dataProvider' => $comData,
                                     'responsive' => true,
                                     'hover' => true,
                                     'panel' => [

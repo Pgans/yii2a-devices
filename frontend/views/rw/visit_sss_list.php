@@ -3,8 +3,11 @@ use kartik\grid\GridView;
 use yii\helpers\Html;
 
 $this->title ="visit_sss_list";
-//$this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/referin']];
+$this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/referin']];
 //$this->params['breadcrumbs'][] = 'รายงานผู้ปวยส่งต่อเข้ามา';
+?>
+<div class='well'>
+<?php
 echo GridView::widget([
         'dataProvider' => $dataProvider,
         'panel' => [
@@ -13,6 +16,6 @@ echo GridView::widget([
             ]]
             )
             ?>
-            <div class="alert alert-info"><?=$sql?></div>
+           
         
         

@@ -68,7 +68,12 @@ $this->title = 'M30hospital(045489064)';
                                     'hover' => true,
                                     'panel' => [
                                         'before' => ' ',
-                                    ],
+                                        'after'=>'<a style="color:#ff6c00">
+                                        -ตัดVisitที่ไม่มีDiagnosisและออกนอกหน่วยบริการ(Mobile_visits) <br>
+                                        -จัดมาตามVisitและDiagเพียงตัวเดียว
+                                        </a>' 
+                                        ],
+                                  
                                     'pjax' => true,
                                     'pjaxSettings' => [
                                         'neverTimeout' => true,
@@ -89,6 +94,17 @@ $this->title = 'M30hospital(045489064)';
                                             'attribute' => 'ovisits',
                                             'format' => ['decimal', 0]
                                         ],
+                                        [
+                                            'label' => 'เฉลี่ย:วัน(ครั้ง)',
+                                            'attribute' => 'avisit',
+                                            'format' => ['decimal', 2]
+                                        ],
+                                        [
+                                            'label' => 'เฉลี่ย:วัน(คน)',
+                                            'attribute' => 'kon',
+                                            'format' => ['decimal',2]
+                                        ],
+
                                     ],
                                 ]);
                                 ?>
@@ -144,7 +160,11 @@ $this->title = 'M30hospital(045489064)';
                                     'hover' => true,
                                     'panel' => [
                                         'before' => ' ',
-                                    ],
+                                        'after'=>'<a style="color:#ff6c00">
+                                        -หาวันนอนนับวันที่นอน+6ชั่วโมง(ไม่ถึง6ชั่วโมงไม่นับเป็นวันนอน) <br>
+                                        -Adjrw คำนวนแล้วนำมาบกกัน/365.25 (ค่าเฉลี่ย:ปี)
+                                        </a>' 
+                                        ],
                                     'pjax' => true,
                                     'pjaxSettings' => [
                                         'neverTimeout' => true,
@@ -156,18 +176,26 @@ $this->title = 'M30hospital(045489064)';
                                             'attribute' => 'fiscal'
                                         ],
                                         [
-                                            'label' => 'จำนวน (Admit)',
+                                            'label' => 'จำนวน(Visits)',
                                             'attribute' => 'ivisits',
                                             'format' => ['decimal', 0]
                                         ],
+                
                                         [
-                                            'label' => 'จำนวน (วันนอน)',
-                                            'attribute' => 'sleepday',
-                                            'format' => ['decimal', 0]
+                                            'label' => 'เฉลี่ย:ปี(adjrw)',
+                                            'attribute' => 'adjrw',
+                                            'format' => ['decimal',4]
+                                        ],
+                                        
+                                        [
+                                            'label' => 'จำนวน:ปี(วันนอน)',
+                                            'attribute' => 'sleepdays',
+                                            'format' => ['decimal',4]
                                         ],
                                     ],
                                 ]);
                                 ?>
+                                
                             </div>
                         </div>
                     </div>
@@ -176,6 +204,7 @@ $this->title = 'M30hospital(045489064)';
         </div>
     </div>
 </div>
+
 
 <div class="panel-body">
     <div class="panel panel-warning">
@@ -221,7 +250,10 @@ $this->title = 'M30hospital(045489064)';
                                     'hover' => true,
                                     'panel' => [
                                         'before' => ' ',
-                                    ],
+                                        'after'=>'<a style="color:#ff6c00">
+                                        -ยกเว้นการส่งไปยังรพ.สต.ในเขต อ.ม่วงสามสิบที่ขึ้นต้นด้วยรหัส 037 <br>
+                                        </a>' 
+                                        ],
                                     'pjax' => true,
                                     'pjaxSettings' => [
                                         'neverTimeout' => true,
@@ -233,17 +265,13 @@ $this->title = 'M30hospital(045489064)';
                                             'attribute' => 'fiscal'
                                         ],
                                         [
-                                            'label' => 'จำนวนส่งต่อ (opd)',
+                                            'label' => 'จำนวนส่งต่อOPD (Visit)',
                                             'attribute' => 'rfvisits',
                                             'format' => ['decimal', 0]
                                         ],
                                     ],
                                 ]);
                                 ?>
-                            </div>
-
-                            <div class="kv-panel-pager">
-                                หมายเหตุ :: ยกเว้นการส่งไปยังรพ.สต.ในเขต อ.ม่วงสามสิบที่ขึ้นต้นด้วยรหัส 037
                             </div>
                         </div>
                     </div>
@@ -291,6 +319,9 @@ $this->title = 'M30hospital(045489064)';
                                     'hover' => true,
                                     'panel' => [
                                         'before' => ' ',
+                                        'after'=>'<a style="color:#ff6c00">
+                                        -ยกเว้นการส่งไปยังรพ.สต.ในเขต อ.ม่วงสามสิบที่ขึ้นต้นด้วยรหัส 037 <br>
+                                        </a>' 
                                     ],
                                     'pjax' => true,
                                     'pjaxSettings' => [
@@ -303,15 +334,25 @@ $this->title = 'M30hospital(045489064)';
                                             'attribute' => 'fiscal'
                                         ],
                                         [
-                                            'label' => 'จำนวนส่งต่อ (ipd)',
+                                            'label' => 'จำนวนส่งต่อ (Visit)',
                                             'attribute' => 'rfvisits',
                                             'format' => ['decimal', 0]
                                         ],
-                                        // [
-                                        //     'label' => 'จำนวน (วันนอน)',
-                                        //     'attribute' => 'sleepday',
-                                        //     'format' => ['decimal', 0]
-                                        // ],
+                                        [
+                                            'label' => 'ห้องคลอด(Visit)',
+                                            'attribute' => 'LR',
+                                            'format' => ['decimal', 0]
+                                        ],
+                                        [
+                                            'label' => 'ผู้ป่วยในบน(Visit)',
+                                            'attribute' => 'WARD2',
+                                            'format' => ['decimal', 0]
+                                        ],
+                                        [
+                                            'label' => 'ผู้ป่วยในล่าง(Visit)',
+                                            'attribute' => 'WARD1',
+                                            'format' => ['decimal', 0]
+                                        ],
                                     ],
                                 ]);
                                 ?>

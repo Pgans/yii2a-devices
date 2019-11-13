@@ -13,6 +13,7 @@ $this->title = 'u_thaimed';
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['computer/index']];
 $this->params['breadcrumbs'][] = 'รหัสโรคแพทย์แผนไทยประเภท U ยกเว้น U778';
 ?>
+<br>
 <b><a>รหัสโรคแพทย์แผนไทยประเภท U ยกเว้น U778</a></b>
 <div class='well'>
     <?php $form = ActiveForm::begin(); ?>

@@ -95,9 +95,12 @@ class SiteController extends Controller
         }
         //Visits มารับบริการOPD
        $dataopd = $connection->createCommand("
-        SELECT  fiscal, COUNT(VISIT_ID) AS ovisits, COUNT(DISTINCT HN) AS hn
-        FROM mb_opd_visits_fiscal
-        GROUP BY fiscal 
+       SELECT k.fiscal, k.ovisits, k.hn,  AVG(k.ovisits)/365.25 AS avisit, AVG(hn)/365.25 AS kon
+       FROM (
+       SELECT  fiscal, COUNT(VISIT_ID) AS ovisits, COUNT(DISTINCT HN) AS hn 
+               FROM mb_opd_visits_fiscal
+               GROUP BY fiscal ) as k  
+                       GROUP BY k.fiscal
         ")->queryAll(); 
 
         $opddataProvider = new ArrayDataProvider([
@@ -113,11 +116,15 @@ class SiteController extends Controller
             $ovisits[] = (int) $dataopd[$i]['ovisits'];
             
         }
-        //Visits นอนโรงพยาบาล
+        //VisitsIPD นอนโรงพยาบาล
        $datai = $connection->createCommand("
-        SELECT fiscal, COUNT(DISTINCT visits) AS ivisits, SUM(amount) AS sleepday
+       SELECT k.fiscal , k.ivisits, avg(k.adjrw)/365.25 as adjrw, avg(k.sleepday)/365.25 as sleepdays
+       FROM (
+       SELECT fiscal,COUNT(DISTINCT visits) AS ivisits, COUNT(adjrw) as adjrw , SUM(days+hour) AS sleepday
         FROM mb_ipdreg_fiscal 
-        GROUP BY fiscal")->queryAll(); 
+          GROUP BY fiscal
+          ) as k
+          GROUP BY k.fiscal")->queryAll(); 
 
         $idataProvider = new ArrayDataProvider([
             'allModels' => $datai,
@@ -150,9 +157,12 @@ class SiteController extends Controller
         }
         //Refers ผู้ป่วยในส่งต่อ
        $datari = $connection->createCommand("
-        SELECT  a.fiscal , COUNT(a.VISIT_ID) AS rfvisits
-        FROM mb_referout_ipd_fiscal a
-        GROUP BY a.fiscal")->queryAll(); 
+       SELECT  a.fiscal , COUNT(a.VISIT_ID) AS rfvisits, 
+       COUNT(CASE WHEN UNIT_ID = 22 THEN '1' END) AS 'LR', 
+       COUNT(CASE WHEN UNIT_ID = 38 THEN '3' END) AS 'WARD2', 
+       COUNT(CASE WHEN UNIT_ID = 39 THEN '4' END) AS 'WARD1' 
+       FROM mb_referout_ipd_fiscal a
+       GROUP BY a.fiscal")->queryAll(); 
 
         $ridataProvider = new ArrayDataProvider([
             'allModels' => $datari,

@@ -10,16 +10,14 @@ use yii\web\JsExpression;
 use kartik\export\ExportMenu;
 
 $this->title ="opcount";
-//$this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/referin']];
+$this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/referin']];
 //$this->params['breadcrumbs'][] = 'รายงานผู้ปวยส่งต่อเข้ามา';
-
 ?>
 <div class="col-md-6">
                     <div class="panel panel-info">
                         <div class="panel-heading"><h5><i class="glyphicon glyphicon-list-alt"></i> หัตถการแพทย์แผนไทยmBase</h5></div>
                         <div class="panel-body">
-                        
-                    
+                          
         <div>
                                 <?php
                                 //use yii\grid\GridView;

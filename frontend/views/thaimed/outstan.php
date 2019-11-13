@@ -8,7 +8,8 @@ $this->title = 'OUTSTAN';
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['thaimed/index']];
 $this->params['breadcrumbs'][] = 'รายงานนับผู้ป่วยนอกสถานบริการ';
 ?>
-<b>รายงานนับผู้ป่วยนอกสถานบริการ</b>
+<br>
+<b><a>รายงานนับผู้ป่วยนอกสถานบริการ</a></b>
 <div class='well'>
     <?php $form = ActiveForm::begin(); ?>
      ระหว่างวันที่:

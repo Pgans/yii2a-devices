@@ -8,7 +8,8 @@ $this->title = "ER-DX";
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/index']];
 $this->params['breadcrumbs'][] = 'รายงาน5อันดับโรค(ER)';
 ?>
-<b>รายงาน5อันดับโรค(ER)</b>
+<br>
+<b><a>รายงาน5อันดับโรค(ER)</a></b>
 <div class='well'>
     <?php $form = ActiveForm::begin(); ?>
      วันที่ระหว่าง:

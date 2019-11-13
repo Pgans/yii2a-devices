@@ -5,7 +5,7 @@ use kartik\widgets\ActiveForm;
 use yii\helpers\Url;
 
 $this->title = 'DXOPD-LIST';
-//$this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/index']];
+$this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/index']];
 //$this->params['breadcrumbs'][] = 'รายงานผู้ป่วยในDischarge';
 
 echo GridView::widget([
@@ -22,6 +22,4 @@ echo GridView::widget([
 
         ?>
     
-        <div class="alert alert-danger">
-            <?=$sql?>
-        </div>
+        

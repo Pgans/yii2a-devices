@@ -5,7 +5,7 @@ use yii\widgets\Pjax;
 
 
 $this->title ="Surgeon-LIST";
-//$this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/referin']];
+$this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/referin']];
 //$this->params['breadcrumbs'][] = 'รายงานผู้ปวยส่งต่อเข้ามา';
 ?>
 <div class="surgrn-thaimed">

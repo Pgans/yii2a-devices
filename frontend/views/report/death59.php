@@ -12,7 +12,8 @@ $this->title = 'DEATH-IPD';
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/index']];
 $this->params['breadcrumbs'][] = 'รายงานนับผู้ป่วยในเสียชีวิตในโรงพยาบาล';
 ?>
-<b>รายงานนับผู้ป่วยมารับบริการแยกตามแผนกที่ลงทะเบียน</b>
+<br>
+<b><a>รายงานนับผู้ป่วยมารับบริการแยกตามแผนกที่ลงทะเบียน</a></b>
 <div class='well'>
     <?php $form = ActiveForm::begin(); ?>
      ระหว่างวันที่:

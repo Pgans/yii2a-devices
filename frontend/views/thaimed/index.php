@@ -4,6 +4,7 @@ use yii\helpers\Html;
 //$this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/index']];
 //$this->params['breadcrumbs'][] = 'รายงานอุปกรณ์คอมพิวเตอร์';
 ?>
+<br>
 <h1>หมวดรายงานแพทย์แผนไทย(mBase)</h1>
 <div class="row">
 <div class = "col-sm-4"> <a href ="" class="btn btn-warning">รายงานเกี่ยวข้องตัวชี้วัดและตอบโจทย์HA สามารถเลือกช่วงเวลาประมวลผลได้(mbase_data)</a></div></div>

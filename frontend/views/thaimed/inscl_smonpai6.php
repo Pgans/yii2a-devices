@@ -6,13 +6,11 @@ use yii\helpers\Url;
 use yii\data\ArrayDataProvider;
 use common\models\RContributionIpd;
 use yii\data\ActiveDataProvider;
-
-
-
 $this->title = 'สมุนไพร6ชนิด';
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['thaimed/index']];
 $this->params['breadcrumbs'][] = 'การจ่ายสมุนไพรแยกตามสิทธิ์การรักษา';
 ?>
+<br>
         <b><a>การจ่ายสมุนไพรแยกตามสิทธิ์</a></b>
 <div class='well'>
     <?php $form = ActiveForm::begin(); ?>
