@@ -116,9 +116,411 @@ class SiteController extends Controller
             $ovisits[] = (int) $dataopd[$i]['ovisits'];
             
         }
+        // นับผู้ป่วยมารับบริการOPDแยกตามแผนก
+       $dataopdu = $connection->createCommand("
+       SELECT  a.fiscal as FISCAL, 
+        COUNT(CASE WHEN a.UNIT_REG = 02 THEN '1' END ) AS 'OPD',
+        COUNT(CASE WHEN a.UNIT_REG = 11 THEN '2' END ) AS 'ER',
+        COUNT(CASE WHEN a.UNIT_REG = 26 THEN '3' END ) AS 'THAIMED', 
+        COUNT(CASE WHEN a.UNIT_REG = 31 THEN '4' END ) AS 'PHISICAL',
+        COUNT(CASE WHEN a.UNIT_REG = 40 THEN '5' END ) AS 'VIP'
+        FROM mb_opd_visits_fiscal a
+        WHERE a.REG_DATETIME BETWEEN '2015-10-01' AND '2020-09-30'
+        GROUP BY a.fiscal  
+        ")->queryAll(); 
+
+        $uopddataProvider = new ArrayDataProvider([
+            'allModels' => $dataopdu,
+            'sort'=>[
+                'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+            ],
+        ]);
+        //เตรียมข้อมูลผู้ป่วยนอกส่งให้กราฟ
+        for ($i = 0; $i < sizeof($dataopdu); $i++) {
+            $fiscal[] = $dataopdu[$i]['FISCAL'];
+            $opd[] = (int) $dataopdu[$i]['OPD'];
+            $er[] = (int) $dataopdu[$i]['ER'];
+            $thaimed[] = (int) $dataopdu[$i]['THAIMED'];
+            $phisical[] = (int) $dataopdu[$i]['PHISICAL'];
+            $vip[] = (int) $dataopdu[$i]['VIP'];
+            
+        }
+        // 10 อันดับโรคผู้ป่วยนอก ปีงบ2560
+       $dataopd1060 = $connection->createCommand("
+       SELECT a.ICD10_TM, a.ICD_NAME , COUNT(a.ICD10_TM) as AMOUNT
+        FROM mb_opd_visits_fiscal a
+        WHERE a.REG_DATETIME BETWEEN '2016-10-01 00:01' AND '2017-09-30 23:59'
+        AND a.ICD10_TM NOT BETWEEN 'Z00' AND 'Z99' AND a.ICD10_TM <> 'U778'
+        GROUP BY a.ICD10_TM ORDER BY AMOUNT DESC  LIMIT 10
+        ")->queryAll(); 
+
+        $opd1060dataProvider = new ArrayDataProvider([
+            'allModels' => $dataopd1060,
+            'sort'=>[
+                'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+            ],
+        ]);
+         // 10 อันดับโรคผู้ป่วยนอก ปีงบ2561
+       $dataopd1061 = $connection->createCommand("
+       SELECT a.ICD10_TM, a.ICD_NAME , COUNT(a.ICD10_TM) as AMOUNT
+        FROM mb_opd_visits_fiscal a
+        WHERE a.REG_DATETIME BETWEEN '2017-10-01 00:01' AND '2018-09-30 23:59'
+        AND a.ICD10_TM NOT BETWEEN 'Z00' AND 'Z99' AND a.ICD10_TM <> 'U778'
+        GROUP BY a.ICD10_TM ORDER BY AMOUNT DESC  LIMIT 10
+        ")->queryAll(); 
+
+        $opd1061dataProvider = new ArrayDataProvider([
+            'allModels' => $dataopd1061,
+            'sort'=>[
+                'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+            ],
+        ]);
+         // 10 อันดับโรคผู้ป่วยนอก ปีงบ2562
+       $dataopd1062 = $connection->createCommand("
+       SELECT a.ICD10_TM, a.ICD_NAME , COUNT(a.ICD10_TM) as AMOUNT
+        FROM mb_opd_visits_fiscal a
+        WHERE a.REG_DATETIME BETWEEN '2018-10-01 00:01' AND '2019-09-30 23:59'
+        AND a.ICD10_TM NOT BETWEEN 'Z00' AND 'Z99' AND a.ICD10_TM <> 'U778'
+        GROUP BY a.ICD10_TM ORDER BY AMOUNT DESC  LIMIT 10
+        ")->queryAll(); 
+
+        $opd1062dataProvider = new ArrayDataProvider([
+            'allModels' => $dataopd1062,
+            'sort'=>[
+                'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+            ],
+        ]);
+       // 10 อันดับโรค IPD ปีงบ2560
+       $dataipd1060 = $connection->createCommand("
+       SELECT c.ICD10_TM ,c.ICD_NAME , COUNT(c.ICD10_TM) as AMOUNT
+       FROM ipd_reg i
+       LEFT JOIN opd_diagnosis b ON i.VISIT_ID = b.VISIT_ID AND b.IS_CANCEL = 0 AND b.DXT_ID = 1
+       LEFT JOIN icd10new c ON b.ICD10 = c.ICD10
+       WHERE i.ADM_DT BETWEEN '2016.10.01 00:01' AND '2017.09.30 23:59'
+       AND i.WARD_NO = 38
+       GROUP BY c.ICD10_TM ORDER BY amount DESC LIMIT 10
+        ")->queryAll(); 
+
+        $ipd1060dataProvider = new ArrayDataProvider([
+            'allModels' => $dataipd1060,
+            'sort'=>[
+                'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+            ],
+        ]);
+        // 10 อันดับโรค IPD ปีงบ2561
+       $dataipd1061 = $connection->createCommand("
+       SELECT c.ICD10_TM ,c.ICD_NAME , COUNT(c.ICD10_TM) as AMOUNT
+        FROM ipd_reg i
+        LEFT JOIN opd_diagnosis b ON i.VISIT_ID = b.VISIT_ID AND b.IS_CANCEL = 0 AND b.DXT_ID = 1
+        LEFT JOIN icd10new c ON b.ICD10 = c.ICD10
+        WHERE i.ADM_DT BETWEEN '2017.10.01 00:01' AND '2018.09.30 23:59'
+        AND i.WARD_NO = 38
+        GROUP BY c.ICD10_TM ORDER BY amount DESC LIMIT 10
+        ")->queryAll(); 
+
+        $ipd1061dataProvider = new ArrayDataProvider([
+            'allModels' => $dataipd1061,
+            'sort'=>[
+                'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+            ],
+        ]);
+        // 10 อันดับโรค IPD ปีงบ2562
+       $dataipd1062 = $connection->createCommand("
+       SELECT c.ICD10_TM ,c.ICD_NAME , COUNT(c.ICD10_TM) as AMOUNT
+        FROM ipd_reg i
+        LEFT JOIN opd_diagnosis b ON i.VISIT_ID = b.VISIT_ID AND b.IS_CANCEL = 0 AND b.DXT_ID = 1
+        LEFT JOIN icd10new c ON b.ICD10 = c.ICD10
+        WHERE i.ADM_DT BETWEEN '2018.10.01 00:01' AND '2019.09.30 23:59'
+        AND i.WARD_NO = 38
+        GROUP BY c.ICD10_TM ORDER BY amount DESC LIMIT 10
+        ")->queryAll(); 
+
+        $ipd1062dataProvider = new ArrayDataProvider([
+            'allModels' => $dataipd1062,
+            'sort'=>[
+                'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+            ],
+        ]);
+         // 10 อันดับโรคเสียชีวิตในโรงพยาบาล ปีงบ2560
+         $datadeath1060 = $connection->createCommand("
+            SELECT d.CDEATH,i.ICD_NAME,COUNT(d.CDEATH) AS AMOUNT
+            FROM deaths d
+            RIGHT  JOIN icd10new i ON d.CDEATH = i.ICD10_TM
+            WHERE d.DEATH_DATE BETWEEN '2016-10-01' AND '2017-09-30'
+            AND d.is_cancel = 0
+            AND d.CDEATH <> ''
+            GROUP BY d.CDEATH ORDER BY amount DESC  LIMIT 10
+      ")->queryAll(); 
+      $death1060dataProvider = new ArrayDataProvider([
+          'allModels' => $datadeath1060,
+          'sort'=>[
+              'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+          ],
+      ]);
+        //// 10 อันดับโรคเสียชีวิตในโรงพยาบาล ปีงบ2561 ////
+        $datadeath1061 = $connection->createCommand("
+            SELECT d.CDEATH,i.ICD_NAME,COUNT(d.CDEATH) AS AMOUNT
+            FROM deaths d
+            RIGHT  JOIN icd10new i ON d.CDEATH = i.ICD10_TM
+            WHERE d.DEATH_DATE BETWEEN '2017-10-01' AND '2018-09-30'
+            AND d.is_cancel = 0
+            AND d.CDEATH <> ''
+            GROUP BY d.CDEATH ORDER BY amount DESC  LIMIT 10
+         ")->queryAll(); 
+         $death1061dataProvider = new ArrayDataProvider([
+             'allModels' => $datadeath1061,
+             'sort'=>[
+                 'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+             ],
+         ]);
+        //// 10 อันดับโรคเสียชีวิตในโรงพยาบาล ปีงบ2562
+        $datadeath1062 = $connection->createCommand("
+            SELECT d.CDEATH,i.ICD_NAME,COUNT(d.CDEATH) AS AMOUNT
+            FROM deaths d
+            RIGHT  JOIN icd10new i ON d.CDEATH = i.ICD10_TM
+            WHERE d.DEATH_DATE BETWEEN '2018-10-01' AND '2019-09-30'
+            AND d.is_cancel = 0
+            AND d.CDEATH <> ''
+            GROUP BY d.CDEATH ORDER BY amount DESC  LIMIT 10
+     ")->queryAll(); 
+     $death1062dataProvider = new ArrayDataProvider([
+         'allModels' => $datadeath1062,
+         'sort'=>[
+             'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+         ],
+     ]);
+         //// 10 อันดับโรค Refers แผนกตรวจโรคทั่วไป ปีงบ2560 ////
+        $datarf_opd1060 = $connection->createCommand("
+        SELECT a.ICD10_TM, a.ICD_NAME, COUNT(a.ICD10_TM) as AMOUNT
+        FROM mb_referout_opd_fiscal a
+        WHERE a.fiscal = '2560'
+        AND a.UNIT_ID = 02
+        AND a.ICD10_TM NOT BETWEEN 'Z00' AND 'Z99'
+        GROUP BY a.ICD10_TM ORDER BY amount DESC LIMIT 10
+     ")->queryAll(); 
+     $rf_opd1060dataProvider = new ArrayDataProvider([
+         'allModels' => $datarf_opd1060,
+         'sort'=>[
+             'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+         ],
+     ]);
+      //// 10 อันดับโรค Refers แผนกตรวจโรคทั่วไป ปีงบ2561 ////
+      $datarf_opd1061 = $connection->createCommand("
+      SELECT a.ICD10_TM, a.ICD_NAME, COUNT(a.ICD10_TM) as AMOUNT
+      FROM mb_referout_opd_fiscal a
+      WHERE a.fiscal = '2561'
+      AND a.UNIT_ID = 02
+      AND a.ICD10_TM NOT BETWEEN 'Z00' AND 'Z99'
+      GROUP BY a.ICD10_TM ORDER BY amount DESC LIMIT 10
+   ")->queryAll(); 
+   $rf_opd1061dataProvider = new ArrayDataProvider([
+       'allModels' => $datarf_opd1061,
+       'sort'=>[
+           'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+       ],
+   ]);
+    //// 10 อันดับโรค Refers แผนกตรวจโรคทั่วไป ปีงบ2562 ////
+    $datarf_opd1062 = $connection->createCommand("
+    SELECT a.ICD10_TM, a.ICD_NAME, COUNT(a.ICD10_TM) as AMOUNT
+    FROM mb_referout_opd_fiscal a
+    WHERE a.fiscal = '2562'
+    AND a.UNIT_ID = 02
+    AND a.ICD10_TM NOT BETWEEN 'Z00' AND 'Z99'
+    GROUP BY a.ICD10_TM ORDER BY amount DESC LIMIT 10
+ ")->queryAll(); 
+ $rf_opd1062dataProvider = new ArrayDataProvider([
+     'allModels' => $datarf_opd1062,
+     'sort'=>[
+         'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+     ],
+ ]);
+     //// 10 อันดับโรค Refers ER ปีงบ2560 ////
+     $datarf_er1060 = $connection->createCommand("
+     SELECT a.ICD10_TM, a.ICD_NAME, COUNT(a.ICD10_TM) as AMOUNT
+     FROM mb_referout_opd_fiscal a
+     WHERE a.fiscal = '2560'
+     AND a.UNIT_ID = 11
+     AND a.ICD10_TM NOT BETWEEN 'Z00' AND 'Z99'
+     GROUP BY a.ICD10_TM ORDER BY amount DESC LIMIT 10
+  ")->queryAll(); 
+  $rf_er1060dataProvider = new ArrayDataProvider([
+      'allModels' => $datarf_er1060,
+      'sort'=>[
+          'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+      ],
+  ]);  
+      //// 10 อันดับโรค Refers ER ปีงบ2561 ////
+     $datarf_er1061 = $connection->createCommand("
+     SELECT a.ICD10_TM, a.ICD_NAME, COUNT(a.ICD10_TM) as AMOUNT
+     FROM mb_referout_opd_fiscal a
+     WHERE a.fiscal = '2561'
+     AND a.UNIT_ID = 11
+     AND a.ICD10_TM NOT BETWEEN 'Z00' AND 'Z99'
+     GROUP BY a.ICD10_TM ORDER BY amount DESC LIMIT 10
+  ")->queryAll(); 
+  $rf_er1061dataProvider = new ArrayDataProvider([
+      'allModels' => $datarf_er1061,
+      'sort'=>[
+          'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+      ],
+  ]);  
+      //// 10 อันดับโรค Refers ER ปีงบ2562 ////
+     $datarf_er1062 = $connection->createCommand("
+     SELECT a.ICD10_TM, a.ICD_NAME, COUNT(a.ICD10_TM) as AMOUNT
+     FROM mb_referout_opd_fiscal a
+     WHERE a.fiscal = '2562'
+     AND a.UNIT_ID = 11
+     AND a.ICD10_TM NOT BETWEEN 'Z00' AND 'Z99'
+     GROUP BY a.ICD10_TM ORDER BY amount DESC LIMIT 10
+  ")->queryAll(); 
+  $rf_er1062dataProvider = new ArrayDataProvider([
+      'allModels' => $datarf_er1062,
+      'sort'=>[
+          'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+      ],
+  ]);  
+      //// 10 อันดับโรค Refers LR ปีงบ2560 ////
+     $datarf_lr1060 = $connection->createCommand("
+     SELECT a.ICD10_TM, a.ICD_NAME, COUNT(a.ICD10_TM) as AMOUNT
+        FROM mb_referout_ipd_fiscal a
+        WHERE a.fiscal = '2560'
+        AND a.UNIT_ID = 22
+        AND a.ICD10_TM NOT BETWEEN 'Z00' AND 'Z99'
+        GROUP BY a.ICD10_TM ORDER BY amount DESC LIMIT 10
+  ")->queryAll(); 
+  $rf_lr1060dataProvider = new ArrayDataProvider([
+      'allModels' => $datarf_lr1060,
+      'sort'=>[
+          'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+      ],
+  ]);  
+       //// 10 อันดับโรค Refers LR ปีงบ2561 ////
+     $datarf_lr1061 = $connection->createCommand("
+     SELECT a.ICD10_TM, a.ICD_NAME, COUNT(a.ICD10_TM) as AMOUNT
+        FROM mb_referout_ipd_fiscal a
+        WHERE a.fiscal = '2561'
+        AND a.UNIT_ID = 22
+        AND a.ICD10_TM NOT BETWEEN 'Z00' AND 'Z99'
+        GROUP BY a.ICD10_TM ORDER BY amount DESC LIMIT 10
+  ")->queryAll(); 
+  $rf_lr1061dataProvider = new ArrayDataProvider([
+      'allModels' => $datarf_lr1061,
+      'sort'=>[
+          'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+      ],
+  ]); 
+       //// 10 อันดับโรค Refers LR ปีงบ2560 ////
+     $datarf_lr1062 = $connection->createCommand("
+     SELECT a.ICD10_TM, a.ICD_NAME, COUNT(a.ICD10_TM) as AMOUNT
+        FROM mb_referout_ipd_fiscal a
+        WHERE a.fiscal = '2562'
+        AND a.UNIT_ID = 22
+        AND a.ICD10_TM NOT BETWEEN 'Z00' AND 'Z99'
+        GROUP BY a.ICD10_TM ORDER BY amount DESC LIMIT 10
+  ")->queryAll(); 
+  $rf_lr1062dataProvider = new ArrayDataProvider([
+      'allModels' => $datarf_lr1062,
+      'sort'=>[
+          'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+      ],
+  ]); 
+            //// 10 อันดับโรค Refers ผู้ป่วยในบน ปีงบ2560 ////
+     $datarf_ward2_1060 = $connection->createCommand("
+     SELECT a.ICD10_TM, a.ICD_NAME, COUNT(a.ICD10_TM) as AMOUNT
+        FROM mb_referout_ipd_fiscal a
+        WHERE a.fiscal = '2560'
+        AND a.UNIT_ID = 38
+        AND a.ICD10_TM NOT BETWEEN 'Z00' AND 'Z99'
+        GROUP BY a.ICD10_TM ORDER BY amount DESC LIMIT 10
+  ")->queryAll(); 
+  $rf_ward21060dataProvider = new ArrayDataProvider([
+      'allModels' => $datarf_ward2_1060,
+      'sort'=>[
+          'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+      ],
+  ]);  
+      
+            //// 10 อันดับโรค Refers ผู้ป่วยในบน ปีงบ2561 ////
+     $datarf_ward2_1061 = $connection->createCommand("
+     SELECT a.ICD10_TM, a.ICD_NAME, COUNT(a.ICD10_TM) as AMOUNT
+        FROM mb_referout_ipd_fiscal a
+        WHERE a.fiscal = '2561'
+        AND a.UNIT_ID = 38
+        AND a.ICD10_TM NOT BETWEEN 'Z00' AND 'Z99'
+        GROUP BY a.ICD10_TM ORDER BY amount DESC LIMIT 10
+  ")->queryAll(); 
+  $rf_ward21061dataProvider = new ArrayDataProvider([
+      'allModels' => $datarf_ward2_1061,
+      'sort'=>[
+          'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+      ],
+  ]);  
+      
+      //// 10 อันดับโรค Refers ผู้ป่วยในบน ปีงบ2562 ////
+     $datarf_ward2_1062 = $connection->createCommand("
+     SELECT a.ICD10_TM, a.ICD_NAME, COUNT(a.ICD10_TM) as AMOUNT
+        FROM mb_referout_ipd_fiscal a
+        WHERE a.fiscal = '2562'
+        AND a.UNIT_ID = 38
+        AND a.ICD10_TM NOT BETWEEN 'Z00' AND 'Z99'
+        GROUP BY a.ICD10_TM ORDER BY amount DESC LIMIT 10
+  ")->queryAll(); 
+  $rf_ward21062dataProvider = new ArrayDataProvider([
+      'allModels' => $datarf_ward2_1062,
+      'sort'=>[
+          'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+      ],
+  ]);  
+      //// 10 อันดับโรค Refers ผู้ป่วยในล่าง ปีงบ2560 ////
+     $datarf_ward1_1060 = $connection->createCommand("
+     SELECT a.ICD10_TM, a.ICD_NAME, COUNT(a.ICD10_TM) as AMOUNT
+        FROM mb_referout_ipd_fiscal a
+        WHERE a.fiscal = '2560'
+        AND a.UNIT_ID = 39
+        AND a.ICD10_TM NOT BETWEEN 'Z00' AND 'Z99'
+        GROUP BY a.ICD10_TM ORDER BY amount DESC LIMIT 10
+  ")->queryAll(); 
+  $rf_ward11060dataProvider = new ArrayDataProvider([
+      'allModels' => $datarf_ward1_1060,
+      'sort'=>[
+          'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+      ],
+  ]);  
+      
+            //// 10 อันดับโรค Refers ผู้ป่วยในล่าง ปีงบ2561 ////
+     $datarf_ward1_1061 = $connection->createCommand("
+     SELECT a.ICD10_TM, a.ICD_NAME, COUNT(a.ICD10_TM) as AMOUNT
+        FROM mb_referout_ipd_fiscal a
+        WHERE a.fiscal = '2561'
+        AND a.UNIT_ID = 39
+        AND a.ICD10_TM NOT BETWEEN 'Z00' AND 'Z99'
+        GROUP BY a.ICD10_TM ORDER BY amount DESC LIMIT 10
+  ")->queryAll(); 
+  $rf_ward11061dataProvider = new ArrayDataProvider([
+      'allModels' => $datarf_ward1_1061,
+      'sort'=>[
+          'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+      ],
+  ]);  
+      
+      //// 10 อันดับโรค Refers ผู้ป่วยในล่าง ปีงบ2562 ////
+     $datarf_ward1_1062 = $connection->createCommand("
+     SELECT a.ICD10_TM, a.ICD_NAME, COUNT(a.ICD10_TM) as AMOUNT
+        FROM mb_referout_ipd_fiscal a
+        WHERE a.fiscal = '2562'
+        AND a.UNIT_ID = 39
+        AND a.ICD10_TM NOT BETWEEN 'Z00' AND 'Z99'
+        GROUP BY a.ICD10_TM ORDER BY amount DESC LIMIT 10
+  ")->queryAll(); 
+  $rf_ward11062dataProvider = new ArrayDataProvider([
+      'allModels' => $datarf_ward1_1062,
+      'sort'=>[
+          'attributes'=>['FISCAL','OPD','ER','THAIMED','PHISICAL','VIP']
+      ],
+  ]);  
         //VisitsIPD นอนโรงพยาบาล
        $datai = $connection->createCommand("
-       SELECT k.fiscal , k.ivisits, avg(k.adjrw)/365.25 as adjrw, avg(k.sleepday)/365.25 as sleepdays
+       SELECT k.fiscal , k.ivisits, avg(k.adjrw)/365.25 as adjrw, avg(k.sleepday) as sleepdays
        FROM (
        SELECT fiscal,COUNT(DISTINCT visits) AS ivisits, COUNT(adjrw) as adjrw , SUM(days+hour) AS sleepday
         FROM mb_ipdreg_fiscal 
@@ -137,6 +539,32 @@ class SiteController extends Controller
             $ifiscal[] = $datai[$i]['fiscal'];
             $ivisits[] = (int) $datai[$i]['ivisits'];
            # $sleepday[] = (int) $datai[$i]['sleepday'];
+        }
+        //VisitsIPD นับแยกแผนก
+       $dataiu = $connection->createCommand("
+       SELECT a.fiscal , 
+            COUNT(CASE WHEN a.ward_no =22 THEN '1'END ) as 'LR',
+            COUNT(CASE WHEN a.ward_no =38 THEN '2'END ) as 'WARD2',
+            COUNT(CASE WHEN a.ward_no =39 THEN '3'END ) as 'WARD1',
+            COUNT(CASE WHEN a.ward_no IN(22,38,39) THEN '4'END ) as 'TOTAL'
+            FROM  mb_ipdreg_fiscal a
+           # WHERE a.admit_date BETWEEN '2015-10-01' AND '2020-12-30'
+            GROUP BY a.fiscal 
+")->queryAll(); 
+
+        $iudataProvider = new ArrayDataProvider([
+            'allModels' => $dataiu,
+            'sort'=>[
+                'attributes'=>['fiscal','LR','WARD2','WARD1','TOTAL']
+            ],
+        ]);
+        //เตรียมข้อมูลผู้ป่วยในส่งให้กราฟ
+        for ($i = 0; $i < sizeof($dataiu); $i++) {
+            $fiscal[] = $dataiu[$i]['fiscal'];
+            $lr[] = (int) $dataiu[$i]['LR'];
+            $ward2[] = (int) $dataiu[$i]['WARD2'];
+            $ward1[] = (int) $dataiu[$i]['WARD1'];
+            $total[] = (int) $dataiu[$i]['TOTAL'];
         }
         //Refers ผู้ป่วยนอกส่งต่อ
        $datarf = $connection->createCommand("
@@ -254,7 +682,32 @@ class SiteController extends Controller
 
          return $this->render('index', [
                     'acdataProvider' => $acdataProvider,
+                    'opd1060dataProvider' => $opd1060dataProvider,
+                    'opd1061dataProvider' => $opd1061dataProvider,
+                    'opd1062dataProvider' => $opd1062dataProvider,
+                    'ipd1060dataProvider' => $ipd1060dataProvider,
+                    'ipd1061dataProvider' => $ipd1061dataProvider,
+                    'ipd1062dataProvider' => $ipd1062dataProvider,
+                    'death1060dataProvider' => $death1060dataProvider,
+                    'death1061dataProvider' => $death1061dataProvider,
+                    'death1062dataProvider' => $death1062dataProvider,
+                    'rf_opd1060dataProvider'=> $rf_opd1060dataProvider,
+                    'rf_opd1061dataProvider'=> $rf_opd1061dataProvider,
+                    'rf_opd1062dataProvider'=> $rf_opd1062dataProvider,
+                    'rf_er1060dataProvider'=> $rf_er1060dataProvider,
+                    'rf_er1061dataProvider'=> $rf_er1061dataProvider,
+                    'rf_er1062dataProvider'=> $rf_er1062dataProvider,
+                    'rf_lr1060dataProvider'=> $rf_lr1060dataProvider,
+                    'rf_lr1061dataProvider'=> $rf_lr1061dataProvider,
+                    'rf_lr1062dataProvider'=> $rf_lr1062dataProvider,
+                    'rf_ward21060dataProvider' => $rf_ward21060dataProvider,
+                    'rf_ward21061dataProvider' => $rf_ward21061dataProvider,
+                    'rf_ward21062dataProvider' => $rf_ward21062dataProvider,
+                    'rf_ward11060dataProvider' => $rf_ward11060dataProvider,
+                    'rf_ward11061dataProvider' => $rf_ward11061dataProvider,
+                    'rf_ward11062dataProvider' => $rf_ward11062dataProvider,
                     'cipdData' => $idataProvider,
+                    'iudataProvider' => $iudataProvider,
                     'acfiscal'=> $acfiscal,
                     'acvisits' => $acvisits,
                     'achuman' => $achuman,
@@ -262,6 +715,7 @@ class SiteController extends Controller
                     'hn' => $hn,
                     'fiscal' => $fiscal,
                     'opddataProvider' => $opddataProvider,
+                    'uopddataProvider' => $uopddataProvider,
                     'ifiscal' => $ifiscal,
                     'ivisits' =>$ivisits,
                     //'sleepday' =>$sleepday,
